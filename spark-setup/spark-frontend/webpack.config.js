@@ -12,7 +12,7 @@ module.exports = (env, args) => {
     return {
         entry: path.join(__dirname, 'src/index.jsx'),
         output: {
-            publicPath: mode === 'development' ? undefined : './',
+            publicPath: mode === 'development' ? undefined : '/',
             path: path.resolve(__dirname, 'dist'),
             filename: '[name].[contenthash:7].js'
         },
