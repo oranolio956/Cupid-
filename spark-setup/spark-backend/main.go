@@ -215,10 +215,15 @@ func deviceListHandler(w http.ResponseWriter, r *http.Request) {
 	copy(devicesCopy, devices)
 	devicesMutex.Unlock()
 
+	// Convert devices array to map format expected by frontend
+	deviceMap := make(map[string]Device)
+	for _, device := range devicesCopy {
+		deviceMap[device.ID] = device
+	}
+
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"success": true,
-		"devices": devicesCopy,
-		"count":   len(devicesCopy),
+		"code": 0,
+		"data": deviceMap,
 	})
 }
 
