@@ -50,18 +50,16 @@ func main() {
 	app := gin.New()
 	app.Use(gin.Recovery())
 	
-	// Initialize security configuration
-	securityConfig := security.GetConfigForEnvironment(config.Config.Environment)
-	securityManager := security.NewSecurityManager(securityConfig)
+	// Initialize comprehensive security manager
+	securityManager := security.NewComprehensiveSecurityManager(config.Config.Environment)
 	
-	// Add security middleware
-	app.Use(securityManager.SecurityMiddleware())
-	app.Use(securityManager.RateLimitMiddleware())
-	app.Use(securityManager.IPBlockingMiddleware())
-	app.Use(securityManager.SecurityHeadersMiddleware())
-	app.Use(securityManager.CORSMiddleware())
-	app.Use(securityManager.RequestValidationMiddleware())
-	app.Use(securityManager.DDoSProtectionMiddleware())
+	// Add security middleware in proper order
+	app.Use(securityManager.SecurityHeadersMiddleware())  // Security headers first
+	app.Use(securityManager.CORSMiddleware())             // CORS second
+	app.Use(securityManager.DDoSProtectionMiddleware())   // DDoS protection third
+	app.Use(securityManager.RateLimitMiddleware())        // Rate limiting fourth
+	app.Use(securityManager.IPBlockingMiddleware())       // IP blocking fifth
+	app.Use(securityManager.RequestValidationMiddleware()) // Request validation last
 	
 	// Add API middleware
 	app.Use(api.RequestTrackingMiddleware())
