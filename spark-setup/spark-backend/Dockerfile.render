@@ -49,8 +49,10 @@ RUN adduser -D -s /bin/sh spark
 # Set working directory
 WORKDIR /app
 
-# Copy binary and startup script from builder
+# Copy binary from builder
 COPY --from=go-builder /app/spark-server .
+
+# Copy startup script from build context
 COPY start.sh .
 
 # Make startup script executable
