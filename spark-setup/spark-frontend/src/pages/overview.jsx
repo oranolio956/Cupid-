@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable, {TableDropdown} from '@ant-design/pro-table';
-import {Button, Image, message, Modal, Progress, Tooltip, Spin} from 'antd';
+import {Button, Image, message, Modal, Progress, Tooltip, Spin, Alert} from 'antd';
 import {catchBlobReq, formatSize, request, tsToTime, waitTime} from "../utils/utils";
-import {QuestionCircleOutlined, PlusOutlined, ReloadOutlined} from "@ant-design/icons";
+import {QuestionCircleOutlined, PlusOutlined, ReloadOutlined, WifiOutlined} from "@ant-design/icons";
 import i18n from "../locale/locale";
 import DeviceCard from '../components/DeviceCard/DeviceCard';
+import connectionTester from '../utils/connectionTest';
 import axios from 'axios';
 
 // EmptyState component for when no devices are connected
@@ -67,6 +68,7 @@ function overview(props) {
 	const [screenBlob, setScreenBlob] = useState('');
 	const [dataSource, setDataSource] = useState([]);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	const [connectionStatus, setConnectionStatus] = useState({ connected: false, testing: false });
 
 	// Add resize listener for responsive behavior
 	useEffect(() => {
@@ -76,6 +78,21 @@ function overview(props) {
 		
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	// Test backend connection on component mount
+	useEffect(() => {
+		const testConnection = async () => {
+			setConnectionStatus({ connected: false, testing: true });
+			const results = await connectionTester.runFullTest();
+			setConnectionStatus({ 
+				connected: results.overall, 
+				testing: false,
+				details: results
+			});
+		};
+		
+		testConnection();
 	}, []);
 
 	const columns = [
@@ -434,6 +451,44 @@ function overview(props) {
 
 	return (
 		<>
+			{/* Connection Status Alert */}
+			{!connectionStatus.connected && !connectionStatus.testing && (
+				<Alert
+					message="Backend Connection Failed"
+					description={`Unable to connect to backend server. ${connectionStatus.details?.api?.error || 'Please check your connection.'}`}
+					type="error"
+					showIcon
+					action={
+						<Button 
+							size="small" 
+							onClick={() => {
+								setConnectionStatus({ connected: false, testing: true });
+								connectionTester.runFullTest().then(results => {
+									setConnectionStatus({ 
+										connected: results.overall, 
+										testing: false,
+										details: results
+									});
+								});
+							}}
+						>
+							Retry
+						</Button>
+					}
+					style={{ marginBottom: 16 }}
+				/>
+			)}
+			
+			{connectionStatus.testing && (
+				<Alert
+					message="Testing Backend Connection..."
+					description="Verifying connection to backend server"
+					type="info"
+					showIcon
+					style={{ marginBottom: 16 }}
+				/>
+			)}
+
 			<Image
 				preview={{
 					visible: !!screenBlob,

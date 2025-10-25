@@ -2,6 +2,7 @@ import axios from "axios";
 import Qs from "qs";
 import i18n, {getLang} from "../locale/locale";
 import {message} from "antd";
+import {getApiUrl, getWsUrl} from "../config/backend";
 
 let orderCompare;
 try {
@@ -51,14 +52,11 @@ function tsToTime(ts) {
 }
 
 function getBaseURL(ws, suffix) {
-	// Use environment variables for API URLs
-	const apiUrl = process.env.REACT_APP_API_URL || process.env.REACT_APP_API_URL_DEV || 'http://localhost:8000';
-	const wsUrl = process.env.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL_DEV || 'ws://localhost:8000';
-	
+	// Use centralized backend configuration
 	if (ws) {
-		return wsUrl + suffix;
+		return getWsUrl(suffix);
 	}
-	return apiUrl + suffix;
+	return getApiUrl(suffix);
 }
 
 function genRandHex(len) {
