@@ -1,10 +1,10 @@
 package core
 
 import (
-	"Spark/client/common"
-	"Spark/client/config"
-	"Spark/modules"
-	"Spark/utils"
+	"spark-client/common"
+	"spark-client/config"
+	"spark-client/modules"
+	"spark-client/utils"
 	"encoding/hex"
 	"errors"
 	"net/http"

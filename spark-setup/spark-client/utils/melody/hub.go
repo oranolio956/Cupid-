@@ -1,7 +1,7 @@
 package melody
 
 import (
-	"Spark/utils/cmap"
+	"spark-client/utils/cmap"
 )
 
 type hub struct {

@@ -1,7 +1,7 @@
 package core
 
 import (
-	"Spark/modules"
+	"spark-client/modules"
 	"crypto/rand"
 	"encoding/hex"
 	"errors"

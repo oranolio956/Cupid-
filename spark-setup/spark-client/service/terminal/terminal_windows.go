@@ -1,10 +1,10 @@
 package terminal
 
 import (
-	"Spark/client/common"
-	"Spark/modules"
-	"Spark/utils"
-	"Spark/utils/cmap"
+	"spark-client/common"
+	"spark-client/modules"
+	"spark-client/utils"
+	"spark-client/utils/cmap"
 	"encoding/hex"
 	"io"
 	"os/exec"

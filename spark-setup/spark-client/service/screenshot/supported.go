@@ -3,8 +3,8 @@
 package screenshot
 
 import (
-	"Spark/client/common"
-	"Spark/client/config"
+	"spark-client/common"
+	"spark-client/config"
 	"bytes"
 	"errors"
 	"github.com/kbinani/screenshot"

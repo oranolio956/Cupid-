@@ -1,10 +1,10 @@
 package desktop
 
 import (
-	"Spark/client/common"
-	"Spark/modules"
-	"Spark/utils"
-	"Spark/utils/cmap"
+	"spark-client/common"
+	"spark-client/modules"
+	"spark-client/utils"
+	"spark-client/utils/cmap"
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"

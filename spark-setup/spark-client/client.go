@@ -1,13 +1,8 @@
 package main
 
 import (
-	"Spark/client/config"
-	"Spark/client/core"
-	"Spark/utils"
-	"bytes"
-	"crypto/aes"
-	"crypto/cipher"
-	"math/big"
+	"spark-client/config"
+	"spark-client/core"
 	"os"
 	"os/exec"
 	"strings"
@@ -59,22 +54,3 @@ func update() {
 	}
 }
 
-func decrypt(data []byte, key []byte) ([]byte, error) {
-	// MD5[16 bytes] + Data[n bytes]
-	dataLen := len(data)
-	if dataLen <= 16 {
-		return nil, utils.ErrEntityInvalid
-	}
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-	stream := cipher.NewCTR(block, data[:16])
-	decBuffer := make([]byte, dataLen-16)
-	stream.XORKeyStream(decBuffer, data[16:])
-	hash, _ := utils.GetMD5(decBuffer)
-	if !bytes.Equal(hash, data[:16]) {
-		return nil, utils.ErrFailedVerification
-	}
-	return decBuffer[:dataLen-16], nil
-}

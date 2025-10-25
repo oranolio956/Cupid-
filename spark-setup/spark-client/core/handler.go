@@ -1,14 +1,14 @@
 package core
 
 import (
-	"Spark/client/common"
-	"Spark/client/service/basic"
-	"Spark/client/service/desktop"
-	"Spark/client/service/file"
-	"Spark/client/service/process"
-	Screenshot "Spark/client/service/screenshot"
-	"Spark/client/service/terminal"
-	"Spark/modules"
+	"spark-client/common"
+	"spark-client/service/basic"
+	"spark-client/service/desktop"
+	"spark-client/service/file"
+	"spark-client/service/process"
+	Screenshot "spark-client/service/screenshot"
+	"spark-client/service/terminal"
+	"spark-client/modules"
 	"github.com/kataras/golog"
 	"os"
 	"os/exec"
