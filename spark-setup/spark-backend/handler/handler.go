@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"Spark/server/handler/api"
 	"Spark/server/handler/bridge"
 	"Spark/server/handler/desktop"
 	"Spark/server/handler/file"
