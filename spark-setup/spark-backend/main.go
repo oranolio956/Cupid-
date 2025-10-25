@@ -6,6 +6,7 @@ import (
 	"Spark/server/common"
 	"Spark/server/config"
 	"Spark/server/handler"
+	"Spark/server/handler/api"
 	"Spark/server/handler/desktop"
 	"Spark/server/handler/terminal"
 	"Spark/server/handler/utility"
@@ -47,6 +48,13 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	app := gin.New()
 	app.Use(gin.Recovery())
+	
+	// Add API middleware
+	app.Use(api.RequestTrackingMiddleware())
+	app.Use(api.APIVersionMiddleware())
+	app.Use(api.ResponseTimeMiddleware())
+	app.Use(api.RequestIDMiddleware())
+	
 	{
 		handler.AuthHandler = checkAuth()
 		handler.InitRouter(app.Group(`/api`))
