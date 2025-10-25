@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html data-wf-domain="cupidbot.org" data-wf-page="trial" data-wf-site="6440ef10d027f97f198da940">
+<head>
+    <meta charset="utf-8"/>
+    <title>CupidBot - Start Your Free Trial</title>
+    <meta content="Get 1 month free trial of CupidBot AI - Premium chat automation for OnlyFans management." name="description"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="cdn.prod.website-files.com/6440ef10d027f97f198da940/css/cupidbotai.webflow.7be6c7fd7.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/" rel="preconnect"/>
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin="anonymous"/>
+    <script src="ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+    <script type="text/javascript">WebFont.load({  google: {    families: ["Roboto Mono:regular,500","Syne:regular,500,600,700,800"]  }});</script>
+    <link href="cdn.prod.website-files.com/6440ef10d027f97f198da940/64434655b04ea639aa482974_icon%20(1).png" rel="shortcut icon" type="image/x-icon"/>
+    <style>
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            background: #050009;
+            overflow-x: hidden;
+        }
+        
+        /* Particle Canvas */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Hero Section */
+        .trial-hero {
+            padding: 8rem 0 6rem;
+            position: relative;
+        }
+        
+        .trial-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+        
+        .animated-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(179, 83, 211, 0.1);
+            border: 1px solid rgba(179, 83, 211, 0.3);
+            border-radius: 50px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #b353d3;
+            margin-bottom: 2rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(179, 83, 211, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(179, 83, 211, 0.6);
+            }
+        }
+        
+        .trial-heading {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #b353d3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .trial-subheading {
+            font-size: 1.5rem;
+            color: #c8c8c8;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        
+        /* Feature Pills */
+        .feature-pills {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-pill {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: #fff;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .feature-pill:nth-child(1) { animation-delay: 0.2s; }
+        .feature-pill:nth-child(2) { animation-delay: 0.4s; }
+        .feature-pill:nth-child(3) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .feature-pill:hover {
+            background: rgba(179, 83, 211, 0.2);
+            border-color: #b353d3;
+            transform: translateY(-2px);
+        }
+        
+        /* Key Generation Card */
+        .key-gen-card {
+            background: rgba(25, 25, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .key-gen-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #b353d3, #ad2c2c, #b353d3);
+            background-size: 200% 100%;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .form-input-trial {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            background: rgba(31, 31, 31, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Roboto Mono', monospace;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-input-trial:focus {
+            outline: none;
+            border-color: #b353d3;
+            box-shadow: 0 0 0 4px rgba(179, 83, 211, 0.1);
+        }
+        
+        .button-trial {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+        
+        .button-trial:hover {
+            transform: translateY(-2px);
+        }
+        
+        .button-trial::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .button-trial:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+        
+        .button-trial span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Key Display */
+        .key-display {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(31, 31, 31, 0.6);
+            border: 2px solid #246426;
+            border-radius: 16px;
+            animation: slideDown 0.5s ease;
+        }
+        
+        .key-display.active {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .key-value {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5rem;
+            color: #246426;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(36, 100, 38, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            user-select: all;
+        }
+        
+        .copy-button {
+            width: 100%;
+            padding: 1rem;
+            background: #246426;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-button:hover {
+            background: #2d7a2f;
+            transform: translateY(-2px);
+        }
+        
+        /* Interactive Installation Guide */
+        .interactive-guide {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .guide-step {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 500px;
+        }
+        
+        .guide-step.active {
+            display: grid;
+            animation: fadeInScale 0.6s ease;
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .step-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .browser-mockup {
+            width: 100%;
+            background: rgba(25, 25, 25, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .browser-header {
+            background: rgba(31, 31, 31, 0.9);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .browser-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .browser-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .browser-dots span:nth-child(1) { background: #ff5f56; }
+        .browser-dots span:nth-child(2) { background: #ffbd2e; }
+        .browser-dots span:nth-child(3) { background: #27c93f; }
+        
+        .browser-url {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            color: #c8c8c8;
+        }
+        
+        .browser-content {
+            padding: 2rem;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .extension-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(179, 83, 211, 0.1);
+            border: 2px solid #b353d3;
+            border-radius: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .ext-icon {
+            font-size: 3rem;
+        }
+        
+        .ext-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .ext-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .ext-desc {
+            font-size: 0.875rem;
+            color: #c8c8c8;
+        }
+        
+        .dev-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: #fff;
+        }
+        
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #b353d3;
+        }
+        
+        .toggle-slider {
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+        
+        .load-unpacked-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .step-instructions {
+            padding: 2rem;
+        }
+        
+        .step-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(179, 83, 211, 0.2);
+            border: 1px solid #b353d3;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: #b353d3;
+        }
+        
+        .step-instructions h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .step-instructions p {
+            color: #c8c8c8;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .step-instructions code {
+            background: rgba(179, 83, 211, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .download-ext-btn,
+        .next-step-btn,
+        .finish-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-ext-btn:hover,
+        .next-step-btn:hover,
+        .finish-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(179, 83, 211, 0.4);
+        }
+        
+        .success-animation {
+            text-align: center;
+        }
+        
+        .checkmark-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        
+        .checkmark {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #246426;
+            stroke-miterlimit: 10;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+        }
+        
+        .checkmark-circle-bg {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #246426;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+        
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #246426;
+            }
+        }
+        
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            padding: 4rem 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(25, 25, 25, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #b353d3;
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #c8c8c8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 991px) {
+            .trial-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .trial-heading {
+                font-size: 3rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .installation-step {
+                grid-template-columns: 60px 1fr;
+                gap: 1.5rem;
+            }
+            
+            .step-number {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="body">
+    <canvas id="particles-canvas"></canvas>
+    
+    <div class="content-wrapper">
+        <div class="page-wrapper">
+            <!-- Navbar -->
+            <header class="header">
+                <div class="navbar-wrapper">
+                    <div class="navbar">
+                        <div class="page-padding">
+                            <div class="container-xxlarge">
+                                <header class="navbar-inner">
+                                    <div class="navbar-left">
+                                        <div class="navbar-logo">
+                                            <a href="index.html" class="w-inline-block">
+                                                <div class="text-block-2">CupidBot.ai</div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="navbar-right">
+                                        <nav class="navbar-menu">
+                                            <a href="index.html" class="navbar-menu-item-link w-inline-block"><div>Home</div></a>
+                                            <a href="contact.html" class="navbar-menu-item-link w-inline-block"><div>Contact</div></a>
+                                            <a href="https://t.me/cupidbotg" target="_blank" class="navbar-menu-item-link w-inline-block"><div>OFM</div></a>
+                                        </nav>
+                                    </div>
+                                </header>
+                                <div class="line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="trial-hero">
+                <div class="page-padding">
+                    <div class="container-xxlarge">
+                        <div class="trial-hero-grid">
+                            <div>
+                                <div class="animated-badge">🎁 Limited Time Offer</div>
+                                <h1 class="trial-heading">Start Your Free 30-Day Trial</h1>
+                                <p class="trial-subheading">
+                                    Premium AI chat automation for OnlyFans management companies. Convert subscribers automatically with intelligent conversations.
+                                </p>
+                                <div class="feature-pills">
+                                    <div class="feature-pill">✨ 24/7 AI Automation</div>
+                                    <div class="feature-pill">🎯 Smart Targeting</div>
+                                    <div class="feature-pill">📊 Real-time Analytics</div>
+                                </div>
+                            </div>
+                            <div class="key-gen-card">
+                                <h3 style="color: #fff; margin-bottom: 1.5rem; font-size: 1.5rem;">Get Your Trial Key</h3>
+                                <form id="trialForm">
+                                    <input type="email" id="email" class="form-input-trial" placeholder="your@email.com" required>
+                                    <input type="text" id="company" class="form-input-trial" placeholder="Company Name (Optional)">
+                                    <button type="submit" class="button-trial" id="generateBtn">
+                                        <span>Generate Trial Key</span>
+                                    </button>
+                                </form>
+                                <div class="key-display" id="keyDisplay">
+                                    <div class="key-value" id="keyValue"></div>
+                                    <button class="copy-button" id="copyBtn">📋 Copy Key</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section>
+                <div class="page-padding">
+                    <div class="container-xxlarge">
+                        <div class="line"></div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">10K+</div>
+                                <div class="stat-label">Active Users</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">2.5M+</div>
+                                <div class="stat-label">Messages Sent</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">87%</div>
+                                <div class="stat-label">Conversion Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Installation Guide -->
+            <section>
+                <div class="page-padding">
+                    <div class="container-xxlarge">
+                        <div class="line"></div>
+                        <div style="padding: 4rem 0;">
+                            <h2 class="heading" style="margin-bottom: 1rem; text-align: center;">Interactive Installation Guide</h2>
+                            <p style="text-align: center; color: #c8c8c8; margin-bottom: 4rem; font-size: 1.25rem;">Follow along as we guide you through each step</p>
+                            
+                            <div class="interactive-guide">
+                                <div class="guide-step active" data-step="1">
+                                    <div class="step-visual">
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-dots">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                                <div class="browser-url">chrome://extensions/</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="extension-card">
+                                                    <div class="ext-icon">🤖</div>
+                                                    <div class="ext-info">
+                                                        <div class="ext-name">CupidBot AI</div>
+                                                        <div class="ext-desc">AI Chat Automation</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 1</div>
+                                        <h3>Download Extension</h3>
+                                        <p>Click the button below to download the CupidBot extension package.</p>
+                                        <button class="download-ext-btn" onclick="downloadExtension()">
+                                            <span>📦 Download Extension</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="guide-step" data-step="2">
+                                    <div class="step-visual">
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-dots">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                                <div class="browser-url">chrome://extensions/</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="dev-mode-toggle">
+                                                    <span>Developer mode</span>
+                                                    <div class="toggle-switch active">
+                                                        <div class="toggle-slider"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 2</div>
+                                        <h3>Enable Developer Mode</h3>
+                                        <p>Open <code>chrome://extensions/</code> and toggle "Developer mode" ON in the top right.</p>
+                                        <button class="next-step-btn" onclick="nextStep(3)">
+                                            <span>Next Step →</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="guide-step" data-step="3">
+                                    <div class="step-visual">
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-dots">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                                <div class="browser-url">chrome://extensions/</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="load-unpacked-btn">
+                                                    📁 Load unpacked
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 3</div>
+                                        <h3>Load Extension</h3>
+                                        <p>Click "Load unpacked" and select the CupidBot extension folder you downloaded.</p>
+                                        <button class="next-step-btn" onclick="nextStep(4)">
+                                            <span>Next Step →</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="guide-step" data-step="4">
+                                    <div class="step-visual">
+                                        <div class="success-animation">
+                                            <div class="checkmark-circle">
+                                                <svg class="checkmark" viewBox="0 0 52 52">
+                                                    <circle class="checkmark-circle-bg" cx="26" cy="26" r="25" fill="none"/>
+                                                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                </svg>
+                                            </div>
+                                            <h3 style="color: #246426; margin-top: 2rem;">Extension Installed!</h3>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 4</div>
+                                        <h3>You're All Set!</h3>
+                                        <p>Click the CupidBot extension icon in your toolbar and enter your trial key to get started.</p>
+                                        <button class="finish-btn" onclick="finishGuide()">
+                                            <span>🚀 Launch CupidBot</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(179, 83, 211, 0.3)';
+                ctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Interactive Guide Functions
+        function nextStep(step) {
+            document.querySelectorAll('.guide-step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.guide-step[data-step="${step}"]`).classList.add('active');
+        }
+        
+        function downloadExtension() {
+            // Create a zip file download
+            const link = document.createElement('a');
+            link.href = 'cupidbot-extension.zip'; // You'll need to create this
+            link.download = 'cupidbot-extension.zip';
+            link.click();
+            
+            // Show success and move to next step
+            setTimeout(() => {
+                nextStep(2);
+            }, 1000);
+        }
+        
+        function finishGuide() {
+            alert('Open the CupidBot extension from your Chrome toolbar to continue!');
+        }
+
+        // Trial Key Generation
+        function generateTrialKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let key = 'CUPID-';
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    key += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                if (i < 3) key += '-';
+            }
+            return key;
+        }
+
+        document.getElementById('trialForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('generateBtn');
+            const keyDisplay = document.getElementById('keyDisplay');
+            const keyValue = document.getElementById('keyValue');
+            
+            btn.innerHTML = '<span class="loading-spinner"></span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const trialKey = generateTrialKey();
+                keyValue.textContent = trialKey;
+                keyDisplay.classList.add('active');
+                btn.innerHTML = '<span>Generate New Key</span>';
+                btn.disabled = false;
+                
+                localStorage.setItem('cupidbot_trial_key', trialKey);
+                localStorage.setItem('cupidbot_trial_email', document.getElementById('email').value);
+            }, 1500);
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const keyValue = document.getElementById('keyValue').textContent;
+            navigator.clipboard.writeText(keyValue).then(() => {
+                const originalText = this.textContent;
+                this.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
