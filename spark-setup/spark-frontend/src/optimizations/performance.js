@@ -122,7 +122,8 @@ export const usePerformanceMonitor = (componentName) => {
 
 // Bundle size optimization
 export const loadChunk = (chunkName) => {
-  return import(/* webpackChunkName: "[request]" */ `../chunks/${chunkName}`);
+  // For now, return a resolved promise since chunks directory doesn't exist
+  return Promise.resolve({ default: () => null });
 };
 
 // Image optimization

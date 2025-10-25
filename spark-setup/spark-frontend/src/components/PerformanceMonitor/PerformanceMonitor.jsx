@@ -3,7 +3,7 @@ import { Card, Row, Col, Statistic, Progress, Alert, Button, Table, Tag } from '
 import { 
   DashboardOutlined, 
   ThunderboltOutlined, 
-  MemoryOutlined, 
+  DatabaseOutlined, 
   ClockCircleOutlined,
   WarningOutlined,
   CheckCircleOutlined
@@ -205,7 +205,7 @@ const PerformanceMonitor = () => {
                   title="Memory Usage"
                   value={performanceData.memoryUsage}
                   suffix="MB"
-                  prefix={<MemoryOutlined />}
+                  prefix={<DatabaseOutlined />}
                 />
               </Col>
               <Col span={8}>
