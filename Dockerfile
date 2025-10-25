@@ -1,70 +1,44 @@
-# Optimized Dockerfile for Render deployment - Updated for latest fixes
-FROM golang:1.21-alpine AS go-builder
+# Build stage
+FROM golang:1.21-alpine AS builder
+WORKDIR /build
 
-# Set working directory
-WORKDIR /app
-
-# Copy go mod files
+# Copy go mod files from the correct location
 COPY spark-setup/spark-backend/go.mod spark-setup/spark-backend/go.sum ./
-
-# Download dependencies
 RUN go mod download
 
-# Copy source code
+# Copy all backend source code
 COPY spark-setup/spark-backend/ ./
 
-# Debug: List files after copy
-RUN ls -la /app/
+# Verify web/dist exists (critical for embed)
+RUN ls -la web/dist || (echo "ERROR: web/dist not found!" && exit 1)
 
-# Build server
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server ./server
+# Build the server
+RUN CGO_ENABLED=0 GOOS=linux go build -o spark-server .
 
-# Debug: List files to verify build
-RUN ls -la /app/
-
-# Final stage
+# Runtime stage
 FROM alpine:latest
 
-# Install ca-certificates and wget for health checks
+# Install runtime dependencies
 RUN apk --no-cache add ca-certificates wget
 
-# Create non-root user
-RUN adduser -D -s /bin/sh spark
-
-# Set working directory
+# Create app user
+RUN adduser -D -s /bin/sh appuser
 WORKDIR /app
 
 # Copy binary from builder
-COPY --from=go-builder /app/spark-server ./
+COPY --from=builder /build/spark-server ./
+COPY spark-setup/spark-backend/config.json ./
 
-# Copy startup script from host
-COPY spark-setup/spark-backend/start.sh ./
+# Set permissions
+RUN chown -R appuser:appuser /app && chmod +x spark-server
+USER appuser
 
-# Debug: List files to verify copy
-RUN ls -la /app/ && echo "Files in /app after copy:"
-RUN echo "Checking startup script:" && ls -la /app/start.sh && head -5 /app/start.sh
-
-# Make files executable
-RUN chmod +x start.sh spark-server
-
-# Debug: Verify files are executable
-RUN ls -la /app/
-
-# Create logs directory
-RUN mkdir -p logs && chown -R spark:spark /app
-
-# Switch to non-root user
-USER spark
-
-# Expose port (Render will set PORT env var)
+# Expose port
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8000}/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8000}/api/health || exit 1
 
-# Run the server with startup script
-ENTRYPOINT ["./start.sh"]
-
-# Fallback CMD in case ENTRYPOINT doesn't work
-CMD ["./start.sh"]
+# Run directly - no startup script needed
+CMD ["./spark-server"]
