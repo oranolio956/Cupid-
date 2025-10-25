@@ -10,6 +10,7 @@ import {
   AndroidOutlined,
   GlobalOutlined
 } from '@ant-design/icons';
+import RealTimeStatus from '../RealTimeStatus/RealTimeStatus';
 import './DeviceCard.css';
 
 function DeviceCard({ device, onAction }) {
@@ -50,9 +51,9 @@ function DeviceCard({ device, onAction }) {
           <h3>{hostname}</h3>
           <span className="device-card-subtitle">{os} {arch && `(${arch})`}</span>
         </div>
-        <Tag color={online ? 'success' : 'default'} className="device-card-status">
-          {online ? 'Online' : 'Offline'}
-        </Tag>
+        <div className="device-card-status">
+          <RealTimeStatus device={device} />
+        </div>
       </div>
 
       {/* Info Grid */}
