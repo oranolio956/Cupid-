@@ -23,7 +23,6 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"path"
 	"strings"
 	"syscall"
 	"time"
@@ -193,7 +192,8 @@ func wsHandshake(ctx *gin.Context) {
 }
 
 func wsOnConnect(session *melody.Session) {
-	pingDevice(session)
+	// Ping device using health checker
+	// This will be handled by the health checker worker pool
 }
 
 func wsOnMessage(session *melody.Session, _ []byte) {
