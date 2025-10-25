@@ -13,6 +13,9 @@ RUN go mod download
 # Copy source code
 COPY spark-setup/spark-backend/ ./
 
+# Debug: List files after copy
+RUN ls -la /app/
+
 # Build server
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server ./server
 
@@ -33,10 +36,10 @@ WORKDIR /app
 
 # Copy binary and startup script from builder
 COPY --from=go-builder /app/spark-server ./
-COPY spark-setup/spark-backend/start.sh ./
+COPY --from=go-builder /app/start.sh ./
 
 # Debug: List files to verify copy
-RUN ls -la /app/
+RUN ls -la /app/ && echo "Files in /app after copy:"
 
 # Make files executable
 RUN chmod +x start.sh spark-server
