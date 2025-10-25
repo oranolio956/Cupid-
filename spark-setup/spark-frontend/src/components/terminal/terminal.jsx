@@ -12,6 +12,7 @@ import {
 	hex2ua, str2hex, str2ua, translate,
 	ua2hex, ua2str
 } from "../../utils/utils";
+import {useWebSocket} from "../../hooks/useWebSocket";
 import DraggableModal from "../modal";
 const Zmodem = require("../../vendors/zmodem.js/zmodem");
 
@@ -32,12 +33,39 @@ let buffer = {content: '', output: ''};
 
 function TerminalModal(props) {
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	const [isConnected, setIsConnected] = useState(false);
 	
 	useEffect(() => {
 		const handleResize = () => setIsMobile(window.innerWidth < 768);
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
+
+	// WebSocket connection
+	const { sendMessage, addMessageHandler, removeMessageHandler, isConnected: wsConnected } = useWebSocket(
+		`/api/device/terminal?device=${props.device.id}&secret=${ua2hex(secret || hex2ua(genRandHex(32)))}`,
+		{
+			onopen: () => {
+				setIsConnected(true);
+				conn = true;
+			},
+			onclose: () => {
+				setIsConnected(false);
+				conn = false;
+				if (term) {
+					term.write(`\n${i18n.t('COMMON.DISCONNECTED')}\n`);
+				}
+			},
+			onmessage: (event) => {
+				onWsMessage(event.data, buffer);
+			},
+			onerror: (error) => {
+				console.error('WebSocket error:', error);
+				setIsConnected(false);
+				conn = false;
+			}
+		}
+	);
 
 	let os = props.device.os;
 	let extKeyRef = createRef();
@@ -514,11 +542,17 @@ function TerminalModal(props) {
 			} else {
 				body = encrypt(str2ua(JSON.stringify(data)), secret);
 			}
-			let buffer = new Uint8Array(body.length + 8);
-			buffer.set(new Uint8Array([34, 22, 19, 17, 21, raw ? 0 : 1]), 0);
-			buffer.set(new Uint8Array([body.length >> 8, body.length & 0xFF]), 6);
-			buffer.set(body, 8);
+		let buffer = new Uint8Array(body.length + 8);
+		buffer.set(new Uint8Array([34, 22, 19, 17, 21, raw ? 0 : 1]), 0);
+		buffer.set(new Uint8Array([body.length >> 8, body.length & 0xFF]), 6);
+		buffer.set(body, 8);
+		
+		// Use the WebSocket manager if available, otherwise fall back to direct ws
+		if (sendMessage) {
+			sendMessage(buffer);
+		} else if (ws) {
 			ws.send(buffer);
+		}
 		}
 	}
 
