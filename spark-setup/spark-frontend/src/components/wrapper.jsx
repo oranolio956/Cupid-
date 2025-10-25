@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProLayout, {PageContainer} from '@ant-design/pro-layout';
 import zhCN from 'antd/lib/locale/zh_CN';
 import en from 'antd/lib/locale/en_US';
@@ -12,6 +12,14 @@ import './wrapper.css';
 
 promptUpdate();
 function wrapper(props) {
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
 	return (
 		<ProLayout
 			loading={false}
@@ -23,8 +31,18 @@ function wrapper(props) {
 			fixedHeader={true}
 			contentWidth='fluid'
 			collapsedButtonRender={Title}
+			style={{
+				minHeight: '100vh'
+			}}
+			headerContentRender={() => (
+				isMobile ? <MobileHeader /> : <DesktopHeader />
+			)}
 		>
-			<PageContainer>
+			<PageContainer
+				style={{
+					padding: isMobile ? '8px' : '24px'
+				}}
+			>
 				<ConfigProvider locale={getLang()==='zh-CN'?zhCN:en}>
 					{props.children}
 				</ConfigProvider>
@@ -44,6 +62,23 @@ function Title() {
 			Spark
 		</div>
 	)
+}
+
+function MobileHeader() {
+	return (
+		<div style={{
+			display: 'flex',
+			alignItems: 'center',
+			padding: '0 16px',
+			height: '48px'
+		}}>
+			<span style={{ fontSize: '18px', fontWeight: 600 }}>Spark</span>
+		</div>
+	);
+}
+
+function DesktopHeader() {
+	return <Title />;
 }
 function promptUpdate() {
 	let latest = '';

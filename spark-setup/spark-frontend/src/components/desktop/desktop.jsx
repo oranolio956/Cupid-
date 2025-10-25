@@ -2,8 +2,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {encrypt, decrypt, formatSize, genRandHex, getBaseURL, translate, str2ua, hex2ua, ua2hex} from "../../utils/utils";
 import i18n from "../../locale/locale";
 import DraggableModal from "../modal";
-import {Button, message} from "antd";
-import {FullscreenOutlined, ReloadOutlined} from "@ant-design/icons";
+import {Button, message, Drawer} from "antd";
+import {FullscreenOutlined, ReloadOutlined} from "@ant-design/icons";ons";
 
 let ws = null;
 let ctx = null;
@@ -14,11 +14,17 @@ let ticker = 0;
 let frames = 0;
 let bytes = 0;
 let ticks = 0;
-let title = i18n.t('DESKTOP.TITLE');
-function ScreenModal(props) {
+let title = i18n.t('DESKTOfunction ScreenModal(props) {
 	const [resolution, setResolution] = useState('0x0');
 	const [bandwidth, setBandwidth] = useState(0);
 	const [fps, setFps] = useState(0);
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []); = useState(0);
 	const canvasRef = useCallback((e) => {
 		if (e && props.open && !conn && !canvas) {
 			secret = hex2ua(genRandHex(32));
@@ -172,13 +178,49 @@ function ScreenModal(props) {
 		if (conn) {
 			let body = encrypt(str2ua(JSON.stringify(data)), secret);
 			let buffer = new Uint8Array(body.length + 8);
-			buffer.set(new Uint8Array([34, 22, 19, 17, 20, 3]), 0);
-			buffer.set(new Uint8Array([body.length >> 8, body.length & 0xFF]), 6);
-			buffer.set(body, 8);
-			ws.send(buffer);
-		}
+			buffer.set(new Ui	const content = (
+		<>
+			<canvas
+				id='painter'
+				ref={canvasRef}
+				style={{width: '100%', height: '100%'}}
+			/>
+			<Button
+				style={{right:'59px'}}
+				className='header-button'
+				icon={<FullscreenOutlined />}
+				onClick={fullScreen}
+			/>
+			<Button
+				style={{right:'115px'}}
+				className='header-button'
+				icon={<ReloadOutlined />}
+				onClick={refresh}
+			/>
+		</>
+	);
+
+	// Mobile: Use Drawer
+	if (isMobile) {
+		return (
+			<Drawer
+				open={props.open}
+				onClose={props.onCancel}
+				placement="bottom"
+				height="100vh"
+				bodyStyle={{ padding: 0 }}
+				headerStyle={{ padding: '12px 16px' }}
+				title={`${title} ${resolution} ${formatSize(bandwidth)}/s FPS: ${fps}`}
+				destroyOnClose={true}
+			>
+				<div style={{ height: '100%' }}>
+					{content}
+				</div>
+			</Drawer>
+		);
 	}
 
+	// Desktop: Use DraggableModal
 	return (
 		<DraggableModal
 			draggable={true}
@@ -193,15 +235,9 @@ function ScreenModal(props) {
 			}}
 			{...props}
 		>
-			<canvas
-				id='painter'
-				ref={canvasRef}
-				style={{width: '100%', height: '100%'}}
-			/>
-			<Button
-				style={{right:'59px'}}
-				className='header-button'
-				icon={<FullscreenOutlined />}
+			{content}
+		</DraggableModal>
+	);Outlined />}
 				onClick={fullScreen}
 			/>
 			<Button

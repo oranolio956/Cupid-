@@ -1,16 +1,133 @@
+/* global.css - Mobile-optimized version */
+* {
+  box-sizing: border-box;
+}
+
 body {
-	overflow-x: hidden;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-	height: 100%;
-	background-image: url('static/bg.svg');
-	background-repeat: no-repeat;
-	background-position: center 110px;
-	background-color: #f0f2f5;
-	background-size: 100%;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+/* Desktop background */
+@media (min-width: 768px) {
+  #root {
+    background-image: url('static/bg.svg');
+    background-repeat: no-repeat;
+    background-position: center 110px;
+    background-size: 100%;
+  }
+}
+
+/* Mobile: remove background image to improve performance */
+@media (max-width: 767px) {
+  #root {
+    background-image: none;
+    background-color: #fafafa;
+  }
 }
 
 .ant-table-cell {
-	border: none !important;
+  border: none !important;
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 767px) {
+  /* Reduce page container padding */
+  .ant-pro-page-container {
+    padding: 8px !important;
+  }
+  
+  .ant-page-header {
+    padding: 12px 16px !important;
+  }
+  
+  /* Full-width modals on mobile */
+  .ant-modal {
+    max-width: 100% !important;
+    margin: 0 !important;
+    top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .ant-modal-content {
+    border-radius: 0 !important;
+    min-height: 100vh;
+  }
+  
+  /* Improve scroll performance */
+  .ant-modal-body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Adjust typography */
+  h1 { font-size: 24px !important; }
+  h2 { font-size: 20px !important; }
+  h3 { font-size: 18px !important; }
+  
+  /* Table improvements for tablets (if kept) */
+  .ant-table {
+    font-size: 13px;
+  }
+  
+  .ant-table-thead > tr > th {
+    padding: 12px 8px !important;
+    font-size: 12px !important;
+  }
+  
+  .ant-table-tbody > tr > td {
+    padding: 12px 8px !important;
+  }
+}
+
+/* Tablet optimizations (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ant-pro-table {
+    font-size: 14px;
+  }
+  
+  .ant-table-thead > tr > th {
+    padding: 14px 10px !important;
+  }
+}
+
+/* Improve scrolling on iOS */
+.ant-table-body {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix for viewport height on mobile browsers */
+@media (max-width: 767px) {
+  #root {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Mobile device grid */
+.mobile-device-grid {
+  padding: 16px;
+  background: #f0f2f5;
+}
+
+@media (max-width: 767px) {
+  .mobile-device-grid {
+    padding: 12px;
+  }
+  
+  /* Hide table completely on mobile */
+  .ant-pro-table {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Hide mobile cards on desktop */
+  .mobile-device-grid {
+    display: none;
+  }
 }

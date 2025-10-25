@@ -1,5 +1,5 @@
-import React, {createRef, useCallback, useState} from "react";
-import {Button, Dropdown, Menu, message, Space} from "antd";
+import React, {createRef, useCallback, useState, useEffect} from "react";
+import {Button, Dropdown, Menu, message, Space, Drawer, Modal} from "antd";
 import {Terminal} from "xterm";
 import {WebLinksAddon} from "xterm-addon-web-links";
 import {FitAddon} from "xterm-addon-fit";
@@ -31,6 +31,14 @@ let ticker = 0;
 let buffer = {content: '', output: ''};
 
 function TerminalModal(props) {
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
 	let os = props.device.os;
 	let extKeyRef = createRef();
 	let termRef = useCallback(e => {
@@ -551,20 +559,8 @@ function TerminalModal(props) {
 		if (focus) term?.focus?.();
 	}
 
-	return (
-		<DraggableModal
-			draggable={true}
-			maskClosable={false}
-			modalTitle={i18n.t('TERMINAL.TITLE')}
-			open={props.open}
-			onCancel={props.onCancel}
-			bodyStyle={{padding: 12}}
-			afterClose={afterClose}
-			destroyOnClose={true}
-			footer={null}
-			height={250}
-			width={900}
-		>
+	const content = (
+		<>
 			<ExtKeyboard
 				ref={extKeyRef}
 				onCtrl={onCtrl}
@@ -583,6 +579,48 @@ function TerminalModal(props) {
 				type='file'
 				style={{display: 'none'}}
 			/>
+		</>
+	);
+
+	// Mobile: Use Drawer
+	if (isMobile) {
+		return (
+			<Drawer
+				open={props.open}
+				onClose={props.onCancel}
+				placement="bottom"
+				height="100vh"
+				bodyStyle={{ padding: 0 }}
+				headerStyle={{ padding: '12px 16px' }}
+				title={i18n.t('TERMINAL.TITLE')}
+				destroyOnClose={true}
+				afterOpenChange={(open) => {
+					if (!open) afterClose();
+				}}
+			>
+				<div style={{ padding: 12, height: '100%' }}>
+					{content}
+				</div>
+			</Drawer>
+		);
+	}
+
+	// Desktop: Use DraggableModal
+	return (
+		<DraggableModal
+			draggable={true}
+			maskClosable={false}
+			modalTitle={i18n.t('TERMINAL.TITLE')}
+			open={props.open}
+			onCancel={props.onCancel}
+			bodyStyle={{padding: 12}}
+			afterClose={afterClose}
+			destroyOnClose={true}
+			footer={null}
+			height={250}
+			width={900}
+		>
+			{content}
 		</DraggableModal>
 	)
 }

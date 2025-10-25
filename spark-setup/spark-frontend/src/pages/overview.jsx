@@ -4,6 +4,7 @@ import {Button, Image, message, Modal, Progress, Tooltip} from 'antd';
 import {catchBlobReq, formatSize, request, tsToTime, waitTime} from "../utils/utils";
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import i18n from "../locale/locale";
+import DeviceCard from '../components/DeviceCard/DeviceCard';
 
 // DO NOT EDIT OR DELETE THIS COPYRIGHT MESSAGE.
 if (process.env.NODE_ENV === 'development') {
@@ -29,6 +30,17 @@ function overview(props) {
 	const [terminal, setTerminal] = useState(false);
 	const [screenBlob, setScreenBlob] = useState('');
 	const [dataSource, setDataSource] = useState([]);
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	// Add resize listener for responsive behavior
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+		
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
 	const columns = [
 		{
@@ -422,14 +434,29 @@ function overview(props) {
 					onCancel={setDesktop.bind(null, false)}
 				/>
 			}
-			{
-				ComponentMap.Terminal &&
-				<ComponentMap.Terminal
-					open={terminal}
-					device={terminal}
-					onCancel={setTerminal.bind(null, false)}
-				/>
-			}
+		{
+			ComponentMap.Terminal &&
+			<ComponentMap.Terminal
+				open={terminal}
+				device={terminal}
+				onCancel={setTerminal.bind(null, false)}
+			/>
+		}
+		
+		{/* CONDITIONAL RENDERING - Mobile Card View vs Desktop Table View */}
+		{isMobile ? (
+			// Mobile Card View
+			<div className="mobile-device-grid">
+				{dataSource.map(device => (
+					<DeviceCard 
+						key={device.id}
+						device={device}
+						onAction={onMenuClick}
+					/>
+				))}
+			</div>
+		) : (
+			// Desktop Table View
 			<ProTable
 				scroll={{
 					x: 'max-content',
@@ -452,6 +479,7 @@ function overview(props) {
 				dataSource={dataSource}
 				onDataSourceChange={setDataSource}
 			/>
+		)}
 		</>
 	);
 }

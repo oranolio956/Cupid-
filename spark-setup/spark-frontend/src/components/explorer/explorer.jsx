@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import ProTable, {TableDropdown} from "@ant-design/pro-table";
-import {Breadcrumb, Button, Image, message, Modal, Popconfirm, Space} from "antd";
+import {Breadcrumb, Button, Image, message, Modal, Popconfirm, Space, Drawer} from "antd";
 import {catchBlobReq, formatSize, orderCompare, post, request, waitTime} from "../../utils/utils";
 import dayjs from "dayjs";
 import i18n from "../../locale/locale";
@@ -38,6 +38,13 @@ function FileBrowser(props) {
 	const [editingFile, setEditingFile] = useState('');
 	const [editingContent, setEditingContent] = useState('');
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 	const columns = [
 		{
 			key: 'Name',
@@ -401,19 +408,8 @@ function FileBrowser(props) {
 		return ({data: [], success: false, total: 0});
 	}
 
-	return (
-		<DraggableModal
-			draggable={draggable}
-			maskClosable={false}
-			destroyOnClose={true}
-			modalTitle={i18n.t('EXPLORER.TITLE')}
-			footer={null}
-			width={830}
-			bodyStyle={{
-				padding: 0
-			}}
-			{...props}
-		>
+	const content = (
+		<>
 			<ProTable
 				rowKey='name'
 				tableStyle={{
@@ -504,7 +500,30 @@ function FileBrowser(props) {
 				}}
 			/>
 		</DraggableModal>
-	)
+	);
+
+	// Mobile: Use Drawer
+	if (isMobile) {
+		return (
+			<Drawer
+				open={props.open}
+				onClose={props.onCancel}
+				placement="bottom"
+				height="100vh"
+				bodyStyle={{ padding: 0 }}
+				headerStyle={{ padding: '12px 16px' }}
+				title={i18n.t('EXPLORER.TITLE')}
+				destroyOnClose={true}
+			>
+				<div style={{ padding: 12, height: '100%' }}>
+					{content}
+				</div>
+			</Drawer>
+		);
+	}
+
+	// Desktop: Use DraggableModal
+	return content;
 }
 
 function Navigator(props) {

@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Button, message, Popconfirm} from "antd";
+import {Button, message, Popconfirm, Drawer} from "antd";
 import ProTable from '@ant-design/pro-table';
 import {request, waitTime} from "../../utils/utils";
 import i18n from "../../locale/locale";
@@ -9,6 +9,13 @@ import {ReloadOutlined} from "@ant-design/icons";
 
 function ProcessMgr(props) {
 	const [loading, setLoading] = useState(false);
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 	const columns = [
 		{
 			key: 'Name',
@@ -90,19 +97,8 @@ function ProcessMgr(props) {
 		return ({data: [], success: false, total: 0});
 	}
 
-	return (
-		<DraggableModal
-			draggable={true}
-			maskClosable={false}
-			destroyOnClose={true}
-			modalTitle={i18n.t('PROCMGR.TITLE')}
-			footer={null}
-			width={500}
-			bodyStyle={{
-				padding: 0
-			}}
-			{...props}
-		>
+	const content = (
+		<>
 			<ProTable
 				rowKey='pid'
 				tableStyle={{
@@ -131,6 +127,44 @@ function ProcessMgr(props) {
 					tableRef.current.reload();
 				}}
 			/>
+		</>
+	);
+
+	// Mobile: Use Drawer
+	if (isMobile) {
+		return (
+			<Drawer
+				open={props.open}
+				onClose={props.onCancel}
+				placement="bottom"
+				height="100vh"
+				bodyStyle={{ padding: 0 }}
+				headerStyle={{ padding: '12px 16px' }}
+				title={i18n.t('PROCMGR.TITLE')}
+				destroyOnClose={true}
+			>
+				<div style={{ padding: 12, height: '100%' }}>
+					{content}
+				</div>
+			</Drawer>
+		);
+	}
+
+	// Desktop: Use DraggableModal
+	return (
+		<DraggableModal
+			draggable={true}
+			maskClosable={false}
+			destroyOnClose={true}
+			modalTitle={i18n.t('PROCMGR.TITLE')}
+			footer={null}
+			width={500}
+			bodyStyle={{
+				padding: 0
+			}}
+			{...props}
+		>
+			{content}
 		</DraggableModal>
 	)
 }
