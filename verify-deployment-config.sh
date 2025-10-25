@@ -87,7 +87,7 @@ fi
 # Check 7: render.yaml configuration
 echo "🔍 Checking render.yaml configuration..."
 if [ -f "render.yaml" ]; then
-    if grep -q "dockerfilePath: spark-setup/spark-backend/Dockerfile.simple" render.yaml; then
+    if grep -q "dockerfilePath: Dockerfile.simple" render.yaml; then
         echo -e "${GREEN}✅ PASS${NC} - render.yaml points to correct Dockerfile"
     else
         echo -e "${RED}❌ FAIL${NC} - render.yaml Dockerfile path is incorrect"
