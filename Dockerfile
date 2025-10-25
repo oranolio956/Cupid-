@@ -55,4 +55,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8000}/api/health || exit 1
 
 # Run the server with startup script
-CMD ["./start.sh"]
+ENTRYPOINT ["./start.sh"]

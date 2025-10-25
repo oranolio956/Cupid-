@@ -7,7 +7,6 @@ services:
     region: oregon
     branch: main
     buildCommand: echo "Building with Docker"
-    startCommand: ./start.sh
     envVars:
       - key: PORT
         value: 8000
