@@ -113,6 +113,7 @@ body {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding-bottom: 80px;
+  position: relative;
 }
 
 /* Stats Header */
@@ -175,6 +176,22 @@ body {
   border-radius: 12px;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* View Mode Toggle */
+.view-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px 12px;
+}
+
+.view-mode-toggle .ant-switch {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.view-mode-toggle .ant-switch-checked {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Device List */

@@ -1,13 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable, {TableDropdown} from '@ant-design/pro-table';
-import {Button, Image, message, Modal, Progress, Tooltip, Spin, Alert} from 'antd';
+import {Button, Image, message, Modal, Progress, Tooltip, Spin, Alert, Switch} from 'antd';
 import {catchBlobReq, formatSize, request, tsToTime, waitTime} from "../utils/utils";
-import {QuestionCircleOutlined, PlusOutlined, ReloadOutlined, WifiOutlined} from "@ant-design/icons";
+import {QuestionCircleOutlined, PlusOutlined, ReloadOutlined, WifiOutlined, AppstoreOutlined, UnorderedListOutlined} from "@ant-design/icons";
 import i18n from "../locale/locale";
 import DeviceCard from '../components/DeviceCard/DeviceCard';
 import FeatureStatus from '../components/FeatureStatus/FeatureStatus';
 import RATDashboard from '../components/RATDashboard/RATDashboard';
 import ClientManager from '../components/ClientManager/ClientManager';
+import MobileBottomNav from '../components/MobileBottomNav/MobileBottomNav';
+import SwipeableDeviceCard from '../components/SwipeableDeviceCard/SwipeableDeviceCard';
+import CompactDeviceList from '../components/CompactDeviceList/CompactDeviceList';
+import FAB from '../components/FloatingActionButton/FAB';
+import PullToRefresh from '../components/PullToRefresh/PullToRefresh';
+import usePullToRefresh from '../hooks/usePullToRefresh';
 import connectionTester from '../utils/connectionTest';
 import axios from 'axios';
 
@@ -73,6 +79,8 @@ function overview(props) {
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	const [connectionStatus, setConnectionStatus] = useState({ connected: false, testing: false });
 	const [clientManagerVisible, setClientManagerVisible] = useState(false);
+	const [activeTab, setActiveTab] = useState('devices');
+	const [viewMode, setViewMode] = useState('cards'); // 'cards' or 'compact'
 
 	// Add resize listener for responsive behavior
 	useEffect(() => {
@@ -98,6 +106,55 @@ function overview(props) {
 		
 		testConnection();
 	}, []);
+
+	// Pull-to-refresh functionality
+	const handleRefresh = async () => {
+		await getData();
+	};
+
+	const { isPulling, pullDistance, isRefreshing } = usePullToRefresh(handleRefresh);
+
+	// FAB action handler
+	const handleFABAction = (action) => {
+		switch (action) {
+			case 'refresh':
+				getData();
+				break;
+			case 'add-client':
+				setClientManagerVisible(true);
+				break;
+			case 'settings':
+				// Navigate to settings or open settings modal
+				message.info('Settings coming soon');
+				break;
+			default:
+				break;
+		}
+	};
+
+	// Swipe action handler
+	const handleSwipeAction = (action, device) => {
+		switch (action) {
+			case 'terminal':
+				openTerminal(device);
+				break;
+			case 'desktop':
+				openDesktop(device);
+				break;
+			case 'delete':
+				// Handle device removal
+				message.warning('Device removal not implemented');
+				break;
+			default:
+				break;
+		}
+	};
+
+	// Device click handler for compact view
+	const handleDeviceClick = (device) => {
+		// Open device details or actions modal
+		openDesktop(device);
+	};
 
 	const columns = [
 		{
@@ -558,6 +615,13 @@ function overview(props) {
 			/>
 		}
 		
+		{/* Pull to Refresh Indicator */}
+		<PullToRefresh 
+			isPulling={isPulling}
+			pullDistance={pullDistance}
+			isRefreshing={isRefreshing}
+		/>
+
 		{/* CONDITIONAL RENDERING - Mobile Card View vs Desktop Table View */}
 		{isMobile ? (
 			<div className="mobile-dashboard">
@@ -581,48 +645,56 @@ function overview(props) {
 					</div>
 				</div>
 
-					{/* Quick Actions */}
-					<div className="mobile-quick-actions">
-						<Button 
-							type="primary" 
-							icon={<PlusOutlined />}
-							onClick={() => onMenuClick('generate', true)}
-						>
-							Add Device
-						</Button>
-						<Button 
-							icon={<ReloadOutlined />}
-							onClick={() => tableRef.current?.reload()}
-						>
-							Refresh
-						</Button>
-						<Button 
-							onClick={() => setClientManagerVisible(true)}
-						>
-							Client Manager
-						</Button>
+				{/* View Mode Toggle */}
+				{dataSource.length > 0 && (
+					<div className="view-mode-toggle">
+						<span style={{ marginRight: 8, fontSize: 12, color: '#999' }}>View:</span>
+						<Switch
+							checkedChildren={<UnorderedListOutlined />}
+							unCheckedChildren={<AppstoreOutlined />}
+							checked={viewMode === 'compact'}
+							onChange={(checked) => setViewMode(checked ? 'compact' : 'cards')}
+						/>
 					</div>
+				)}
 
-					{/* Device List/Grid */}
-					{loading ? (
-						<div className="mobile-loading">
-							<Spin size="large" tip="Loading devices..." />
-						</div>
-					) : dataSource.length === 0 ? (
-						<EmptyState baseURL={axios.defaults.baseURL} />
-					) : (
-						<div className="mobile-device-list">
-							{dataSource.map(device => (
-								<div key={device.id} className="device-wrapper">
-									<DeviceCard
-										device={device}
-										onAction={onMenuClick}
-									/>
-									<FeatureStatus device={device} compact={true} />
-								</div>
-							))}
-						</div>
-					)}
+				{/* Device List/Grid */}
+				{loading ? (
+					<div className="mobile-loading">
+						<Spin size="large" tip="Loading devices..." />
+					</div>
+				) : dataSource.length === 0 ? (
+					<EmptyState baseURL={axios.defaults.baseURL} />
+				) : viewMode === 'compact' ? (
+					<CompactDeviceList 
+						devices={dataSource}
+						onDeviceClick={handleDeviceClick}
+					/>
+				) : (
+					<div className="mobile-device-list">
+						{dataSource.map(device => (
+							<SwipeableDeviceCard
+								key={device.id}
+								device={device}
+								onAction={handleSwipeAction}
+							>
+								<DeviceCard
+									device={device}
+									onAction={onMenuClick}
+								/>
+							</SwipeableDeviceCard>
+						))}
+					</div>
+				)}
+
+				{/* Floating Action Button */}
+				<FAB onAction={handleFABAction} />
+
+				{/* Mobile Bottom Navigation */}
+				<MobileBottomNav 
+					activeTab={activeTab}
+					onTabChange={setActiveTab}
+				/>
 			</div>
 		) : (
 			// Desktop Table View
