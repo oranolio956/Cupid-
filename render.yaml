@@ -14,11 +14,11 @@ services:
       - key: SPARK_LISTEN
         value: ":8000"
       - key: SPARK_SALT
-        generateValue: true
+        value: "2pCOIIAcPNRwT2hBXlDUhHF5waX1/QJCz06VwVywrM8="
       - key: SPARK_USERNAME
         value: admin
       - key: SPARK_PASSWORD
-        generateValue: true
+        value: "admin123"
     healthCheckPath: /api/device/list
     autoDeploy: true
     pullRequestPreviewsEnabled: true

@@ -1,40 +1,19 @@
-# Optimized Dockerfile for Render deployment
-FROM node:18-alpine AS frontend-builder
-
-# Set working directory
-WORKDIR /app/web
-
-# Copy package files
-COPY web/package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
-COPY web/ ./
-
-# Build frontend
-RUN npm run build-prod
-
-# Go build stage
-FROM golang:1.21-alpine AS go-builder
+# Multi-stage build for Spark Backend
+FROM golang:1.21-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
 # Copy go mod files
-COPY go.mod go.sum ./
+COPY spark-setup/spark-backend/go.mod spark-setup/spark-backend/go.sum ./
 
 # Download dependencies
 RUN go mod download
 
 # Copy source code
-COPY . .
+COPY spark-setup/spark-backend/ ./
 
-# Copy frontend build from previous stage
-COPY --from=frontend-builder /app/web/dist ./server/dist
-
-# Build server
+# Build the server
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server ./server
 
 # Final stage
@@ -50,8 +29,8 @@ RUN adduser -D -s /bin/sh spark
 WORKDIR /app
 
 # Copy binary and startup script from builder
-COPY --from=go-builder /app/spark-server .
-COPY start.sh .
+COPY --from=builder /app/spark-server ./
+COPY spark-setup/spark-backend/start.sh ./
 
 # Make startup script executable
 RUN chmod +x start.sh
