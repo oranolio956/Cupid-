@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter as Router, Route, Routes} from 'react-router-dom';
 import Wrapper from './components/wrapper';
+import ErrorBoundary from './components/ErrorBoundary';
 import Err from './pages/404';
 import axios from 'axios';
 import {message} from 'antd';
@@ -14,10 +15,13 @@ import {translate} from "./utils/utils";
 
 // Use environment variable for API URL, fallback to production backend
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com';
+// Set API key for authentication
+axios.defaults.headers.common['X-API-Key'] = process.env.REACT_APP_API_KEY || 'default-insecure-key-CHANGE-ME';
 // Log for debugging (remove after deployment works)
 if (process.env.NODE_ENV === 'development') {
   console.log('API Base URL:', axios.defaults.baseURL);
   console.log('WebSocket URL:', process.env.REACT_APP_WS_URL);
+  console.log('API Key:', process.env.REACT_APP_API_KEY ? 'Set' : 'Not set');
 }
 axios.interceptors.response.use(async res => {
 	let data = res.data;
@@ -50,11 +54,13 @@ axios.interceptors.response.use(async res => {
 });
 
 ReactDOM.render(
-	<Router>
-		<Routes>
-			<Route path="/" element={<Wrapper><Overview/></Wrapper>}/>
-			<Route path="*" element={<Err/>}/>
-		</Routes>
-	</Router>,
+	<ErrorBoundary>
+		<Router>
+			<Routes>
+				<Route path="/" element={<Wrapper><Overview/></Wrapper>}/>
+				<Route path="*" element={<Err/>}/>
+			</Routes>
+		</Router>
+	</ErrorBoundary>,
 	document.getElementById('root')
 );

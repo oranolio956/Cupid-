@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -93,6 +94,81 @@ var hub = &Hub{
 var devices = make(map[string]*Device)
 var devicesMutex sync.RWMutex
 
+// Load configuration from file
+func loadConfig() (*Config, error) {
+	data, err := os.ReadFile("config.json")
+	if err != nil {
+		return nil, err
+	}
+	var config Config
+	if err := json.NewDecoder(bytes.NewReader(data)).Decode(&config); err != nil {
+		return nil, err
+	}
+	return &config, nil
+}
+
+// Authentication middleware
+func authMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Skip auth for health check
+		if r.URL.Path == "/api/health" {
+			next(w, r)
+			return
+		}
+		
+		// Get API key from header
+		apiKey := r.Header.Get("X-API-Key")
+		
+		// Load config to get expected key
+		expectedKey := os.Getenv("SPARK_API_KEY")
+		if expectedKey == "" {
+			// Read from config.json if env var not set
+			config, err := loadConfig()
+			if err == nil && len(config.Auth) > 0 {
+				// Use first auth entry as API key
+				for _, pass := range config.Auth {
+					expectedKey = pass
+					break
+				}
+			}
+		}
+		
+		// If no API key configured, allow (development mode)
+		if expectedKey == "" {
+			log.Println("Warning: No API key configured, running in open mode")
+			next(w, r)
+			return
+		}
+		
+		// Verify API key
+		if apiKey != expectedKey {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		next(w, r)
+	}
+}
+
+// Clean up offline devices
+func cleanupOfflineDevices() {
+	devicesMutex.Lock()
+	defer devicesMutex.Unlock()
+	timeout := 15 * time.Second
+	now := time.Now()
+	for id, device := range devices {
+		if now.Sub(device.LastSeen) > timeout {
+			log.Printf("Removing offline device: %s (%s)", device.Hostname, id)
+			delete(devices, id)
+			// Notify WebSocket clients
+			removeData, _ := json.Marshal(map[string]interface{}{
+				"type": "device_removed",
+				"id":   id,
+			})
+			hub.broadcast <- removeData
+		}
+	}
+}
+
 // CORS middleware
 func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -181,6 +257,56 @@ func deviceRegisterHandler(w http.ResponseWriter, r *http.Request) {
 		"code": 0,
 		"msg":  "Device registered successfully",
 		"id":   device.ID,
+	})
+}
+
+// Device update endpoint - receives metric updates from clients
+func deviceUpdateHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var device Device
+	if err := json.NewDecoder(r.Body).Decode(&device); err != nil {
+		http.Error(w, "Invalid device data", http.StatusBadRequest)
+		return
+	}
+
+	// Device must have ID to update
+	if device.ID == "" {
+		http.Error(w, "Device ID required", http.StatusBadRequest)
+		return
+	}
+
+	// Update last seen time
+	device.LastSeen = time.Now()
+
+	// Store/update device
+	devicesMutex.Lock()
+	existingDevice, exists := devices[device.ID]
+	if exists {
+		// Keep ConnectedAt from first registration
+		device.ConnectedAt = existingDevice.ConnectedAt
+	} else {
+		device.ConnectedAt = time.Now()
+	}
+	devices[device.ID] = &device
+	devicesMutex.Unlock()
+
+	// Broadcast update to all WebSocket clients
+	updateData, _ := json.Marshal(map[string]interface{}{
+		"type":   "device_update",
+		"device": device,
+	})
+	hub.broadcast <- updateData
+
+	log.Printf("Device updated: %s", device.Hostname)
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"code": 0,
+		"msg":  "Device updated successfully",
 	})
 }
 
@@ -280,15 +406,32 @@ func main() {
 	// Start WebSocket hub
 	go hub.run()
 
-	// Register API routes
+	// Start device cleanup routine
+	go func() {
+		ticker := time.NewTicker(30 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			cleanupOfflineDevices()
+		}
+	}()
+
+	// Register API routes with auth
 	http.HandleFunc("/api/health", corsMiddleware(healthHandler))
-	http.HandleFunc("/api/device/list", corsMiddleware(deviceListHandler))
-	http.HandleFunc("/api/device/register", corsMiddleware(deviceRegisterHandler))
-	http.HandleFunc("/api/device/", corsMiddleware(deviceHandler))
+	http.HandleFunc("/api/device/list", corsMiddleware(authMiddleware(deviceListHandler)))
+	http.HandleFunc("/api/device/register", corsMiddleware(authMiddleware(deviceRegisterHandler)))
+	http.HandleFunc("/api/device/update", corsMiddleware(authMiddleware(deviceUpdateHandler)))
+	http.HandleFunc("/api/device/", corsMiddleware(authMiddleware(deviceHandler)))
 	http.HandleFunc("/ws", wsHandler)
 
-	// Serve static files (if any)
-	http.Handle("/", http.FileServer(http.Dir("./static/")))
+	// Serve API info instead of static files
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Spark Backend API",
+			"version": "1.0.0",
+			"endpoints": "health, device/list, device/register, device/update, ws",
+		})
+	})
 
 	// Start server
 	port := os.Getenv("PORT")
