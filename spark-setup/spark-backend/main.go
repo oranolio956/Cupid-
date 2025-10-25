@@ -10,6 +10,7 @@ import (
 	"Spark/server/handler/desktop"
 	"Spark/server/handler/terminal"
 	"Spark/server/handler/utility"
+	"Spark/server/security"
 	"Spark/utils/cmap"
 	"bytes"
 	"context"
@@ -48,6 +49,19 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	app := gin.New()
 	app.Use(gin.Recovery())
+	
+	// Initialize security configuration
+	securityConfig := security.GetConfigForEnvironment(config.Config.Environment)
+	securityManager := security.NewSecurityManager(securityConfig)
+	
+	// Add security middleware
+	app.Use(securityManager.SecurityMiddleware())
+	app.Use(securityManager.RateLimitMiddleware())
+	app.Use(securityManager.IPBlockingMiddleware())
+	app.Use(securityManager.SecurityHeadersMiddleware())
+	app.Use(securityManager.CORSMiddleware())
+	app.Use(securityManager.RequestValidationMiddleware())
+	app.Use(securityManager.DDoSProtectionMiddleware())
 	
 	// Add API middleware
 	app.Use(api.RequestTrackingMiddleware())

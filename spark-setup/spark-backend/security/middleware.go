@@ -102,89 +102,18 @@ func (sm *SecurityMiddleware) IPBlockingMiddleware() gin.HandlerFunc {
 
 // SecurityHeadersMiddleware sets security headers
 func (sm *SecurityMiddleware) SecurityHeadersMiddleware() gin.HandlerFunc {
-	return gin.HandlerFunc(func(c *gin.Context) {
-		if !sm.config.SecurityHeadersEnabled {
-			c.Next()
-			return
-		}
-		
-		// HSTS
-		c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
-		
-		// X-Frame-Options
-		c.Header("X-Frame-Options", "DENY")
-		
-		// X-Content-Type-Options
-		c.Header("X-Content-Type-Options", "nosniff")
-		
-		// X-XSS-Protection
-		c.Header("X-XSS-Protection", "1; mode=block")
-		
-		// Referrer-Policy
-		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
-		
-		// Content-Security-Policy
-		csp := "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' wss: https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
-		c.Header("Content-Security-Policy", csp)
-		
-		// Permissions-Policy
-		c.Header("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=(), usb=()")
-		
-		// X-Permitted-Cross-Domain-Policies
-		c.Header("X-Permitted-Cross-Domain-Policies", "none")
-		
-		// X-DNS-Prefetch-Control
-		c.Header("X-DNS-Prefetch-Control", "off")
-		
-		// X-Download-Options
-		c.Header("X-Download-Options", "noopen")
-		
-		// X-Powered-By (remove)
-		c.Header("X-Powered-By", "")
-		
-		c.Next()
-	})
+	// Get security headers configuration
+	headersConfig := GetSecurityHeadersConfigForEnvironment("production")
+	
+	return SecurityHeadersMiddleware(headersConfig)
 }
 
 // CORSMiddleware handles CORS
 func (sm *SecurityMiddleware) CORSMiddleware() gin.HandlerFunc {
-	return gin.HandlerFunc(func(c *gin.Context) {
-		if !sm.config.CORSEnabled {
-			c.Next()
-			return
-		}
-		
-		origin := c.GetHeader("Origin")
-		
-		// Check if origin is allowed
-		allowed := false
-		for _, allowedOrigin := range sm.config.AllowedOrigins {
-			if origin == allowedOrigin {
-				allowed = true
-				break
-			}
-		}
-		
-		if allowed {
-			c.Header("Access-Control-Allow-Origin", origin)
-		} else {
-			c.Header("Access-Control-Allow-Origin", "*")
-		}
-		
-		c.Header("Access-Control-Allow-Methods", strings.Join(sm.config.AllowedMethods, ", "))
-		c.Header("Access-Control-Allow-Headers", strings.Join(sm.config.AllowedHeaders, ", "))
-		c.Header("Access-Control-Allow-Credentials", "true")
-		c.Header("Access-Control-Max-Age", "86400")
-		c.Header("Access-Control-Expose-Headers", "X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset")
-		
-		// Handle preflight requests
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-		
-		c.Next()
-	})
+	// Get CORS configuration
+	corsConfig := GetCORSConfigForEnvironment("production")
+	
+	return CORSMiddleware(corsConfig)
 }
 
 // RequestValidationMiddleware validates requests
