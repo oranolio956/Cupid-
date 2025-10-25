@@ -16,9 +16,6 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Copy configuration file
-COPY config.json ./
-
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -o spark-server ./main.go
 
