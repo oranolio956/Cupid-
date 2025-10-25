@@ -1,4 +1,4 @@
-# Optimized Dockerfile for Render deployment
+# Optimized Dockerfile for Render deployment - Updated for latest fixes
 FROM golang:1.21-alpine AS go-builder
 
 # Set working directory

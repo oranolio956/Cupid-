@@ -7,6 +7,7 @@ services:
     region: oregon
     branch: main
     buildCommand: echo "Building with Docker"
+    startCommand: ./start.sh
     envVars:
       - key: PORT
         value: 8000
@@ -18,5 +19,6 @@ services:
         value: "admin123"
     healthCheckPath: /api/health
     healthCheckGracePeriod: 30
+    # Force deployment with latest changes
     autoDeploy: true
     pullRequestPreviewsEnabled: true
