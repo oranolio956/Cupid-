@@ -3,25 +3,24 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"sync"
 	"syscall"
 	"time"
 
 	"github.com/gorilla/websocket"
-	// Embedded frontend is in the same package
 )
 
 // Config represents the server configuration
 type Config struct {
-	Listen string `json:"listen"`
-	Salt   string `json:"salt"`
+	Listen string            `json:"listen"`
+	Salt   string            `json:"salt"`
 	Auth   map[string]string `json:"auth"`
-	Log    LogConfig `json:"log"`
+	Log    LogConfig         `json:"log"`
 }
 
 type LogConfig struct {
@@ -30,15 +29,48 @@ type LogConfig struct {
 	Days  int    `json:"days"`
 }
 
-// Device represents a connected device
+// Device represents a connected device with full system information
 type Device struct {
-	ID          string    `json:"id"`
-	Name        string    `json:"name"`
-	Type        string    `json:"type"`
-	Status      string    `json:"status"`
-	LastSeen    time.Time `json:"lastSeen"`
-	IP          string    `json:"ip"`
-	Description string    `json:"description"`
+	ID       string    `json:"id"`
+	Hostname string    `json:"hostname"`
+	Username string    `json:"username"`
+	OS       string    `json:"os"`
+	Arch     string    `json:"arch"`
+	MAC      string    `json:"mac"`
+	LAN      string    `json:"lan"`
+	WAN      string    `json:"wan"`
+	Latency  int       `json:"latency"` // milliseconds
+	Uptime   int64     `json:"uptime"`  // seconds
+
+	// System resources
+	CPU struct {
+		Model string `json:"model"`
+		Usage float64 `json:"usage"`
+		Cores struct {
+			Physical int `json:"physical"`
+			Logical  int `json:"logical"`
+		} `json:"cores"`
+	} `json:"cpu"`
+
+	RAM struct {
+		Usage float64 `json:"usage"` // percentage
+		Total int64   `json:"total"` // bytes
+		Used  int64   `json:"used"`  // bytes
+	} `json:"ram"`
+
+	Disk struct {
+		Usage float64 `json:"usage"` // percentage
+		Total int64   `json:"total"` // bytes
+		Used  int64   `json:"used"`  // bytes
+	} `json:"disk"`
+
+	// Network stats
+	NetSent int64     `json:"net_sent"` // bytes per second
+	NetRecv int64     `json:"net_recv"` // bytes per second
+
+	// Connection metadata
+	LastSeen    time.Time `json:"last_seen"`
+	ConnectedAt time.Time `json:"connected_at"`
 }
 
 // WebSocket connection manager
@@ -57,37 +89,8 @@ var hub = &Hub{
 	unregister: make(chan *websocket.Conn),
 }
 
-// Sample devices for demonstration
-var devices = []Device{
-	{
-		ID:          "device-001",
-		Name:        "Spark Terminal 1",
-		Type:        "terminal",
-		Status:      "online",
-		LastSeen:    time.Now(),
-		IP:          "192.168.1.100",
-		Description: "Main terminal device",
-	},
-	{
-		ID:          "device-002",
-		Name:        "Spark Terminal 2",
-		Type:        "terminal",
-		Status:      "offline",
-		LastSeen:    time.Now().Add(-5 * time.Minute),
-		IP:          "192.168.1.101",
-		Description: "Secondary terminal device",
-	},
-	{
-		ID:          "device-003",
-		Name:        "Spark Monitor",
-		Type:        "monitor",
-		Status:      "online",
-		LastSeen:    time.Now(),
-		IP:          "192.168.1.102",
-		Description: "System monitoring device",
-	},
-}
-
+// Real connected devices only - starts empty
+var devices = make(map[string]*Device)
 var devicesMutex sync.RWMutex
 
 // CORS middleware
@@ -97,183 +100,120 @@ func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		
+
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-		
+
 		next(w, r)
 	}
 }
 
-func main() {
-	// Load configuration
-	_, err := loadConfig()
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
+// Health check endpoint
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	devicesMutex.RLock()
+	deviceCount := len(devices)
+	devicesMutex.RUnlock()
+
+	response := map[string]interface{}{
+		"status":    "healthy",
+		"timestamp": time.Now().Unix(),
+		"uptime":    time.Since(startTime).String(),
+		"devices":   deviceCount,
 	}
 
-	// Start WebSocket hub
-	go hub.run()
-
-	// Setup routes with CORS middleware
-	http.HandleFunc("/api/device/list", corsMiddleware(deviceListHandler))
-	http.HandleFunc("/api/device/", corsMiddleware(deviceHandler))
-	http.HandleFunc("/api/health", corsMiddleware(healthHandler))
-	http.HandleFunc("/ws", websocketHandler)
-	
-	// Serve static files (embedded frontend)
-	http.Handle("/", http.FileServer(http.FS(GetEmbedFS())))
-
-	// Start server
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8000"
-	}
-
-	log.Printf("🚀 Starting Spark server on port %s", port)
-	log.Printf("📡 WebSocket endpoint: /ws")
-	log.Printf("🔌 API endpoint: /api/device/list")
-	log.Printf("🌐 Frontend served at: /")
-
-	// Create server with timeouts
-	server := &http.Server{
-		Addr:         ":" + port,
-		ReadTimeout:  15 * time.Second,
-		WriteTimeout: 15 * time.Second,
-		IdleTimeout:  60 * time.Second,
-	}
-
-	// Handle graceful shutdown
-	go func() {
-		sigChan := make(chan os.Signal, 1)
-		signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-		<-sigChan
-		
-		log.Println("🛑 Shutting down server...")
-		
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-		defer cancel()
-		
-		if err := server.Shutdown(ctx); err != nil {
-			log.Printf("Server shutdown error: %v", err)
-		}
-	}()
-
-	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("Server failed to start: %v", err)
-	}
-	
-	log.Println("✅ Server shutdown complete")
+	json.NewEncoder(w).Encode(response)
 }
 
-func loadConfig() (*Config, error) {
-	// Try to load from config.json first
-	if data, err := os.ReadFile("config.json"); err == nil {
-		var config Config
-		if err := json.Unmarshal(data, &config); err == nil {
-			return &config, nil
-		}
-	}
-
-	// Fallback to environment variables
-	config := &Config{
-		Listen: getEnv("SPARK_LISTEN", ":8000"),
-		Salt:   getEnv("SPARK_SALT", "default-salt-123456789012345678901234"),
-		Auth: map[string]string{
-			getEnv("SPARK_USERNAME", "admin"): getEnv("SPARK_PASSWORD", "admin123"),
-		},
-		Log: LogConfig{
-			Level: "info",
-			Path:  "./logs",
-			Days:  7,
-		},
-	}
-
-	return config, nil
-}
-
-func getEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-	return defaultValue
-}
-
+// Device list endpoint
 func deviceListHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	devicesMutex.RLock()
+	defer devicesMutex.RUnlock()
 
-	// Update device statuses (simulate real-time updates)
-	devicesMutex.Lock()
-	for i := range devices {
-		if devices[i].Status == "online" {
-			devices[i].LastSeen = time.Now()
-		}
+	// Return in format expected by frontend
+	response := map[string]interface{}{
+		"code": 0,
+		"msg":  "success",
+		"data": devices, // Already a map[string]*Device
 	}
-	devicesCopy := make([]Device, len(devices))
-	copy(devicesCopy, devices)
+
+	// If no devices connected, return empty map (not error)
+	if len(devices) == 0 {
+		response["data"] = make(map[string]interface{})
+	}
+
+	json.NewEncoder(w).Encode(response)
+}
+
+// Device registration endpoint for real clients to connect
+func deviceRegisterHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var device Device
+	if err := json.NewDecoder(r.Body).Decode(&device); err != nil {
+		http.Error(w, "Invalid device data", http.StatusBadRequest)
+		return
+	}
+
+	// Generate ID if not provided
+	if device.ID == "" {
+		device.ID = fmt.Sprintf("device-%d", time.Now().UnixNano())
+	}
+
+	// Set connection time
+	device.ConnectedAt = time.Now()
+	device.LastSeen = time.Now()
+
+	// Store device
+	devicesMutex.Lock()
+	devices[device.ID] = &device
 	devicesMutex.Unlock()
 
-	// Convert devices array to map format expected by frontend
-	deviceMap := make(map[string]Device)
-	for _, device := range devicesCopy {
-		deviceMap[device.ID] = device
+	log.Printf("Device registered: %s (%s)", device.Hostname, device.ID)
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"code": 0,
+		"msg":  "Device registered successfully",
+		"id":   device.ID,
+	})
+}
+
+// Individual device endpoint
+func deviceHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	
+	// Extract device ID from URL path
+	deviceID := r.URL.Path[len("/api/device/"):]
+	
+	devicesMutex.RLock()
+	device, exists := devices[deviceID]
+	devicesMutex.RUnlock()
+
+	if !exists {
+		http.Error(w, "Device not found", http.StatusNotFound)
+		return
 	}
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"code": 0,
-		"data": deviceMap,
+		"data": device,
 	})
 }
 
-func deviceHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	deviceID := filepath.Base(r.URL.Path)
-	
-	devicesMutex.RLock()
-	for _, device := range devices {
-		if device.ID == deviceID {
-			devicesMutex.RUnlock()
-			json.NewEncoder(w).Encode(map[string]interface{}{
-				"success": true,
-				"device":  device,
-			})
-			return
-		}
-	}
-	devicesMutex.RUnlock()
-
-	w.WriteHeader(http.StatusNotFound)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"success": false,
-		"error":   "Device not found",
-	})
+// WebSocket upgrade handler
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true // Allow all origins for development
+	},
 }
 
-func healthHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":    "healthy",
-		"timestamp": time.Now().Unix(),
-		"uptime":    time.Since(startTime).String(),
-		"devices":   len(devices),
-	})
-}
-
-var startTime = time.Now()
-
-func websocketHandler(w http.ResponseWriter, r *http.Request) {
-	upgrader := websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true // Allow all origins for development
-		},
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
-	}
-
+func wsHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("WebSocket upgrade error: %v", err)
@@ -282,102 +222,111 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	hub.register <- conn
 
-	// Send initial device list
-	devicesMutex.RLock()
-	devicesJSON, _ := json.Marshal(map[string]interface{}{
-		"type":    "devices",
-		"devices": devices,
-	})
-	devicesMutex.RUnlock()
-	
-	if err := conn.WriteMessage(websocket.TextMessage, devicesJSON); err != nil {
-		log.Printf("Error sending initial device list: %v", err)
-		hub.unregister <- conn
-		return
-	}
-
-	// Handle WebSocket connection in a goroutine
-	go handleWebSocketConnection(conn)
-}
-
-func handleWebSocketConnection(conn *websocket.Conn) {
-	defer func() {
-		hub.unregister <- conn
-		conn.Close()
-	}()
-
-	// Set read deadline to detect dead connections
-	conn.SetReadDeadline(time.Now().Add(60 * time.Second))
-	conn.SetPongHandler(func(string) error {
-		conn.SetReadDeadline(time.Now().Add(60 * time.Second))
-		return nil
-	})
-
-	// Start ping ticker
-	ticker := time.NewTicker(30 * time.Second)
-	defer ticker.Stop()
-
 	go func() {
+		defer func() {
+			hub.unregister <- conn
+			conn.Close()
+		}()
+
 		for {
-			select {
-			case <-ticker.C:
-				if err := conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-					return
+			_, _, err := conn.ReadMessage()
+			if err != nil {
+				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+					log.Printf("WebSocket error: %v", err)
 				}
+				break
 			}
 		}
 	}()
-
-	// Read messages from client
-	for {
-		_, _, err := conn.ReadMessage()
-		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("WebSocket error: %v", err)
-			}
-			break
-		}
-	}
 }
 
+// Hub run loop
 func (h *Hub) run() {
 	for {
 		select {
 		case conn := <-h.register:
 			h.mutex.Lock()
 			h.clients[conn] = true
-			clientCount := len(h.clients)
 			h.mutex.Unlock()
-			log.Printf("WebSocket client connected. Total clients: %d", clientCount)
+			log.Printf("WebSocket client connected. Total clients: %d", len(h.clients))
 
 		case conn := <-h.unregister:
 			h.mutex.Lock()
 			if _, ok := h.clients[conn]; ok {
 				delete(h.clients, conn)
-				clientCount := len(h.clients)
-				h.mutex.Unlock()
 				conn.Close()
-				log.Printf("WebSocket client disconnected. Total clients: %d", clientCount)
-			} else {
-				h.mutex.Unlock()
 			}
+			h.mutex.Unlock()
+			log.Printf("WebSocket client disconnected. Total clients: %d", len(h.clients))
 
 		case message := <-h.broadcast:
 			h.mutex.RLock()
-			clients := make([]*websocket.Conn, 0, len(h.clients))
 			for conn := range h.clients {
-				clients = append(clients, conn)
-			}
-			h.mutex.RUnlock()
-			
-			for _, conn := range clients {
-				if err := conn.WriteMessage(websocket.TextMessage, message); err != nil {
-					h.mutex.Lock()
-					delete(h.clients, conn)
-					h.mutex.Unlock()
+				err := conn.WriteMessage(websocket.TextMessage, message)
+				if err != nil {
+					log.Printf("WebSocket write error: %v", err)
 					conn.Close()
+					delete(h.clients, conn)
 				}
 			}
+			h.mutex.RUnlock()
 		}
 	}
+}
+
+var startTime = time.Now()
+
+func main() {
+	// Start WebSocket hub
+	go hub.run()
+
+	// Register API routes
+	http.HandleFunc("/api/health", corsMiddleware(healthHandler))
+	http.HandleFunc("/api/device/list", corsMiddleware(deviceListHandler))
+	http.HandleFunc("/api/device/register", corsMiddleware(deviceRegisterHandler))
+	http.HandleFunc("/api/device/", corsMiddleware(deviceHandler))
+	http.HandleFunc("/ws", wsHandler)
+
+	// Serve static files (if any)
+	http.Handle("/", http.FileServer(http.Dir("./static/")))
+
+	// Start server
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+
+	log.Printf("Starting Spark backend server on port %s", port)
+	log.Printf("Health check: http://localhost:%s/api/health", port)
+	log.Printf("Device list: http://localhost:%s/api/device/list", port)
+	log.Printf("WebSocket: ws://localhost:%s/ws", port)
+
+	server := &http.Server{
+		Addr:    ":" + port,
+		Handler: nil,
+	}
+
+	// Graceful shutdown
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Server failed to start: %v", err)
+		}
+	}()
+
+	// Wait for interrupt signal
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+
+	log.Println("Shutting down server...")
+
+	// Graceful shutdown with timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced to shutdown: %v", err)
+	}
+
+	log.Println("Server exited")
 }
