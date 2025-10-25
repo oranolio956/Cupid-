@@ -1,6 +1,6 @@
 import React from 'react';
 import {ModalForm, ProFormCascader, ProFormDigit, ProFormGroup, ProFormText} from '@ant-design/pro-form';
-import {post, request} from "../../utils/utils";
+import {post, request, getBaseURL} from "../../utils/utils";
 import prebuilt from '../../config/prebuilt.json';
 import i18n from "../../locale/locale";
 
@@ -14,24 +14,23 @@ function Generate(props) {
 			delete form.ArchOS;
 		}
 		form.secure = location.protocol === 'https:' ? 'true' : 'false';
-		let basePath = location.origin + location.pathname + 'api/client/';
+		let basePath = getBaseURL(false, '/api/client/');
 		request(basePath + 'check', form).then(res => {
 			if (res.data.code === 0) {
-				post(basePath += 'generate', form);
+				post(basePath + 'generate', form);
 			}
 		}).catch();
 	}
 
 	function getInitValues() {
+		// Use the configured backend URL instead of current location
+		const backendUrl = new URL(getBaseURL(false, ''));
 		let initValues = {
-			host: location.hostname,
-			port: location.port,
-			path: location.pathname,
+			host: backendUrl.hostname,
+			port: backendUrl.port || (backendUrl.protocol === 'https:' ? 443 : 80),
+			path: '/api',
 			ArchOS: ['windows', 'amd64']
 		};
-		if (String(location.port).length === 0) {
-			initValues.port = location.protocol === 'https:' ? 443 : 80;
-		}
 		return initValues;
 	}
 

@@ -5,6 +5,8 @@ import {catchBlobReq, formatSize, request, tsToTime, waitTime} from "../utils/ut
 import {QuestionCircleOutlined, PlusOutlined, ReloadOutlined, WifiOutlined} from "@ant-design/icons";
 import i18n from "../locale/locale";
 import DeviceCard from '../components/DeviceCard/DeviceCard';
+import FeatureStatus from '../components/FeatureStatus/FeatureStatus';
+import RATDashboard from '../components/RATDashboard/RATDashboard';
 import connectionTester from '../utils/connectionTest';
 import axios from 'axios';
 
@@ -587,49 +589,56 @@ function overview(props) {
 					</Button>
 				</div>
 
-				{/* Device List/Grid */}
-				{loading ? (
-					<div className="mobile-loading">
-						<Spin size="large" tip="Loading devices..." />
-					</div>
-				) : dataSource.length === 0 ? (
-					<EmptyState baseURL={axios.defaults.baseURL} />
-				) : (
-					<div className="mobile-device-list">
-						{dataSource.map(device => (
-							<DeviceCard
-								key={device.id}
-								device={device}
-								onAction={onMenuClick}
-							/>
-						))}
-					</div>
-				)}
+					{/* Device List/Grid */}
+					{loading ? (
+						<div className="mobile-loading">
+							<Spin size="large" tip="Loading devices..." />
+						</div>
+					) : dataSource.length === 0 ? (
+						<EmptyState baseURL={axios.defaults.baseURL} />
+					) : (
+						<div className="mobile-device-list">
+							{dataSource.map(device => (
+								<div key={device.id} className="device-wrapper">
+									<DeviceCard
+										device={device}
+										onAction={onMenuClick}
+									/>
+									<FeatureStatus device={device} compact={true} />
+								</div>
+							))}
+						</div>
+					)}
 			</div>
 		) : (
 			// Desktop Table View
-			<ProTable
-				scroll={{
-					x: 'max-content',
-					scrollToFirstRowOnChange: true
-				}}
-				rowKey='id'
-				search={false}
-				options={options}
-				columns={columns}
-				columnsState={{
-					persistenceKey: 'columnsState',
-					persistenceType: 'localStorage'
-				}}
-				onLoadingChange={setLoading}
-				loading={loading}
-				request={getData}
-				pagination={false}
-				actionRef={tableRef}
-				toolBarRender={toolBar}
-				dataSource={dataSource}
-				onDataSourceChange={setDataSource}
-			/>
+			<>
+				{/* RAT Dashboard Overview */}
+				<RATDashboard devices={dataSource} />
+				
+				<ProTable
+					scroll={{
+						x: 'max-content',
+						scrollToFirstRowOnChange: true
+					}}
+					rowKey='id'
+					search={false}
+					options={options}
+					columns={columns}
+					columnsState={{
+						persistenceKey: 'columnsState',
+						persistenceType: 'localStorage'
+					}}
+					onLoadingChange={setLoading}
+					loading={loading}
+					request={getData}
+					pagination={false}
+					actionRef={tableRef}
+					toolBarRender={toolBar}
+					dataSource={dataSource}
+					onDataSourceChange={setDataSource}
+				/>
+			</>
 		)}
 		</>
 	);
