@@ -1,7 +1,7 @@
 package common
 
 import (
-	"Spark/server/config"
+	"Spark/config"
 	"Spark/utils"
 	"Spark/utils/melody"
 	"fmt"

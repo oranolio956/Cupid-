@@ -1,15 +1,13 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"runtime"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"Spark/server/common"
-	"Spark/server/config"
+	"Spark/common"
+	"Spark/config"
 )
 
 // APIResponse represents a standard API response
@@ -113,7 +111,7 @@ func HealthCheck(c *gin.Context) {
 	runtime.ReadMemStats(&m)
 	
 	uptime := time.Since(startTime)
-	clientCount := common.Devices.Len()
+	clientCount := common.Devices.Count()
 	
 	response := HealthResponse{
 		Status:   "healthy",
@@ -124,7 +122,7 @@ func HealthCheck(c *gin.Context) {
 			Alloc:      m.Alloc,
 			TotalAlloc: m.TotalAlloc,
 			Sys:        m.Sys,
-			NumGC:      m.NumGC,
+			NumGC:      int32(m.NumGC),
 		},
 		System: SystemInfo{
 			GoVersion:    runtime.Version(),
@@ -146,7 +144,7 @@ func HealthCheck(c *gin.Context) {
 // Info provides system information endpoint
 func Info(c *gin.Context) {
 	uptime := time.Since(startTime)
-	clientCount := common.Devices.Len()
+	clientCount := common.Devices.Count()
 	
 	response := InfoResponse{
 		Version:     "2.0.0",
@@ -189,7 +187,7 @@ func Metrics(c *gin.Context) {
 	runtime.ReadMemStats(&m)
 	
 	uptime := time.Since(startTime)
-	clientCount := common.Devices.Len()
+	clientCount := common.Devices.Count()
 	
 	// Calculate rates
 	var requestRate float64
@@ -237,7 +235,7 @@ func Metrics(c *gin.Context) {
 // Status provides system status endpoint
 func Status(c *gin.Context) {
 	uptime := time.Since(startTime)
-	clientCount := common.Devices.Len()
+	clientCount := common.Devices.Count()
 	
 	status := "healthy"
 	if clientCount == 0 {

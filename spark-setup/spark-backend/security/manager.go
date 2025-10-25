@@ -1,7 +1,6 @@
 package security
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"

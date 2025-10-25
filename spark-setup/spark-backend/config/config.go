@@ -9,11 +9,12 @@ import (
 )
 
 type config struct {
-	Listen    string            `json:"listen"`
-	Salt      string            `json:"salt"`
-	Auth      map[string]string `json:"auth"`
-	Log       *log              `json:"log"`
-	SaltBytes []byte            `json:"-"`
+	Listen      string            `json:"listen"`
+	Salt        string            `json:"salt"`
+	Auth        map[string]string `json:"auth"`
+	Log         *log              `json:"log"`
+	Environment string            `json:"environment"`
+	SaltBytes   []byte            `json:"-"`
 }
 type log struct {
 	Level string `json:"level"`

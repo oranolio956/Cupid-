@@ -2,9 +2,9 @@ package file
 
 import (
 	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/handler/bridge"
-	"Spark/server/handler/utility"
+	"Spark/common"
+	"Spark/handler/bridge"
+	"Spark/handler/utility"
 	"Spark/utils"
 	"Spark/utils/melody"
 	"fmt"

@@ -1,11 +1,8 @@
 package security
 
 import (
-	"crypto/tls"
-	"fmt"
 	"log"
-	"net/http"
-	"strings"
+	"sync"
 	"time"
 )
 
@@ -57,7 +54,7 @@ type SecurityTest struct {
 	Name        string
 	Category    string
 	Description string
-	TestFunc    func(*SecurityAuditor) *AuditResult
+	TestFunc    func() *AuditResult
 }
 
 // DefaultAuditConfig returns default audit configuration
@@ -96,7 +93,7 @@ func (sa *SecurityAuditor) RunSecurityAudit() []AuditResult {
 	// Run security tests
 	securityTests := sa.getSecurityTests()
 	for _, test := range securityTests {
-		result := test.TestFunc(sa)
+		result := test.TestFunc()
 		sa.results = append(sa.results, *result)
 	}
 	
@@ -124,7 +121,7 @@ func (sa *SecurityAuditor) getSecurityTests() []SecurityTest {
 	
 	// Security tests
 	if sa.config.EnableSecurityTests {
-		tests = append(tests, sa.getSecurityTests()...)
+		tests = append(tests, sa.getSecurityTestsList()...)
 	}
 	
 	return tests
@@ -190,8 +187,8 @@ func (sa *SecurityAuditor) getPerformanceTests() []SecurityTest {
 	}
 }
 
-// getSecurityTests returns security tests
-func (sa *SecurityAuditor) getSecurityTests() []SecurityTest {
+// getSecurityTestsList returns security tests
+func (sa *SecurityAuditor) getSecurityTestsList() []SecurityTest {
 	return []SecurityTest{
 		{
 			Name:        "Authentication Test",

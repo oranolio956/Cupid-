@@ -15,67 +15,6 @@ import (
 	"golang.org/x/time/rate"
 )
 
-// SecurityConfig holds security configuration
-type SecurityConfig struct {
-	// Rate limiting
-	RateLimitEnabled    bool          `json:"rate_limit_enabled"`
-	RateLimitRPS        int           `json:"rate_limit_rps"`
-	RateLimitBurst      int           `json:"rate_limit_burst"`
-	RateLimitWindow     time.Duration `json:"rate_limit_window"`
-	
-	// IP blocking
-	IPBlockingEnabled   bool          `json:"ip_blocking_enabled"`
-	MaxFailedAttempts   int           `json:"max_failed_attempts"`
-	BlockDuration       time.Duration `json:"block_duration"`
-	
-	// Security headers
-	SecurityHeadersEnabled bool `json:"security_headers_enabled"`
-	
-	// CORS
-	CORSEnabled         bool     `json:"cors_enabled"`
-	AllowedOrigins      []string `json:"allowed_origins"`
-	AllowedMethods      []string `json:"allowed_methods"`
-	AllowedHeaders      []string `json:"allowed_headers"`
-	
-	// Request validation
-	MaxRequestSize      int64    `json:"max_request_size"`
-	ValidateUserAgent   bool     `json:"validate_user_agent"`
-	BlockSuspiciousUA   bool     `json:"block_suspicious_ua"`
-	
-	// DDoS protection
-	DDoSProtectionEnabled bool   `json:"ddos_protection_enabled"`
-	MaxConcurrentConns   int     `json:"max_concurrent_conns"`
-	ConnectionTimeout    time.Duration `json:"connection_timeout"`
-}
-
-// DefaultSecurityConfig returns default security configuration
-func DefaultSecurityConfig() *SecurityConfig {
-	return &SecurityConfig{
-		RateLimitEnabled:      true,
-		RateLimitRPS:          100,
-		RateLimitBurst:        200,
-		RateLimitWindow:       1 * time.Minute,
-		
-		IPBlockingEnabled:     true,
-		MaxFailedAttempts:     5,
-		BlockDuration:         15 * time.Minute,
-		
-		SecurityHeadersEnabled: true,
-		
-		CORSEnabled:           true,
-		AllowedOrigins:        []string{"https://spark-rat-dashboard.vercel.app"},
-		AllowedMethods:        []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:        []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"},
-		
-		MaxRequestSize:        10 * 1024 * 1024, // 10MB
-		ValidateUserAgent:     true,
-		BlockSuspiciousUA:     true,
-		
-		DDoSProtectionEnabled: true,
-		MaxConcurrentConns:    1000,
-		ConnectionTimeout:     30 * time.Second,
-	}
-}
 
 // SecurityManager manages security features
 type SecurityManager struct {
@@ -352,6 +291,7 @@ func (sm *SecurityManager) cleanup() {
 		
 		// Clean up old rate limiters (keep only active ones)
 		for ip, limiter := range sm.rateLimiters {
+			_ = limiter // Use the variable to avoid unused error
 			// If limiter hasn't been used recently, remove it
 			if now.Sub(sm.lastCleanup) > 1*time.Hour {
 				delete(sm.rateLimiters, ip)

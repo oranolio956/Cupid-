@@ -29,6 +29,11 @@ func LoadFromEnv() {
 		Config.Auth["admin"] = adminHash
 	}
 
+	// Override environment if GO_ENV is set
+	if env := os.Getenv("GO_ENV"); env != "" {
+		Config.Environment = env
+	}
+
 	// Override log level if GO_ENV is production
 	if os.Getenv("GO_ENV") == "production" {
 		if Config.Log == nil {

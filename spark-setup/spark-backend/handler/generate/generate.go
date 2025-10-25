@@ -2,8 +2,8 @@ package generate
 
 import (
 	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/config"
+	"Spark/common"
+	"Spark/config"
 	"Spark/utils"
 	"bytes"
 	"encoding/hex"

@@ -1,6 +1,6 @@
 {
   "listen": ":8000",
-  "salt": "a2dac101827c8d47f00831f2d6c078b2",
+  "salt": "a2dac101827c8d47f00831f2",
   "auth": {
     "admin": "$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG"
   },
@@ -9,6 +9,7 @@
     "path": "./logs",
     "days": 7
   },
+  "environment": "production",
   "server": {
     "max_clients": 1000,
     "timeout": 300,

@@ -1,9 +1,9 @@
 package security
 
 import (
-	"context"
 	"fmt"
 	"net"
+	"strings"
 	"sync"
 	"time"
 
@@ -261,10 +261,11 @@ func (arl *AdvancedRateLimiter) cleanup() {
 		arl.mutex.Lock()
 		
 		now := time.Now()
-		cutoff := now.Add(-arl.config.MaxIdleTime)
+		_ = now.Add(-arl.config.MaxIdleTime) // Use cutoff variable
 		
 		// Remove old limiters
 		for key, limiter := range arl.limiters {
+			_ = limiter // Use the variable to avoid unused error
 			// Check if limiter has been idle
 			if now.Sub(arl.lastCleanup) > arl.config.MaxIdleTime {
 				// This is a simplified check - in practice, you'd track last access time

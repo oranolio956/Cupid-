@@ -2,8 +2,8 @@ package utility
 
 import (
 	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/config"
+	"Spark/common"
+	"Spark/config"
 	"Spark/utils"
 	"Spark/utils/melody"
 	"bytes"

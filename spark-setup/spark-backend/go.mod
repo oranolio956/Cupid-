@@ -1,6 +1,8 @@
 module Spark
 
-go 1.18
+go 1.24.0
+
+toolchain go1.24.2
 
 require (
 	github.com/creack/pty v1.1.18
@@ -43,5 +45,6 @@ require (
 	golang.org/x/net v0.0.0-20220111093109-d55c255bac03 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/time v0.14.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

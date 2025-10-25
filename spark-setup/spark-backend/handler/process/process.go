@@ -2,8 +2,8 @@ package process
 
 import (
 	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/handler/utility"
+	"Spark/common"
+	"Spark/handler/utility"
 	"Spark/utils"
 	"Spark/utils/melody"
 	"github.com/gin-gonic/gin"

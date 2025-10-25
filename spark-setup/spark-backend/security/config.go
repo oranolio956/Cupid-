@@ -2,6 +2,7 @@ package security
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"time"
 )
@@ -37,6 +38,9 @@ type SecurityConfig struct {
 	DDoSProtectionEnabled bool   `json:"ddos_protection_enabled"`
 	MaxConcurrentConns   int     `json:"max_concurrent_conns"`
 	ConnectionTimeout    time.Duration `json:"connection_timeout"`
+	
+	// Environment
+	Environment string `json:"environment"`
 	
 	// Authentication
 	AuthEnabled         bool     `json:"auth_enabled"`

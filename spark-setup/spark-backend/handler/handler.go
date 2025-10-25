@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"Spark/server/handler/api"
-	"Spark/server/handler/bridge"
-	"Spark/server/handler/desktop"
-	"Spark/server/handler/file"
-	"Spark/server/handler/generate"
-	"Spark/server/handler/process"
-	"Spark/server/handler/screenshot"
-	"Spark/server/handler/terminal"
-	"Spark/server/handler/utility"
+	"Spark/handler/api"
+	"Spark/handler/bridge"
+	"Spark/handler/desktop"
+	"Spark/handler/file"
+	"Spark/handler/generate"
+	"Spark/handler/process"
+	"Spark/handler/screenshot"
+	"Spark/handler/terminal"
+	"Spark/handler/utility"
 	"github.com/gin-gonic/gin"
 )
 
