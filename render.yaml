@@ -10,8 +10,6 @@ services:
     envVars:
       - key: PORT
         value: 8000
-      - key: SPARK_LISTEN
-        value: ":8000"
       - key: SPARK_SALT
         value: "2pCOIIAcPNRwT2hBXlDUhHF5waX1/QJCz06VwVywrM8="
       - key: SPARK_USERNAME
@@ -19,5 +17,6 @@ services:
       - key: SPARK_PASSWORD
         value: "admin123"
     healthCheckPath: /api/health
+    healthCheckGracePeriod: 30
     autoDeploy: true
     pullRequestPreviewsEnabled: true
