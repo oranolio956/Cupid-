@@ -1,12 +1,26 @@
 {
-    "listen": ":8000",
-    "salt": "3f8a9b2c4d5e6f7a8b9c0d1e2f3a4b5c",
-    "auth": {
-        "admin": "$sha256$8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+  "listen": ":8000",
+  "salt": "72415144205a3a1f5618223832aecbed",
+  "auth": {
+    "admin": "$2b$10$Jbxck.MpAVkEZy.jM.z0Rufztx4WGfj//IhyOyBqsQp4nLWvr.em6"
+  },
+  "log": {
+    "level": "info",
+    "path": "./logs",
+    "days": 7
+  },
+  "server": {
+    "max_clients": 1000,
+    "timeout": 300,
+    "buffer_size": 65535
+  },
+  "delivery": {
+    "desktop": {
+      "quality": 75,
+      "smooth": false
     },
-    "log": {
-        "level": "info",
-        "path": "./logs",
-        "days": 7
+    "terminal": {
+      "buffer_size": 65535
     }
+  }
 }
