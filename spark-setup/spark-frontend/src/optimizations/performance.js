@@ -316,10 +316,10 @@ export const registerServiceWorker = () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
-        console.log('SW registered: ', registration);
+        // Service Worker registered
       })
       .catch(registrationError => {
-        console.log('SW registration failed: ', registrationError);
+        // Service Worker registration failed
       });
   }
 };

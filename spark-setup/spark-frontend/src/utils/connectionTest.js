@@ -91,7 +91,7 @@ class ConnectionTester {
 
   // Run comprehensive connection test
   async runFullTest() {
-    console.log('🔍 Testing backend connection...');
+    // Testing backend connection...
     
     const apiTest = await this.testApiConnection();
     const wsTest = await this.testWsConnection();
@@ -104,7 +104,7 @@ class ConnectionTester {
     };
 
     if (results.overall) {
-      console.log('✅ Backend connection successful');
+      // Backend connection successful
     } else {
       console.error('❌ Backend connection failed:', results);
     }

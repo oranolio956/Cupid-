@@ -102,7 +102,7 @@ class WebSocketManager {
     }
 
     const delay = Math.min(1000 * Math.pow(2, attempts), 30000); // Exponential backoff, max 30s
-    console.log(`WebSocket ${key}: Attempting reconnection ${attempts + 1}/${maxAttempts} in ${delay}ms`);
+    // Reconnection attempt (logging removed for production)
 
     setTimeout(() => {
       this.reconnectAttempts.set(key, attempts + 1);

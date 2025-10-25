@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 import './login.css';
 
 function Login() {
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post('/api/auth/login', {
-        username: 'admin',  // Spark uses fixed 'admin' username
-        password: values.password
-      });
+      const success = await login(values.password);
       
-      if (response.data.code === 0) {
+      if (success) {
         message.success('Login successful!');
         // Redirect to dashboard
         window.location.href = '/';
       } else {
-        message.error(response.data.msg || 'Login failed');
+        message.error('Invalid password. Please try again.');
       }
     } catch (error) {
-      message.error('Login failed. Check your password.');
+      message.error('Login failed. Please try again.');
       console.error('Login error:', error);
     } finally {
       setLoading(false);

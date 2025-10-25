@@ -12,18 +12,15 @@ import './global.css';
 import 'antd/dist/reset.css';
 import Overview from "./pages/overview";
 import Login from "./pages/login";
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import {translate} from "./utils/utils";
 
 // Use environment variable for API URL, fallback to production backend
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com';
 // Enable cookies for authentication (Spark uses cookie-based auth)
 axios.defaults.withCredentials = true;
-// Log for debugging (remove after deployment works)
-if (process.env.NODE_ENV === 'development') {
-  console.log('API Base URL:', axios.defaults.baseURL);
-  console.log('WebSocket URL:', process.env.REACT_APP_WS_URL);
-  console.log('Authentication: Cookie-based');
-}
+// Development logging removed for production
 axios.interceptors.response.use(async res => {
 	let data = res.data;
 	if (data.hasOwnProperty('code')) {
@@ -65,13 +62,19 @@ axios.interceptors.response.use(async res => {
 
 ReactDOM.render(
 		<ErrorBoundary>
-			<Router>
-				<Routes>
-					<Route path="/login" element={<Login/>}/>
-					<Route path="/" element={<Wrapper><Overview/></Wrapper>}/>
-					<Route path="*" element={<Err/>}/>
-				</Routes>
-			</Router>
+			<AuthProvider>
+				<Router>
+					<Routes>
+						<Route path="/login" element={<Login/>}/>
+						<Route path="/" element={
+							<ProtectedRoute>
+								<Wrapper><Overview/></Wrapper>
+							</ProtectedRoute>
+						}/>
+						<Route path="*" element={<Err/>}/>
+					</Routes>
+				</Router>
+			</AuthProvider>
 		</ErrorBoundary>,
 	document.getElementById('root')
 );
