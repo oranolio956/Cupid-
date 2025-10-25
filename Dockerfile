@@ -27,7 +27,6 @@ WORKDIR /app
 
 # Copy binary from builder
 COPY --from=builder /build/spark-server ./
-COPY spark-setup/spark-backend/config.json ./
 
 # Set permissions
 RUN chown -R appuser:appuser /app && chmod +x spark-server
