@@ -15,13 +15,13 @@ import {translate} from "./utils/utils";
 
 // Use environment variable for API URL, fallback to production backend
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com';
-// Set API key for authentication
-axios.defaults.headers.common['X-API-Key'] = process.env.REACT_APP_API_KEY || 'default-insecure-key-CHANGE-ME';
+// Enable cookies for authentication (Spark uses cookie-based auth)
+axios.defaults.withCredentials = true;
 // Log for debugging (remove after deployment works)
 if (process.env.NODE_ENV === 'development') {
   console.log('API Base URL:', axios.defaults.baseURL);
   console.log('WebSocket URL:', process.env.REACT_APP_WS_URL);
-  console.log('API Key:', process.env.REACT_APP_API_KEY ? 'Set' : 'Not set');
+  console.log('Authentication: Cookie-based');
 }
 axios.interceptors.response.use(async res => {
 	let data = res.data;
@@ -44,6 +44,15 @@ axios.interceptors.response.use(async res => {
 	}
 	let res = err.response;
 	let data = res?.data ?? {};
+	
+	// Handle authentication errors
+	if (res?.status === 401) {
+		message.error('Authentication required. Please login.');
+		// Redirect to login page
+		window.location.href = '/login';
+		return Promise.reject(err);
+	}
+	
 	if (data.hasOwnProperty('code') && data.hasOwnProperty('msg')) {
 		if (data.code !== 0){
 			message.warn(translate(data.msg));
