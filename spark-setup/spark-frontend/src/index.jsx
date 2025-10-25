@@ -8,7 +8,7 @@ import {message} from 'antd';
 import i18n from "./locale/locale";
 
 import './global.css';
-import 'antd/dist/antd.css';
+import 'antd/dist/reset.css';
 import Overview from "./pages/overview";
 import {translate} from "./utils/utils";
 

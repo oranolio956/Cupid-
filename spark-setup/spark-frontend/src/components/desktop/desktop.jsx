@@ -3,7 +3,7 @@ import {encrypt, decrypt, formatSize, genRandHex, getBaseURL, translate, str2ua,
 import i18n from "../../locale/locale";
 import DraggableModal from "../modal";
 import {Button, message, Drawer} from "antd";
-import {FullscreenOutlined, ReloadOutlined} from "@ant-design/icons";ons";
+import {FullscreenOutlined, ReloadOutlined} from "@ant-design/icons";
 
 let ws = null;
 let ctx = null;
@@ -14,17 +14,21 @@ let ticker = 0;
 let frames = 0;
 let bytes = 0;
 let ticks = 0;
-let title = i18n.t('DESKTOfunction ScreenModal(props) {
+let title = i18n.t('DESKTOP.TITLE');
+
+function ScreenModal(props) {
 	const [resolution, setResolution] = useState('0x0');
 	const [bandwidth, setBandwidth] = useState(0);
 	const [fps, setFps] = useState(0);
+	const [draggable, setDraggable] = useState(true);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
 	useEffect(() => {
 		const handleResize = () => setIsMobile(window.innerWidth < 768);
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
-	}, []); = useState(0);
+	}, []);
+
 	const canvasRef = useCallback((e) => {
 		if (e && props.open && !conn && !canvas) {
 			secret = hex2ua(genRandHex(32));
@@ -32,145 +36,84 @@ let title = i18n.t('DESKTOfunction ScreenModal(props) {
 			initCanvas(canvas);
 			construct(canvas);
 		}
-	}, [props]);
-	useEffect(() => {
-		if (!props.open) {
-			canvas = null;
-			if (ws && conn) {
-				clearInterval(ticker);
-				ws.close();
-				conn = false;
-			}
-		}
 	}, [props.open]);
 
-	function initCanvas() {
-		if (!canvas) return;
-		ctx = canvas.getContext('2d', {alpha: false});
-		ctx.imageSmoothingEnabled = false;
-	}
-	function construct() {
-		if (ctx !== null) {
-			if (ws !== null && conn) {
-				ws.close();
-			}
-			ws = new WebSocket(getBaseURL(true, `api/device/desktop?device=${props.device.id}&secret=${ua2hex(secret)}`));
-			ws.binaryType = 'arraybuffer';
-			ws.onopen = () => {
-				conn = true;
-			}
-			ws.onmessage = (e) => {
-				parseBlocks(e.data, canvas, ctx);
-			};
-			ws.onclose = () => {
-				if (conn) {
-					conn = false;
-					message.warn(i18n.t('COMMON.DISCONNECTED'));
-				}
-			};
-			ws.onerror = (e) => {
-				console.error(e);
-				if (conn) {
-					conn = false;
-					message.warn(i18n.t('COMMON.DISCONNECTED'));
-				} else {
-					message.warn(i18n.t('COMMON.CONNECTION_FAILED'));
-				}
-			};
-			clearInterval(ticker);
-			ticker = setInterval(() => {
-				setBandwidth(bytes);
-				setFps(frames);
-				bytes = 0;
-				frames = 0;
-				ticks++;
-				if (ticks > 10 && conn) {
-					ticks = 0;
-					sendData({
-						act: 'DESKTOP_PING'
-					});
-				}
-			}, 1000);
+	useEffect(() => {
+		if (props.open) {
+			setResolution('0x0');
+			setBandwidth(0);
+			setFps(0);
+			setDraggable(true);
 		}
+	}, [props.device, props.open]);
+
+	function initCanvas(canvas) {
+		ctx = canvas.getContext('2d');
+		canvas.width = 1200;
+		canvas.height = 600;
 	}
+
+	function construct(canvas) {
+		ws = new WebSocket(`${getBaseURL().replace('http', 'ws')}/api/device/desktop?device=${props.device}`);
+		ws.binaryType = 'arraybuffer';
+		ws.onopen = () => {
+			conn = true;
+			message.success(i18n.t('DESKTOP.CONNECTED'));
+		};
+		ws.onclose = () => {
+			conn = false;
+			message.error(i18n.t('DESKTOP.DISCONNECTED'));
+		};
+		ws.onmessage = (event) => {
+			if (event.data instanceof ArrayBuffer) {
+				let data = new Uint8Array(event.data);
+				if (data.length > 8) {
+					let body = data.slice(8);
+					let decrypted = decrypt(body, secret);
+					if (decrypted) {
+						let json = JSON.parse(ua2hex(decrypted));
+						if (json.type === 'image') {
+							let img = new Image();
+							img.onload = () => {
+								ctx.clearRect(0, 0, canvas.width, canvas.height);
+								ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+								frames++;
+								bytes += data.length;
+								ticks++;
+								if (ticks % 30 === 0) {
+									setFps(Math.round(frames / (ticks / 30)));
+									setBandwidth(Math.round(bytes / (ticks / 30)));
+									frames = 0;
+									bytes = 0;
+								}
+							};
+							img.src = 'data:image/jpeg;base64,' + json.data;
+						} else if (json.type === 'resolution') {
+							setResolution(`${json.width}x${json.height}`);
+						}
+					}
+				}
+			}
+		};
+	}
+
 	function fullScreen() {
-		canvas.requestFullscreen().catch(console.error);
-	}
-	function refresh() {
-		if (canvas && props.open) {
-			if (!conn) {
-				initCanvas(canvas);
-				construct(canvas);
-			} else {
-				sendData({
-					act: 'DESKTOP_SHOT'
-				});
+		if (canvas) {
+			if (canvas.requestFullscreen) {
+				canvas.requestFullscreen();
+			} else if (canvas.webkitRequestFullscreen) {
+				canvas.webkitRequestFullscreen();
+			} else if (canvas.mozRequestFullScreen) {
+				canvas.mozRequestFullScreen();
+			} else if (canvas.msRequestFullscreen) {
+				canvas.msRequestFullscreen();
 			}
 		}
 	}
 
-	function parseBlocks(ab, canvas, canvasCtx) {
-		ab = ab.slice(5);
-		let dv = new DataView(ab);
-		let op = dv.getUint8(0);
-		if (op === 3) {
-			handleJSON(ab.slice(1));
-			return;
-		}
-		if (op === 2) {
-			let width = dv.getUint16(3, false);
-			let height = dv.getUint16(5, false);
-			if (width === 0 || height === 0) return;
-			canvas.width = width;
-			canvas.height = height;
-			setResolution(`${width}x${height}`);
-			return;
-		}
-		if (op === 0) frames++;
-		bytes += ab.byteLength;
-		let offset = 1;
-		while (offset < ab.byteLength) {
-			let bl = dv.getUint16(offset + 0, false); // body length
-			let it = dv.getUint16(offset + 2, false); // image type
-			let dx = dv.getUint16(offset + 4, false); // image block x
-			let dy = dv.getUint16(offset + 6, false); // image block y
-			let bw = dv.getUint16(offset + 8, false); // image block width
-			let bh = dv.getUint16(offset + 10, false); // image block height
-			let il = bl - 10; // image length
-			offset += 12;
-			updateImage(ab.slice(offset, offset + il), it, dx, dy, bw, bh, canvasCtx);
-			offset += il;
-		}
-		dv = null;
-	}
-	function updateImage(ab, it, dx, dy, bw, bh, canvasCtx) {
-		switch (it) {
-			case 0:
-				canvasCtx.putImageData(new ImageData(new Uint8ClampedArray(ab), bw, bh), dx, dy, 0, 0, bw, bh);
-				break;
-			case 1:
-				createImageBitmap(new Blob([ab]), 0, 0, bw, bh, {
-					premultiplyAlpha: 'none',
-					colorSpaceConversion: 'none'
-				}).then((ib) => {
-					canvasCtx.drawImage(ib, 0, 0, bw, bh, dx, dy, bw, bh);
-				});
-				break;
-		}
-	}
-	function handleJSON(ab) {
-		let data = decrypt(ab, secret);
-		try {
-			data = JSON.parse(data);
-		} catch (_) {}
-		if (data?.act === 'WARN') {
-			message.warn(data.msg ? translate(data.msg) : i18n.t('COMMON.UNKNOWN_ERROR'));
-			return;
-		}
-		if (data?.act === 'QUIT') {
-			message.warn(data.msg ? translate(data.msg) : i18n.t('COMMON.UNKNOWN_ERROR'));
-			conn = false;
-			ws.close();
+	function refresh() {
+		if (ws && conn) {
+			sendData({type: 'refresh'});
 		}
 	}
 
@@ -178,7 +121,13 @@ let title = i18n.t('DESKTOfunction ScreenModal(props) {
 		if (conn) {
 			let body = encrypt(str2ua(JSON.stringify(data)), secret);
 			let buffer = new Uint8Array(body.length + 8);
-			buffer.set(new Ui	const content = (
+			buffer.set(new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]), 0);
+			buffer.set(body, 8);
+			ws.send(buffer);
+		}
+	}
+
+	const content = (
 		<>
 			<canvas
 				id='painter'
@@ -213,7 +162,7 @@ let title = i18n.t('DESKTOfunction ScreenModal(props) {
 				title={`${title} ${resolution} ${formatSize(bandwidth)}/s FPS: ${fps}`}
 				destroyOnClose={true}
 			>
-				<div style={{ height: '100%' }}>
+				<div style={{ padding: 12, height: '100%' }}>
 					{content}
 				</div>
 			</Drawer>
@@ -223,29 +172,16 @@ let title = i18n.t('DESKTOfunction ScreenModal(props) {
 	// Desktop: Use DraggableModal
 	return (
 		<DraggableModal
-			draggable={true}
-			maskClosable={false}
-			destroyOnClose={true}
-			modalTitle={`${title} ${resolution} ${formatSize(bandwidth)}/s FPS: ${fps}`}
-			footer={null}
-			height={480}
-			width={940}
-			bodyStyle={{
-				padding: 0
-			}}
-			{...props}
+			open={props.open}
+			onCancel={props.onCancel}
+			title={`${title} ${resolution} ${formatSize(bandwidth)}/s FPS: ${fps}`}
+			width={1200}
+			height={600}
+			draggable={draggable}
+			onDragStart={() => setDraggable(false)}
+			onDragEnd={() => setDraggable(true)}
 		>
 			{content}
-		</DraggableModal>
-	);Outlined />}
-				onClick={fullScreen}
-			/>
-			<Button
-				style={{right:'115px'}}
-				className='header-button'
-				icon={<ReloadOutlined />}
-				onClick={refresh}
-			/>
 		</DraggableModal>
 	);
 }

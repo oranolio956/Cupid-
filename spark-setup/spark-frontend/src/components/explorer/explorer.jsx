@@ -4,7 +4,7 @@ import {Breadcrumb, Button, Image, message, Modal, Popconfirm, Space, Drawer} fr
 import {catchBlobReq, formatSize, orderCompare, post, request, waitTime} from "../../utils/utils";
 import dayjs from "dayjs";
 import i18n from "../../locale/locale";
-import {VList} from "virtuallist-antd";
+// Removed virtuallist-antd import - using Ant Design's built-in virtual scrolling
 import {HomeOutlined, QuestionCircleOutlined, ReloadOutlined, UploadOutlined} from "@ant-design/icons";
 import Qs from "qs";
 import DraggableModal from "../modal";
@@ -88,11 +88,12 @@ function FileBrowser(props) {
 		setting: false,
 	};
 	const tableRef = useRef();
+	// Removed VList - using Ant Design's built-in virtual scrolling
 	const virtualTable = useMemo(() => {
-		return VList({
-			height: 300,
-			vid: 'file-table',
-		})
+		return {
+			scroll: { y: 300 },
+			virtual: true
+		}
 	}, []);
 	const alertOptionRenderer = () => (<Space size={16}>
 		<Popconfirm
@@ -409,7 +410,16 @@ function FileBrowser(props) {
 	}
 
 	const content = (
-		<>
+		<DraggableModal
+			open={props.open}
+			onCancel={props.onCancel}
+			title={i18n.t('EXPLORER.TITLE')}
+			width={1200}
+			height={600}
+			draggable={draggable}
+			onDragStart={() => setDraggable(false)}
+			onDragEnd={() => setDraggable(true)}
+		>
 			<ProTable
 				rowKey='name'
 				tableStyle={{

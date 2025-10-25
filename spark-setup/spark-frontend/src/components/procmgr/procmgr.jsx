@@ -3,7 +3,7 @@ import {Button, message, Popconfirm, Drawer} from "antd";
 import ProTable from '@ant-design/pro-table';
 import {request, waitTime} from "../../utils/utils";
 import i18n from "../../locale/locale";
-import {VList} from "virtuallist-antd";
+// Removed virtuallist-antd import - using Ant Design's built-in virtual scrolling
 import DraggableModal from "../modal";
 import {ReloadOutlined} from "@ant-design/icons";
 
@@ -48,10 +48,12 @@ function ProcessMgr(props) {
 		setting: false,
 	};
 	const tableRef = useRef();
+	// Removed VList - using Ant Design's built-in virtual scrolling
 	const virtualTable = useMemo(() => {
-		return VList({
-			height: 300
-		})
+		return {
+			scroll: { y: 300 },
+			virtual: true
+		}
 	}, []);
 	useEffect(() => {
 		if (props.open) {
