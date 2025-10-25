@@ -13,7 +13,7 @@ services:
       - key: GO_ENV
         value: production
       - key: SPARK_SALT
-        value: a2dac101827c8d47f00831f2d6c078b2
+        value: WG/Cc6eZUXWuqfi2+NNr2dso
       - key: SPARK_ADMIN_HASH
         value: $2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG
     healthCheckPath: /api/info
