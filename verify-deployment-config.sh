@@ -44,7 +44,7 @@ fi
 
 # Check 3: Dockerfile has wget
 echo "🔍 Checking Dockerfile for wget..."
-if grep -q "wget" spark-setup/spark-backend/Dockerfile.simple; then
+if grep -q "wget" spark-setup/spark-backend/Dockerfile; then
     echo -e "${GREEN}✅ PASS${NC} - Dockerfile includes wget"
 else
     echo -e "${RED}❌ FAIL${NC} - Dockerfile missing wget (required for health checks)"
@@ -53,7 +53,7 @@ fi
 
 # Check 4: Dockerfile has HEALTHCHECK
 echo "🔍 Checking Dockerfile for HEALTHCHECK..."
-if grep -q "HEALTHCHECK" spark-setup/spark-backend/Dockerfile.simple; then
+if grep -q "HEALTHCHECK" spark-setup/spark-backend/Dockerfile; then
     echo -e "${GREEN}✅ PASS${NC} - Dockerfile includes HEALTHCHECK directive"
 else
     echo -e "${RED}❌ FAIL${NC} - Dockerfile missing HEALTHCHECK directive"
@@ -62,8 +62,8 @@ fi
 
 # Check 5: Dockerfile copies config.json
 echo "🔍 Checking Dockerfile for config.json copy..."
-if grep -q "COPY config.json" spark-setup/spark-backend/Dockerfile.simple || grep -q "COPY . ." spark-setup/spark-backend/Dockerfile.simple; then
-    if grep -q "COPY config.json" spark-setup/spark-backend/Dockerfile.simple; then
+if grep -q "COPY config.json" spark-setup/spark-backend/Dockerfile || grep -q "COPY . ." spark-setup/spark-backend/Dockerfile; then
+    if grep -q "COPY config.json" spark-setup/spark-backend/Dockerfile; then
         echo -e "${GREEN}✅ PASS${NC} - Dockerfile explicitly copies config.json"
     else
         echo -e "${YELLOW}⚠️  WARN${NC} - Dockerfile uses 'COPY . .' which includes config.json"
@@ -87,7 +87,7 @@ fi
 # Check 7: render.yaml configuration
 echo "🔍 Checking render.yaml configuration..."
 if [ -f "render.yaml" ]; then
-    if grep -q "dockerfilePath: Dockerfile.simple" render.yaml; then
+    if grep -q "dockerfilePath: Dockerfile" render.yaml; then
         echo -e "${GREEN}✅ PASS${NC} - render.yaml points to correct Dockerfile"
     else
         echo -e "${RED}❌ FAIL${NC} - render.yaml Dockerfile path is incorrect"
