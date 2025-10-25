@@ -12,7 +12,13 @@ import 'antd/dist/antd.css';
 import Overview from "./pages/overview";
 import {translate} from "./utils/utils";
 
-axios.defaults.baseURL = '.';
+// Use environment variable for API URL, fallback to relative path for development
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || '.';
+// Log for debugging (remove after deployment works)
+if (process.env.NODE_ENV === 'development') {
+  console.log('API Base URL:', axios.defaults.baseURL);
+  console.log('WebSocket URL:', process.env.REACT_APP_WS_URL);
+}
 axios.interceptors.response.use(async res => {
 	let data = res.data;
 	if (data.hasOwnProperty('code')) {

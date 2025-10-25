@@ -11,7 +11,7 @@
 		"build-dev": "cross-env NODE_ENV=development npx webpack --mode development",
 		"build-prod": "cross-env NODE_ENV=production webpack --mode production",
 		"build": "npm run build-prod",
-		"vercel-build": "npm install webpack-cli && npm run build-prod"
+		"vercel-build": "npm run build-prod"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^4.6.2",

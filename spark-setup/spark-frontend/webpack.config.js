@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require('webpack');
 const esbuild = require('esbuild');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -66,6 +67,12 @@ module.exports = (env, args) => {
             ]
         },
         plugins: [
+            // ADD THIS FIRST - Before HtmlWebpackPlugin
+            new webpack.DefinePlugin({
+                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'http://localhost:8000'),
+                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'ws://localhost:8000'),
+                'process.env.NODE_ENV': JSON.stringify(mode)
+            }),
             new HtmlWebpackPlugin({
                 appMountId: 'root',
                 template:  path.resolve(__dirname, 'public/index.html'),
