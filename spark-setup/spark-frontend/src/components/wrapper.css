@@ -1,61 +1,86 @@
-.ant-page-header {
-	display: none;
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.ant-pro-top-nav-header-logo {
-	user-select: none;
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.header-button {
-	background: transparent !important;
-	position: absolute !important;
-	font-weight: 700 !important;
-	cursor: pointer !important;
-	border: none !important;
-	top: 3px !important;
-	height: 50px !important;
-	width: 50px !important;
-	color: rgba(0, 0, 0, 0.45) !important;
+.hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
-/* Touch-friendly button sizing for mobile */
-@media (max-width: 767px) {
-	.ant-btn {
-		min-height: 44px !important;
-		min-width: 44px !important;
-		font-size: 15px !important;
-		padding: 0 20px !important;
-	}
-	
-	.ant-dropdown-menu-item {
-		min-height: 48px !important;
-		padding: 12px 16px !important;
-		font-size: 15px !important;
-	}
-	
-	/* Table action buttons (if table shown on tablet) */
-	.ant-table-cell a {
-		display: inline-block;
-		min-height: 40px;
-		line-height: 40px;
-		padding: 0 12px;
-	}
-	
-	/* Mobile header adjustments */
-	.ant-pro-top-nav-header {
-		height: 48px !important;
-	}
-	
-	.ant-pro-top-nav-header-logo {
-		height: 48px !important;
-		line-height: 48px !important;
-	}
+.hamburger-btn:active {
+  background: #f0f0f0;
 }
 
-/* Tablet optimizations */
-@media (min-width: 768px) and (max-width: 1024px) {
-	.ant-btn {
-		min-height: 40px !important;
-		font-size: 14px !important;
-	}
+.app-title {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.header-spacer {
+  width: 40px; /* Same as hamburger-btn for centering */
+}
+
+.app-content {
+  flex: 1;
+}
+
+/* Desktop: hide header */
+@media (min-width: 768px) {
+  .app-header {
+    display: none;
+  }
+}
+
+/* Mobile Drawer Styling */
+.mobile-drawer .ant-drawer-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom: none;
+}
+
+.mobile-drawer .ant-drawer-title {
+  color: white;
+  font-weight: 700;
+}
+
+.mobile-drawer .ant-drawer-close {
+  color: white;
+}
+
+.mobile-drawer .ant-menu-item {
+  border-radius: 8px;
+  margin: 8px 0;
+  height: 48px;
+  line-height: 48px;
+}
+
+.mobile-drawer .ant-menu-item:hover {
+  background: #f5f5f5;
 }

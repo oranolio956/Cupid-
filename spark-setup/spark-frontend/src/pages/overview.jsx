@@ -2,10 +2,45 @@ import React, {useEffect, useRef, useState} from 'react';
 import ProTable, {TableDropdown} from '@ant-design/pro-table';
 import {Button, Image, message, Modal, Progress, Tooltip, Spin} from 'antd';
 import {catchBlobReq, formatSize, request, tsToTime, waitTime} from "../utils/utils";
-import {QuestionCircleOutlined} from "@ant-design/icons";
+import {QuestionCircleOutlined, PlusOutlined, ReloadOutlined} from "@ant-design/icons";
 import i18n from "../locale/locale";
 import DeviceCard from '../components/DeviceCard/DeviceCard';
 import axios from 'axios';
+
+// EmptyState component for when no devices are connected
+function EmptyState({ baseURL }) {
+	return (
+		<div className="mobile-empty-state">
+			<div className="empty-icon">📡</div>
+			<h2>No Devices Connected</h2>
+			<p>Install the Spark client on your devices to monitor them remotely.</p>
+			<div className="empty-steps">
+				<div className="empty-step">
+					<span className="step-number">1</span>
+					<span>Download Spark client</span>
+				</div>
+				<div className="empty-step">
+					<span className="step-number">2</span>
+					<span>Install on target device</span>
+				</div>
+				<div className="empty-step">
+					<span className="step-number">3</span>
+					<span>Connect to server</span>
+				</div>
+			</div>
+			<div className="empty-backend-info">
+				<code>{baseURL}</code>
+			</div>
+			<Button 
+				type="primary" 
+				size="large"
+				onClick={() => window.location.reload()}
+			>
+				Refresh
+			</Button>
+		</div>
+	);
+}
 
 // DO NOT EDIT OR DELETE THIS COPYRIGHT MESSAGE.
 if (process.env.NODE_ENV === 'development') {
@@ -459,25 +494,61 @@ function overview(props) {
 		
 		{/* CONDITIONAL RENDERING - Mobile Card View vs Desktop Table View */}
 		{isMobile ? (
-			// Mobile Card View
-			<div className={`mobile-device-grid ${loading ? 'loading' : ''} ${dataSource.length === 0 && !loading ? 'empty' : ''}`}>
+			<div className="mobile-dashboard">
+				{/* Stats Overview Header */}
+				<div className="mobile-stats-header">
+					<div className="stat-card">
+						<div className="stat-value">{dataSource.length}</div>
+						<div className="stat-label">Total Devices</div>
+					</div>
+					<div className="stat-card">
+						<div className="stat-value stat-success">
+							{dataSource.filter(d => (d.latency || 0) > 0 && (d.latency || 0) < 5000).length}
+						</div>
+						<div className="stat-label">Online</div>
+					</div>
+					<div className="stat-card">
+						<div className="stat-value stat-danger">
+							{dataSource.filter(d => !d.latency || d.latency >= 5000).length}
+						</div>
+						<div className="stat-label">Offline</div>
+					</div>
+				</div>
+
+				{/* Quick Actions */}
+				<div className="mobile-quick-actions">
+					<Button 
+						type="primary" 
+						icon={<PlusOutlined />}
+						onClick={() => onMenuClick('generate', true)}
+					>
+						Add Device
+					</Button>
+					<Button 
+						icon={<ReloadOutlined />}
+						onClick={() => tableRef.current?.reload()}
+					>
+						Refresh
+					</Button>
+				</div>
+
+				{/* Device List/Grid */}
 				{loading ? (
-					<div style={{textAlign: 'center', padding: '40px'}}>
+					<div className="mobile-loading">
 						<Spin size="large" tip="Loading devices..." />
 					</div>
 				) : dataSource.length === 0 ? (
-					<div style={{textAlign: 'center', padding: '40px', color: '#999'}}>
-						<p style={{fontSize: '16px', marginBottom: '8px'}}>No devices connected</p>
-						<p style={{fontSize: '14px'}}>Check backend connection at:<br/>{axios.defaults.baseURL}</p>
-					</div>
+					<EmptyState baseURL={axios.defaults.baseURL} />
 				) : (
-					dataSource.map(device => (
-						<DeviceCard 
-							key={device.id}
-							device={device}
-							onAction={onMenuClick}
-						/>
-					))
+					<div className="mobile-device-list">
+						{dataSource.map(device => (
+							<DeviceCard
+								key={device.id}
+								device={device}
+								onAction={onMenuClick}
+							/>
+						))}
+					</div>
 				)}
 			</div>
 		) : (
