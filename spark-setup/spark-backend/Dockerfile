@@ -50,7 +50,7 @@ EXPOSE 8000
 
 # Health check for Render
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8000/api/info || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8000/api/health || exit 1
 
 # Run server
 CMD ["./spark-server"]

@@ -16,5 +16,5 @@ services:
         value: WG/Cc6eZUXWuqfi2+NNr2dso
       - key: SPARK_ADMIN_HASH
         value: $2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG
-    healthCheckPath: /api/info
+    healthCheckPath: /api/health
     autoDeploy: true
