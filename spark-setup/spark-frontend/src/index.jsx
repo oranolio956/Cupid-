@@ -11,6 +11,7 @@ import i18n from "./locale/locale";
 import './global.css';
 import 'antd/dist/reset.css';
 import Overview from "./pages/overview";
+import Login from "./pages/login";
 import {translate} from "./utils/utils";
 
 // Use environment variable for API URL, fallback to production backend
@@ -63,13 +64,14 @@ axios.interceptors.response.use(async res => {
 });
 
 ReactDOM.render(
-	<ErrorBoundary>
-		<Router>
-			<Routes>
-				<Route path="/" element={<Wrapper><Overview/></Wrapper>}/>
-				<Route path="*" element={<Err/>}/>
-			</Routes>
-		</Router>
-	</ErrorBoundary>,
+		<ErrorBoundary>
+			<Router>
+				<Routes>
+					<Route path="/login" element={<Login/>}/>
+					<Route path="/" element={<Wrapper><Overview/></Wrapper>}/>
+					<Route path="*" element={<Err/>}/>
+				</Routes>
+			</Router>
+		</ErrorBoundary>,
 	document.getElementById('root')
 );
