@@ -48,7 +48,7 @@ RUN echo "Checking startup script:" && ls -la /app/start.sh && head -5 /app/star
 RUN chmod +x start.sh spark-server
 
 # Debug: Verify files are executable
-RUN ls -la /app/ && file /app/spark-server
+RUN ls -la /app/
 
 # Create logs directory
 RUN mkdir -p logs && chown -R spark:spark /app
