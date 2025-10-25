@@ -16,9 +16,16 @@ func LoadFromEnv() {
 	// Override salt if SPARK_SALT environment variable is set
 	if salt := os.Getenv("SPARK_SALT"); salt != "" {
 		Config.Salt = salt
-		Config.SaltBytes = []byte(Config.Salt)
-		Config.SaltBytes = append(Config.SaltBytes, bytes.Repeat([]byte{25}, 24)...)
-		Config.SaltBytes = Config.SaltBytes[:24]
+		// Use secure salt validation
+		if err := validateAndSetSalt(); err != nil {
+			// If validation fails, generate a secure salt
+			secureSalt, err := generateSecureSalt()
+			if err != nil {
+				panic("Failed to generate secure salt: " + err.Error())
+			}
+			Config.Salt = secureSalt
+			validateAndSetSalt() // This should not fail now
+		}
 	}
 
 	// Override admin password if SPARK_ADMIN_HASH environment variable is set

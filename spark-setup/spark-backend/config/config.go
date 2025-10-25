@@ -2,9 +2,12 @@ package config
 
 import (
 	"Spark/utils"
-	"bytes"
+	"crypto/rand"
+	"encoding/base64"
 	"flag"
+	"fmt"
 	"github.com/kataras/golog"
+	"math"
 	"os"
 )
 
@@ -92,17 +95,15 @@ func init() {
 		}
 	}
 
-	if len(Config.Salt) > 24 {
+	// Validate and set salt with proper security checks
+	if err := validateAndSetSalt(); err != nil {
 		fatal(map[string]any{
 			`event`:  `CONFIG_PARSE`,
 			`status`: `fail`,
-			`msg`:    `length of salt should less than 24`,
+			`msg`:    err.Error(),
 		})
 		return
 	}
-	Config.SaltBytes = []byte(Config.Salt)
-	Config.SaltBytes = append(Config.SaltBytes, bytes.Repeat([]byte{25}, 24)...)
-	Config.SaltBytes = Config.SaltBytes[:24]
 
 	golog.SetLevel(utils.If(len(Config.Log.Level) == 0, `info`, Config.Log.Level))
 }
@@ -110,4 +111,58 @@ func init() {
 func fatal(args map[string]any) {
 	output, _ := utils.JSON.MarshalToString(args)
 	golog.Fatal(output)
+}
+
+
+const (
+	RequiredSaltLength = 24
+	MinSaltEntropy     = 3.5
+)
+
+// validateAndSetSalt validates the salt and sets SaltBytes with proper security checks
+func validateAndSetSalt() error {
+	// 1. Check length - require exactly 24 bytes
+	if len(Config.Salt) != RequiredSaltLength {
+		return fmt.Errorf("salt must be exactly %d bytes, got %d", RequiredSaltLength, len(Config.Salt))
+	}
+	
+	// 2. Calculate Shannon entropy
+	entropy := calculateEntropy([]byte(Config.Salt))
+	if entropy < MinSaltEntropy {
+		return fmt.Errorf("salt has insufficient randomness (entropy: %.2f, required: %.2f)", entropy, MinSaltEntropy)
+	}
+	
+	// 3. Set salt bytes (no padding needed - exact length required)
+	Config.SaltBytes = []byte(Config.Salt)
+	
+	return nil
+}
+
+// calculateEntropy calculates the Shannon entropy of the given data
+func calculateEntropy(data []byte) float64 {
+	if len(data) == 0 {
+		return 0
+	}
+	
+	freq := make(map[byte]int)
+	for _, b := range data {
+		freq[b]++
+	}
+	
+	var entropy float64
+	for _, count := range freq {
+		p := float64(count) / float64(len(data))
+		entropy -= p * math.Log2(p)
+	}
+	
+	return entropy
+}
+
+// generateSecureSalt generates a cryptographically secure salt
+func generateSecureSalt() (string, error) {
+	salt := make([]byte, RequiredSaltLength)
+	if _, err := rand.Read(salt); err != nil {
+		return "", fmt.Errorf("failed to generate secure salt: %w", err)
+	}
+	return base64.RawStdEncoding.EncodeToString(salt)[:RequiredSaltLength], nil
 }

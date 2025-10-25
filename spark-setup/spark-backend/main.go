@@ -10,7 +10,9 @@ import (
 	"Spark/handler/desktop"
 	"Spark/handler/terminal"
 	"Spark/handler/utility"
+	"Spark/health"
 	"Spark/security"
+	"Spark/static"
 	"Spark/utils/cmap"
 	"bytes"
 	"context"
@@ -122,6 +124,27 @@ func main() {
 }
 
 func wsHandshake(ctx *gin.Context) {
+	// Validate WebSocket origin to prevent cross-site hijacking
+	origin := ctx.GetHeader("Origin")
+	allowedOrigins := []string{
+		"https://cupid-otys.vercel.app",
+		"https://spark-backend-fixed-v2.onrender.com",
+		"http://localhost:3000", // For development
+	}
+	
+	validOrigin := false
+	for _, allowed := range allowedOrigins {
+		if origin == allowed {
+			validOrigin = true
+			break
+		}
+	}
+	
+	if !validOrigin && origin != "" {
+		ctx.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+	
 	if !ctx.IsWebsocket() {
 		// When message is too large to transport via websocket,
 		// client will try to send these data via http.
@@ -187,8 +210,15 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 			case 20:
 				switch op {
 				case 00, 01, 02, 03:
+					// Bounds check before accessing data[6:22]
+					if dataLen < 22 {
+						return
+					}
 					event := hex.EncodeToString(data[6:22])
-					copy(data[6:], data[22:])
+					// Bounds check before copy operation
+					if dataLen >= 22+16 {
+						copy(data[6:], data[22:])
+					}
 					common.CallEvent(modules.Packet{
 						Act:   `RAW_DATA_ARRIVE`,
 						Event: event,
@@ -200,8 +230,15 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 			case 21:
 				switch op {
 				case 00, 01:
+					// Bounds check before accessing data[6:22]
+					if dataLen < 22 {
+						return
+					}
 					event := hex.EncodeToString(data[6:22])
-					copy(data[6:], data[22:])
+					// Bounds check before copy operation
+					if dataLen >= 22+16 {
+						copy(data[6:], data[22:])
+					}
 					common.CallEvent(modules.Packet{
 						Act:   `RAW_DATA_ARRIVE`,
 						Event: event,
@@ -255,68 +292,11 @@ func wsOnDisconnect(session *melody.Session) {
 }
 
 func wsHealthCheck(container *melody.Melody) {
-	const MaxIdleSeconds = 150
-	const MaxPingInterval = 60
-	go func() {
-		// Ping clients with a dynamic interval.
-		// Interval will be greater than 3 seconds and less than MaxPingInterval.
-		var tick int64 = 0
-		var pingInterval int64 = 3
-		for range time.NewTicker(3 * time.Second).C {
-			tick += 3
-			if tick >= utils.Unix-lastRequest {
-				pingInterval = 3
-			}
-			if tick >= 3 && (tick >= pingInterval || tick >= MaxPingInterval) {
-				pingInterval += 3
-				if pingInterval > MaxPingInterval {
-					pingInterval = MaxPingInterval
-				}
-				tick = 0
-				container.IterSessions(func(uuid string, s *melody.Session) bool {
-					go pingDevice(s)
-					return true
-				})
-			}
-		}
-	}()
-	for now := range time.NewTicker(60 * time.Second).C {
-		timestamp := now.Unix()
-		// Store sessions to be disconnected.
-		queue := make([]*melody.Session, 0)
-		container.IterSessions(func(uuid string, s *melody.Session) bool {
-			val, ok := s.Get(`LastPack`)
-			if !ok {
-				queue = append(queue, s)
-				return true
-			}
-			lastPack, ok := val.(int64)
-			if !ok {
-				queue = append(queue, s)
-				return true
-			}
-			if timestamp-lastPack > MaxIdleSeconds {
-				queue = append(queue, s)
-			}
-			return true
-		})
-		for i := 0; i < len(queue); i++ {
-			queue[i].Close()
-		}
-	}
+	// Create health checker with worker pool (10 workers)
+	healthChecker := health.NewChecker(container, 10)
+	healthChecker.Start()
 }
 
-func pingDevice(s *melody.Session) {
-	t := time.Now().UnixMilli()
-	trigger := utils.GetStrUUID()
-	common.SendPack(modules.Packet{Act: `PING`, Event: trigger}, s)
-	common.AddEventOnce(func(packet modules.Packet, session *melody.Session) {
-		device, ok := common.Devices.Get(s.UUID)
-		if ok {
-			device.Latency = uint(time.Now().UnixMilli()-t) / 2
-		}
-	}, s.UUID, trigger, 3*time.Second)
-}
 
 func checkAuth() gin.HandlerFunc {
 	// Token as key and update timestamp as value.
@@ -392,7 +372,14 @@ func checkAuth() gin.HandlerFunc {
 			})
 			token := utils.GetStrUUID()
 			tokens.Set(token, now)
-			ctx.Header(`Set-Cookie`, fmt.Sprintf(`Authorization=%s; Path=/; HttpOnly`, token))
+			// Use secure cookie manager
+		cookieMgr := auth.NewCookieManager(config.Config.Environment == "production", "")
+		cookieMgr.SetAuthCookie(ctx.Writer, token)
+		
+		// Generate and set CSRF token
+		csrfMgr := auth.NewCSRFManager()
+		csrfToken := csrfMgr.GenerateCSRFToken()
+		ctx.SetCookie("CSRF-Token", csrfToken, 1800, "/", "", config.Config.Environment == "production", true)
 		}
 		lastRequest = now
 	}
@@ -400,7 +387,11 @@ func checkAuth() gin.HandlerFunc {
 
 func serveGzip(ctx *gin.Context, statikFS http.FileSystem) bool {
 	headers := ctx.Request.Header
-	filename := path.Clean(ctx.Request.RequestURI)
+	filename, err := static.SanitizePath(ctx.Request.RequestURI)
+	if err != nil {
+		ctx.AbortWithStatus(http.StatusBadRequest)
+		return false
+	}
 	if !strings.Contains(headers.Get(`Accept-Encoding`), `gzip`) {
 		return false
 	}
@@ -462,7 +453,11 @@ func serveGzip(ctx *gin.Context, statikFS http.FileSystem) bool {
 }
 
 func checkCache(ctx *gin.Context, _ http.FileSystem) bool {
-	filename := path.Clean(ctx.Request.RequestURI)
+	filename, err := static.SanitizePath(ctx.Request.RequestURI)
+	if err != nil {
+		ctx.AbortWithStatus(http.StatusBadRequest)
+		return false
+	}
 
 	etag := fmt.Sprintf(`"%x-%s"`, []byte(filename), config.Commit)
 	if ctx.Request.Header.Get(`If-None-Match`) == etag {
