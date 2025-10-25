@@ -8,7 +8,7 @@ echo "=================================="
 
 # Configuration
 SERVICE_ID="srv-d3u6cgripnbc738naa70"
-API_KEY="rnd_EBeA1GCdGDixMGI6PpwkalLa6gxh"
+API_KEY="rnd_DCT3Kms5YDiMxMPswtOvaDXHl26K"
 SERVICE_URL="https://cupid-1-njpo.onrender.com"
 
 echo "📋 Service Configuration:"

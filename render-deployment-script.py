@@ -10,7 +10,7 @@ import time
 import sys
 
 # Configuration
-API_KEY = "rnd_EBeA1GCdGDixMGI6PpwkalLa6gxh"
+API_KEY = "rnd_DCT3Kms5YDiMxMPswtOvaDXHl26K"
 SERVICE_ID = "srv-d3u6cgripnbc738naa70"
 BASE_URL = "https://api.render.com/v1"
 HEADERS = {
