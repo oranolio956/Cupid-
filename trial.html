@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-wf-domain="cupidbot.ai" data-wf-page="trial" data-wf-site="6440ef10d027f97f198da940">
+<html data-wf-domain="cupidbot.org" data-wf-page="trial" data-wf-site="6440ef10d027f97f198da940">
 <head>
     <meta charset="utf-8"/>
     <title>CupidBot - Start Your Free Trial</title>
@@ -278,45 +278,288 @@
             transform: translateY(-2px);
         }
         
-        /* Installation Steps */
-        .installation-step {
+        /* Interactive Installation Guide */
+        .interactive-guide {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .guide-step {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 500px;
+        }
+        
+        .guide-step.active {
             display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 2rem;
-            padding: 2rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.6s ease;
+            animation: fadeInScale 0.6s ease;
         }
         
-        .installation-step.visible {
-            opacity: 1;
-            transform: translateX(0);
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         
-        .step-number {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
-            border-radius: 50%;
+        .step-visual {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        .browser-mockup {
+            width: 100%;
+            background: rgba(25, 25, 25, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .browser-header {
+            background: rgba(31, 31, 31, 0.9);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .browser-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .browser-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .browser-dots span:nth-child(1) { background: #ff5f56; }
+        .browser-dots span:nth-child(2) { background: #ffbd2e; }
+        .browser-dots span:nth-child(3) { background: #27c93f; }
+        
+        .browser-url {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            color: #c8c8c8;
+        }
+        
+        .browser-content {
+            padding: 2rem;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .extension-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(179, 83, 211, 0.1);
+            border: 2px solid #b353d3;
+            border-radius: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .ext-icon {
+            font-size: 3rem;
+        }
+        
+        .ext-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .ext-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .ext-desc {
+            font-size: 0.875rem;
+            color: #c8c8c8;
+        }
+        
+        .dev-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: #fff;
+        }
+        
+        .toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #b353d3;
+        }
+        
+        .toggle-slider {
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+        
+        .load-unpacked-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .step-instructions {
+            padding: 2rem;
+        }
+        
+        .step-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(179, 83, 211, 0.2);
+            border: 1px solid #b353d3;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: #b353d3;
+        }
+        
+        .step-instructions h3 {
             font-size: 2rem;
-            font-weight: 800;
+            margin-bottom: 1rem;
             color: #fff;
         }
         
-        .step-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #fff;
-        }
-        
-        .step-content p {
+        .step-instructions p {
             color: #c8c8c8;
             line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .step-instructions code {
+            background: rgba(179, 83, 211, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .download-ext-btn,
+        .next-step-btn,
+        .finish-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-ext-btn:hover,
+        .next-step-btn:hover,
+        .finish-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(179, 83, 211, 0.4);
+        }
+        
+        .success-animation {
+            text-align: center;
+        }
+        
+        .checkmark-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        
+        .checkmark {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #246426;
+            stroke-miterlimit: 10;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+        }
+        
+        .checkmark-circle-bg {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #246426;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+        
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #246426;
+            }
         }
         
         /* Stats Section */
@@ -495,51 +738,121 @@
                 </div>
             </section>
 
-            <!-- Installation Steps -->
+            <!-- Interactive Installation Guide -->
             <section>
                 <div class="page-padding">
                     <div class="container-xxlarge">
                         <div class="line"></div>
                         <div style="padding: 4rem 0;">
-                            <h2 class="heading" style="margin-bottom: 3rem;">Installation Guide</h2>
+                            <h2 class="heading" style="margin-bottom: 1rem; text-align: center;">Interactive Installation Guide</h2>
+                            <p style="text-align: center; color: #c8c8c8; margin-bottom: 4rem; font-size: 1.25rem;">Follow along as we guide you through each step</p>
                             
-                            <div class="installation-step">
-                                <div class="step-number">01</div>
-                                <div class="step-content">
-                                    <h3>Download Extension</h3>
-                                    <p>Download the CupidBot Chrome extension package to your computer.</p>
+                            <div class="interactive-guide">
+                                <div class="guide-step active" data-step="1">
+                                    <div class="step-visual">
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-dots">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                                <div class="browser-url">chrome://extensions/</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="extension-card">
+                                                    <div class="ext-icon">🤖</div>
+                                                    <div class="ext-info">
+                                                        <div class="ext-name">CupidBot AI</div>
+                                                        <div class="ext-desc">AI Chat Automation</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 1</div>
+                                        <h3>Download Extension</h3>
+                                        <p>Click the button below to download the CupidBot extension package.</p>
+                                        <button class="download-ext-btn" onclick="downloadExtension()">
+                                            <span>📦 Download Extension</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="installation-step">
-                                <div class="step-number">02</div>
-                                <div class="step-content">
-                                    <h3>Open Chrome Extensions</h3>
-                                    <p>Navigate to <code style="background: rgba(179, 83, 211, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-family: 'Roboto Mono', monospace;">chrome://extensions/</code> in your browser.</p>
+                                
+                                <div class="guide-step" data-step="2">
+                                    <div class="step-visual">
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-dots">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                                <div class="browser-url">chrome://extensions/</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="dev-mode-toggle">
+                                                    <span>Developer mode</span>
+                                                    <div class="toggle-switch active">
+                                                        <div class="toggle-slider"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 2</div>
+                                        <h3>Enable Developer Mode</h3>
+                                        <p>Open <code>chrome://extensions/</code> and toggle "Developer mode" ON in the top right.</p>
+                                        <button class="next-step-btn" onclick="nextStep(3)">
+                                            <span>Next Step →</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="installation-step">
-                                <div class="step-number">03</div>
-                                <div class="step-content">
-                                    <h3>Enable Developer Mode</h3>
-                                    <p>Toggle "Developer mode" ON in the top right corner of the extensions page.</p>
+                                
+                                <div class="guide-step" data-step="3">
+                                    <div class="step-visual">
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-dots">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                                <div class="browser-url">chrome://extensions/</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="load-unpacked-btn">
+                                                    📁 Load unpacked
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 3</div>
+                                        <h3>Load Extension</h3>
+                                        <p>Click "Load unpacked" and select the CupidBot extension folder you downloaded.</p>
+                                        <button class="next-step-btn" onclick="nextStep(4)">
+                                            <span>Next Step →</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="installation-step">
-                                <div class="step-number">04</div>
-                                <div class="step-content">
-                                    <h3>Load Extension</h3>
-                                    <p>Click "Load unpacked" and select the CupidBot extension folder.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="installation-step">
-                                <div class="step-number">05</div>
-                                <div class="step-content">
-                                    <h3>Activate with Your Key</h3>
-                                    <p>Click the extension icon and enter your trial key to start your 30-day free trial.</p>
+                                
+                                <div class="guide-step" data-step="4">
+                                    <div class="step-visual">
+                                        <div class="success-animation">
+                                            <div class="checkmark-circle">
+                                                <svg class="checkmark" viewBox="0 0 52 52">
+                                                    <circle class="checkmark-circle-bg" cx="26" cy="26" r="25" fill="none"/>
+                                                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                </svg>
+                                            </div>
+                                            <h3 style="color: #246426; margin-top: 2rem;">Extension Installed!</h3>
+                                        </div>
+                                    </div>
+                                    <div class="step-instructions">
+                                        <div class="step-badge">Step 4</div>
+                                        <h3>You're All Set!</h3>
+                                        <p>Click the CupidBot extension icon in your toolbar and enter your trial key to get started.</p>
+                                        <button class="finish-btn" onclick="finishGuide()">
+                                            <span>🚀 Launch CupidBot</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -591,18 +904,28 @@
             canvas.height = window.innerHeight;
         });
 
-        // Scroll Animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.installation-step').forEach(step => {
-            observer.observe(step);
-        });
+        // Interactive Guide Functions
+        function nextStep(step) {
+            document.querySelectorAll('.guide-step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.guide-step[data-step="${step}"]`).classList.add('active');
+        }
+        
+        function downloadExtension() {
+            // Create a zip file download
+            const link = document.createElement('a');
+            link.href = 'cupidbot-extension.zip'; // You'll need to create this
+            link.download = 'cupidbot-extension.zip';
+            link.click();
+            
+            // Show success and move to next step
+            setTimeout(() => {
+                nextStep(2);
+            }, 1000);
+        }
+        
+        function finishGuide() {
+            alert('Open the CupidBot extension from your Chrome toolbar to continue!');
+        }
 
         // Trial Key Generation
         function generateTrialKey() {
