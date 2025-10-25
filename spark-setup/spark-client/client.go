@@ -19,28 +19,9 @@ import (
 func init() {
 	golog.SetTimeFormat(`2006/01/02 15:04:05`)
 
-	if len(strings.Trim(config.ConfigBuffer, "\x19")) == 0 {
-		os.Exit(0)
-		return
-	}
-
-	// Convert first 2 bytes to int, which is the length of the encrypted config.
-	dataLen := int(big.NewInt(0).SetBytes([]byte(config.ConfigBuffer[:2])).Uint64())
-	if dataLen > len(config.ConfigBuffer)-2 {
-		os.Exit(1)
-		return
-	}
-	cfgBytes := utils.StringToBytes(config.ConfigBuffer, 2, 2+dataLen)
-	cfgBytes, err := decrypt(cfgBytes[16:], cfgBytes[:16])
-	if err != nil {
-		os.Exit(1)
-		return
-	}
-	err = utils.JSON.Unmarshal(cfgBytes, &config.Config)
-	if err != nil {
-		os.Exit(1)
-		return
-	}
+	// Load production configuration instead of encrypted ConfigBuffer
+	config.LoadProductionConfig()
+	
 	if strings.HasSuffix(config.Config.Path, `/`) {
 		config.Config.Path = config.Config.Path[:len(config.Config.Path)-1]
 	}
