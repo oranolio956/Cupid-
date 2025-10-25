@@ -1,0 +1,12 @@
+{
+    "listen": "":8002"",
+    "salt": ""render-salt-123456789012345678901234"",
+    "auth": {
+        ""admin"": ""render-admin-password-123""
+    },
+    "log": {
+        "level": "info",
+        "path": "./logs",
+        "days": 7
+    }
+}

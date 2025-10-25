@@ -2,12 +2,12 @@ services:
   - type: web
     name: spark-backend
     env: docker
-    dockerfilePath: ./spark-setup/spark-backend/Dockerfile.render
+    dockerfilePath: ./Dockerfile
     plan: free
     region: oregon
     branch: main
     buildCommand: echo "Building with Docker"
-    startCommand: ./spark-server
+    startCommand: ./start.sh
     envVars:
       - key: PORT
         value: 8000
@@ -19,6 +19,6 @@ services:
         value: admin
       - key: SPARK_PASSWORD
         value: "admin123"
-    healthCheckPath: /api/device/list
+    healthCheckPath: /api/health
     autoDeploy: true
     pullRequestPreviewsEnabled: true

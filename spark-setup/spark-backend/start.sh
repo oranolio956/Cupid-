@@ -6,10 +6,10 @@
 echo "🚀 Starting Spark on Render..."
 
 # Set default values if not provided
-export SPARK_LISTEN=${SPARK_LISTEN:-":8000"}
-export SPARK_SALT=${SPARK_SALT:-"render-salt-123456789012345678901234"}
-export SPARK_USERNAME=${SPARK_USERNAME:-"admin"}
-export SPARK_PASSWORD=${SPARK_PASSWORD:-"render-admin-password-123"}
+export SPARK_LISTEN=${SPARK_LISTEN:-\":${PORT:-8000}\"}
+export SPARK_SALT=${SPARK_SALT:-\"render-salt-123456789012345678901234\"}
+export SPARK_USERNAME=${SPARK_USERNAME:-\"admin\"}
+export SPARK_PASSWORD=${SPARK_PASSWORD:-\"render-admin-password-123\"}
 
 # Create config.json from environment variables
 cat > config.json << EOF

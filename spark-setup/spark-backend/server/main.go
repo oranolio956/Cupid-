@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -121,7 +120,7 @@ func main() {
 
 func loadConfig() (*Config, error) {
 	// Try to load from config.json first
-	if data, err := ioutil.ReadFile("config.json"); err == nil {
+	if data, err := os.ReadFile("config.json"); err == nil {
 		var config Config
 		if err := json.Unmarshal(data, &config); err == nil {
 			return &config, nil
@@ -180,6 +179,8 @@ func deviceListHandler(w http.ResponseWriter, r *http.Request) {
 func deviceHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 	deviceID := filepath.Base(r.URL.Path)
 	
@@ -203,6 +204,8 @@ func deviceHandler(w http.ResponseWriter, r *http.Request) {
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status":    "healthy",

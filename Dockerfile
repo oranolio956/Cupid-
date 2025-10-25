@@ -1,5 +1,5 @@
-# Multi-stage build for Spark Backend
-FROM golang:1.21-alpine AS builder
+# Optimized Dockerfile for Render deployment
+FROM golang:1.21-alpine AS go-builder
 
 # Set working directory
 WORKDIR /app
@@ -13,7 +13,7 @@ RUN go mod download
 # Copy source code
 COPY spark-setup/spark-backend/ ./
 
-# Build the server
+# Build server
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server ./server
 
 # Final stage
@@ -29,7 +29,7 @@ RUN adduser -D -s /bin/sh spark
 WORKDIR /app
 
 # Copy binary and startup script from builder
-COPY --from=builder /app/spark-server ./
+COPY --from=go-builder /app/spark-server ./
 COPY spark-setup/spark-backend/start.sh ./
 
 # Make startup script executable
@@ -45,8 +45,8 @@ USER spark
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8000/api/device/list || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8000}/api/health || exit 1
 
 # Run the server with startup script
 CMD ["./start.sh"]
