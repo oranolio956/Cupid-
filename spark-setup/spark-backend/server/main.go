@@ -47,6 +47,7 @@ type Hub struct {
 	broadcast  chan []byte
 	register   chan *websocket.Conn
 	unregister chan *websocket.Conn
+	mutex      sync.RWMutex
 }
 
 var hub = &Hub{
@@ -87,6 +88,8 @@ var devices = []Device{
 	},
 }
 
+var devicesMutex sync.RWMutex
+
 func main() {
 	// Load configuration
 	_, err := loadConfig()
@@ -117,9 +120,35 @@ func main() {
 	log.Printf("🔌 API endpoint: /api/device/list")
 	log.Printf("🌐 Frontend served at: /")
 
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	// Create server with timeouts
+	server := &http.Server{
+		Addr:         ":" + port,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+
+	// Handle graceful shutdown
+	go func() {
+		sigChan := make(chan os.Signal, 1)
+		signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+		<-sigChan
+		
+		log.Println("🛑 Shutting down server...")
+		
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+		
+		if err := server.Shutdown(ctx); err != nil {
+			log.Printf("Server shutdown error: %v", err)
+		}
+	}()
+
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server failed to start: %v", err)
 	}
+	
+	log.Println("✅ Server shutdown complete")
 }
 
 func loadConfig() (*Config, error) {
@@ -167,16 +196,20 @@ func deviceListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update device statuses (simulate real-time updates)
+	devicesMutex.Lock()
 	for i := range devices {
 		if devices[i].Status == "online" {
 			devices[i].LastSeen = time.Now()
 		}
 	}
+	devicesCopy := make([]Device, len(devices))
+	copy(devicesCopy, devices)
+	devicesMutex.Unlock()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
-		"devices": devices,
-		"count":   len(devices),
+		"devices": devicesCopy,
+		"count":   len(devicesCopy),
 	})
 }
 
@@ -188,8 +221,10 @@ func deviceHandler(w http.ResponseWriter, r *http.Request) {
 
 	deviceID := filepath.Base(r.URL.Path)
 	
+	devicesMutex.RLock()
 	for _, device := range devices {
 		if device.ID == deviceID {
+			devicesMutex.RUnlock()
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
 				"device":  device,
@@ -197,6 +232,7 @@ func deviceHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	devicesMutex.RUnlock()
 
 	w.WriteHeader(http.StatusNotFound)
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -226,6 +262,8 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 		CheckOrigin: func(r *http.Request) bool {
 			return true // Allow all origins for development
 		},
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
 	}
 
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -237,31 +275,98 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 	hub.register <- conn
 
 	// Send initial device list
+	devicesMutex.RLock()
 	devicesJSON, _ := json.Marshal(map[string]interface{}{
 		"type":    "devices",
 		"devices": devices,
 	})
-	conn.WriteMessage(websocket.TextMessage, devicesJSON)
+	devicesMutex.RUnlock()
+	
+	if err := conn.WriteMessage(websocket.TextMessage, devicesJSON); err != nil {
+		log.Printf("Error sending initial device list: %v", err)
+		hub.unregister <- conn
+		return
+	}
+
+	// Handle WebSocket connection in a goroutine
+	go handleWebSocketConnection(conn)
+}
+
+func handleWebSocketConnection(conn *websocket.Conn) {
+	defer func() {
+		hub.unregister <- conn
+		conn.Close()
+	}()
+
+	// Set read deadline to detect dead connections
+	conn.SetReadDeadline(time.Now().Add(60 * time.Second))
+	conn.SetPongHandler(func(string) error {
+		conn.SetReadDeadline(time.Now().Add(60 * time.Second))
+		return nil
+	})
+
+	// Start ping ticker
+	ticker := time.NewTicker(30 * time.Second)
+	defer ticker.Stop()
+
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				if err := conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+					return
+				}
+			}
+		}
+	}()
+
+	// Read messages from client
+	for {
+		_, _, err := conn.ReadMessage()
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("WebSocket error: %v", err)
+			}
+			break
+		}
+	}
 }
 
 func (h *Hub) run() {
 	for {
 		select {
 		case conn := <-h.register:
+			h.mutex.Lock()
 			h.clients[conn] = true
-			log.Printf("WebSocket client connected. Total clients: %d", len(h.clients))
+			clientCount := len(h.clients)
+			h.mutex.Unlock()
+			log.Printf("WebSocket client connected. Total clients: %d", clientCount)
 
 		case conn := <-h.unregister:
+			h.mutex.Lock()
 			if _, ok := h.clients[conn]; ok {
 				delete(h.clients, conn)
+				clientCount := len(h.clients)
+				h.mutex.Unlock()
 				conn.Close()
-				log.Printf("WebSocket client disconnected. Total clients: %d", len(h.clients))
+				log.Printf("WebSocket client disconnected. Total clients: %d", clientCount)
+			} else {
+				h.mutex.Unlock()
 			}
 
 		case message := <-h.broadcast:
+			h.mutex.RLock()
+			clients := make([]*websocket.Conn, 0, len(h.clients))
 			for conn := range h.clients {
+				clients = append(clients, conn)
+			}
+			h.mutex.RUnlock()
+			
+			for _, conn := range clients {
 				if err := conn.WriteMessage(websocket.TextMessage, message); err != nil {
+					h.mutex.Lock()
 					delete(h.clients, conn)
+					h.mutex.Unlock()
 					conn.Close()
 				}
 			}
