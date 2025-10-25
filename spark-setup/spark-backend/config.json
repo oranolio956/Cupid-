@@ -1,0 +1,26 @@
+{
+  "listen": ":8000",
+  "salt": "a2dac101827c8d47f00831f2d6c078b2",
+  "auth": {
+    "admin": "$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG"
+  },
+  "log": {
+    "level": "info",
+    "path": "./logs",
+    "days": 7
+  },
+  "server": {
+    "max_clients": 1000,
+    "timeout": 300,
+    "buffer_size": 65535
+  },
+  "delivery": {
+    "desktop": {
+      "quality": 75,
+      "smooth": false
+    },
+    "terminal": {
+      "buffer_size": 65535
+    }
+  }
+}
