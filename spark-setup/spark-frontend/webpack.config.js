@@ -69,8 +69,8 @@ module.exports = (env, args) => {
         plugins: [
             // ADD THIS FIRST - Before HtmlWebpackPlugin
             new webpack.DefinePlugin({
-                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://cupid-1-njpo.onrender.com'),
-                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'wss://cupid-1-njpo.onrender.com'),
+                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com'),
+                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'wss://spark-backend-fixed-v2.onrender.com'),
                 'process.env.NODE_ENV': JSON.stringify(mode)
             }),
             new HtmlWebpackPlugin({
