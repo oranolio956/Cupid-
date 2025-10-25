@@ -37,14 +37,14 @@
 		"wcwidth": "^1.0.1",
 		"xterm": "^5.0.0",
 		"xterm-addon-fit": "^0.6.0",
-		"xterm-addon-web-links": "^0.7.0"
+		"xterm-addon-web-links": "^0.7.0",
+		"cross-env": "^7.0.3"
 	},
 	"devDependencies": {
 		"antd-dayjs-webpack-plugin": "^1.0.6",
 		"clean-webpack-plugin": "^4.0.0",
 		"compression-webpack-plugin": "^10.0.0",
 		"copy-webpack-plugin": "^10.2.4",
-		"cross-env": "^7.0.3",
 		"css-loader": "^6.7.1",
 		"esbuild": "^0.15.14",
 		"esbuild-loader": "^2.20.0",
