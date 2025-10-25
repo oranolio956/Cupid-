@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CupidBot AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 350px;
+            min-height: 400px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ff3366;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff3366 0%, #ff6b9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: #b3b3b3;
+        }
+
+        .status {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .status-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-label {
+            font-size: 13px;
+            color: #b3b3b3;
+        }
+
+        .status-value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            color: #00ff88;
+        }
+
+        .status-inactive {
+            color: #ff3366;
+        }
+
+        .activation-section {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .activation-section.hidden {
+            display: none;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff3366;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff3366 0%, #ff6b9d 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #2a2a2a;
+            margin-top: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff3366;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #b3b3b3;
+            text-transform: uppercase;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .message-success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .message-error {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid #ff3366;
+            color: #ff3366;
+        }
+
+        .message.hidden {
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        .footer a {
+            color: #ff3366;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">CupidBot AI</div>
+        <div class="subtitle">OnlyFans Chat Assistant</div>
+    </div>
+
+    <div id="activationSection" class="activation-section">
+        <div class="section-title">Activate Your Trial</div>
+        <input type="text" id="trialKey" placeholder="Enter your trial key (CUPID-XXXX-XXXX-XXXX-XXXX)">
+        <button class="btn" id="activateBtn">Activate Trial</button>
+        <div id="message" class="message hidden"></div>
+    </div>
+
+    <div id="activeSection" class="hidden">
+        <div class="status">
+            <div class="status-row">
+                <span class="status-label">Status</span>
+                <span class="status-value status-active" id="statusText">Active</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">Trial Expires</span>
+                <span class="status-value" id="expiryDate">--</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">AI Mode</span>
+                <span class="status-value status-active" id="aiMode">Enabled</span>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="messagesCount">0</div>
+                <div class="stat-label">Messages Sent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="conversionsCount">0</div>
+                <div class="stat-label">Conversions</div>
+            </div>
+        </div>
+
+        <button class="btn" id="toggleBtn">Pause AI</button>
+        <button class="btn btn-secondary" id="settingsBtn">Settings</button>
+    </div>
+
+    <div class="footer">
+        <a href="https://cupidbot.ai/trial.html" target="_blank">Get Trial Key</a> | 
+        <a href="https://cupidbot.ai/contact.html" target="_blank">Support</a>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
