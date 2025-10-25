@@ -343,46 +343,59 @@ function overview(props) {
 		await waitTime(300);
 		let res = await request('/api/device/list');
 		let data = res.data;
-		if (data.code === 0) {
-			let result = [];
+		
+		// Handle both old and new backend formats
+		let result = [];
+		if (data.code === 0 && data.data) {
+			// New format: {code: 0, data: {device-001: {...}, device-002: {...}}}
 			for (const uuid in data.data) {
 				let temp = data.data[uuid];
 				temp.conn = uuid;
 				result.push(temp);
 			}
-			// Iterate all object and expand them.
-			for (let i = 0; i < result.length; i++) {
-				for (const k in result[i]) {
-					if (typeof result[i][k] === 'object') {
-						for (const key in result[i][k]) {
-							result[i][k + '_' + key] = result[i][k][key];
-						}
+		} else if (data.success && data.devices && Array.isArray(data.devices)) {
+			// Old format: {success: true, devices: [...], count: 3}
+			for (let i = 0; i < data.devices.length; i++) {
+				let temp = data.devices[i];
+				temp.conn = temp.id; // Use id as conn
+				// Add missing properties that frontend expects
+				if (!temp.hostname) temp.hostname = temp.name || temp.id;
+				if (!temp.os) temp.os = 'Unknown';
+				result.push(temp);
+			}
+		}
+		
+		// Iterate all object and expand them.
+		for (let i = 0; i < result.length; i++) {
+			for (const k in result[i]) {
+				if (typeof result[i][k] === 'object') {
+					for (const key in result[i][k]) {
+						result[i][k + '_' + key] = result[i][k][key];
 					}
 				}
 			}
-			result = result.sort((first, second) => {
-				let firstEl = first.hostname.toUpperCase();
-				let secondEl = second.hostname.toUpperCase();
-				if (firstEl < secondEl) return -1;
-				if (firstEl > secondEl) return 1;
-				return 0;
-			});
-			result = result.sort((first, second) => {
-				let firstEl = first.os.toUpperCase();
-				let secondEl = second.os.toUpperCase();
-				if (firstEl < secondEl) return -1;
-				if (firstEl > secondEl) return 1;
-				return 0;
-			});
-			setDataSource(result);
-			return ({
-				data: result,
-				success: true,
-				total: result.length
-			});
 		}
-		return ({data: [], success: false, total: 0});
-	}
+		result = result.sort((first, second) => {
+			let firstEl = first.hostname.toUpperCase();
+			let secondEl = second.hostname.toUpperCase();
+			if (firstEl < secondEl) return -1;
+			if (firstEl > secondEl) return 1;
+			return 0;
+		});
+		result = result.sort((first, second) => {
+			let firstEl = first.os.toUpperCase();
+			let secondEl = second.os.toUpperCase();
+			if (firstEl < secondEl) return -1;
+			if (firstEl > secondEl) return 1;
+			return 0;
+		});
+	setDataSource(result);
+	return ({
+		data: result,
+		success: true,
+		total: result.length
+	});
+}
 
 	return (
 		<>
