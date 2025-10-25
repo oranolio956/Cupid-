@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -100,7 +101,20 @@ func main() {
 	http.HandleFunc("/ws", websocketHandler)
 	
 	// Serve static files (embedded frontend)
-	http.Handle("/", http.FileServer(http.FS(GetEmbedFS())))
+	// Try to serve from dist/ first, then server/dist/ as fallback
+	var distFS fs.FS
+	var distErr error
+	
+	// Try dist/ first (when building from server directory)
+	distFS, distErr = fs.Sub(GetEmbedFS(), "dist")
+	if distErr != nil {
+		// Try server/dist/ (when building from parent directory)
+		distFS, distErr = fs.Sub(GetEmbedFS(), "server/dist")
+		if distErr != nil {
+			log.Fatalf("Failed to create sub filesystem: %v", distErr)
+		}
+	}
+	http.Handle("/", http.FileServer(http.FS(distFS)))
 
 	// Start server
 	port := os.Getenv("PORT")
