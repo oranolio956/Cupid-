@@ -41,6 +41,9 @@ RUN ls -la /app/
 # Make files executable
 RUN chmod +x start.sh spark-server
 
+# Debug: Verify files are executable
+RUN ls -la /app/ && file /app/spark-server
+
 # Create logs directory
 RUN mkdir -p logs && chown -R spark:spark /app
 
