@@ -1,0 +1,39 @@
+RENDER BACKEND DEPLOYMENT - MANUAL STEPS REQUIRED
+Service ID: srv-d3u6cgripnbc738naa70
+Dashboard URL: https://dashboard.render.com/web/srv-d3u6cgripnbc738naa70
+
+STEP 1: UNSUSPEND SERVICE
+1. Go to the dashboard URL above
+2. Look for "Service Suspended" warning
+3. Click the "Unsuspend" or "Resume" button
+4. Wait for service to start initializing
+
+STEP 2: TRIGGER DEPLOYMENT
+1. After unsuspending, click "Manual Deploy" button
+2. Select "Deploy latest commit" from dropdown
+3. Click "Deploy" to start build process
+4. Monitor build logs for errors
+
+STEP 3: VERIFY DEPLOYMENT
+Once build completes, test these endpoints:
+Health Check:
+curl https://[your-service-name].onrender.com/api/health
+Should return: {"status":"healthy","uptime":"..."}
+
+Device List:
+curl https://[your-service-name].onrender.com/api/device/list
+Should return: {"code":0,"data":{}}
+
+STEP 4: GET ACTUAL BACKEND URL
+1. In Render dashboard, copy the full service URL (e.g., https://spark-backend-fixed-v2.onrender.com)
+2. Save this URL - you'll need it for frontend configuration
+3. Write it down exactly as shown, including https://
+
+EXPECTED BUILD TIME: 3-5 minutes
+EXPECTED ERRORS TO IGNORE: None - build should succeed completely
+
+IF BUILD FAILS:
+1. Check Render build logs for "go.mod" errors
+2. Check for "Dockerfile" not found errors
+3. Check for "config.json" not found errors
+4. All of these should be fixed by previous steps

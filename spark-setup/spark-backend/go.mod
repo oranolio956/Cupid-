@@ -1,8 +1,6 @@
 module Spark
 
-go 1.24.0
-
-toolchain go1.24.2
+go 1.21
 
 require (
 	github.com/gin-gonic/gin v1.7.7
