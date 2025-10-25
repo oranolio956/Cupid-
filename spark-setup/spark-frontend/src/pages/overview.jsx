@@ -7,6 +7,7 @@ import i18n from "../locale/locale";
 import DeviceCard from '../components/DeviceCard/DeviceCard';
 import FeatureStatus from '../components/FeatureStatus/FeatureStatus';
 import RATDashboard from '../components/RATDashboard/RATDashboard';
+import ClientManager from '../components/ClientManager/ClientManager';
 import connectionTester from '../utils/connectionTest';
 import axios from 'axios';
 
@@ -71,6 +72,7 @@ function overview(props) {
 	const [dataSource, setDataSource] = useState([]);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 	const [connectionStatus, setConnectionStatus] = useState({ connected: false, testing: false });
+	const [clientManagerVisible, setClientManagerVisible] = useState(false);
 
 	// Add resize listener for responsive behavior
 	useEffect(() => {
@@ -389,7 +391,14 @@ function overview(props) {
 
 	function toolBar() {
 		return (
-			<Button type='primary' onClick={() => onMenuClick('generate', true)}>{i18n.t('OVERVIEW.GENERATE')}</Button>
+			<Space>
+				<Button type='primary' onClick={() => onMenuClick('generate', true)}>
+					{i18n.t('OVERVIEW.GENERATE')}
+				</Button>
+				<Button onClick={() => setClientManagerVisible(true)}>
+					Client Manager
+				</Button>
+			</Space>
 		)
 	}
 
@@ -572,22 +581,27 @@ function overview(props) {
 					</div>
 				</div>
 
-				{/* Quick Actions */}
-				<div className="mobile-quick-actions">
-					<Button 
-						type="primary" 
-						icon={<PlusOutlined />}
-						onClick={() => onMenuClick('generate', true)}
-					>
-						Add Device
-					</Button>
-					<Button 
-						icon={<ReloadOutlined />}
-						onClick={() => tableRef.current?.reload()}
-					>
-						Refresh
-					</Button>
-				</div>
+					{/* Quick Actions */}
+					<div className="mobile-quick-actions">
+						<Button 
+							type="primary" 
+							icon={<PlusOutlined />}
+							onClick={() => onMenuClick('generate', true)}
+						>
+							Add Device
+						</Button>
+						<Button 
+							icon={<ReloadOutlined />}
+							onClick={() => tableRef.current?.reload()}
+						>
+							Refresh
+						</Button>
+						<Button 
+							onClick={() => setClientManagerVisible(true)}
+						>
+							Client Manager
+						</Button>
+					</div>
 
 					{/* Device List/Grid */}
 					{loading ? (
@@ -639,7 +653,13 @@ function overview(props) {
 					onDataSourceChange={setDataSource}
 				/>
 			</>
-		)}
+		)		}
+		
+		{/* Client Manager Modal */}
+		<ClientManager
+			visible={clientManagerVisible}
+			onClose={() => setClientManagerVisible(false)}
+		/>
 		</>
 	);
 }
