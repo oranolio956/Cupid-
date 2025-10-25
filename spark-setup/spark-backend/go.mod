@@ -9,7 +9,7 @@ require (
 	github.com/kataras/golog v0.1.7
 	github.com/rakyll/statik v0.1.7
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/time v0.14.0
+	golang.org/x/time v0.5.0
 )
 
 require (
