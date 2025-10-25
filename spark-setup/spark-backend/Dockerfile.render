@@ -17,7 +17,7 @@ COPY . .
 COPY web/dist ./web/dist
 
 # Build server
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server ./server
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server .
 
 # Final stage
 FROM alpine:latest
