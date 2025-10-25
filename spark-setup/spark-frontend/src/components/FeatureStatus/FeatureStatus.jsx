@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Row, Col, Tag, Tooltip, Badge } from 'antd';
 import {
-  TerminalOutlined,
+  CodeOutlined,
   DesktopOutlined,
   FileTextOutlined,
   SettingOutlined,
@@ -19,7 +19,7 @@ const FeatureStatus = ({ device, compact = false }) => {
     {
       key: 'terminal',
       name: 'Terminal',
-      icon: <TerminalOutlined />,
+      icon: <CodeOutlined />,
       enabled: isFeatureEnabled('TERMINAL'),
       description: 'Remote command execution and terminal access'
     },

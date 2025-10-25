@@ -1,11 +1,75 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": null,
-  "rewrites": [
+  "version": 2,
+  "name": "spark-rat-dashboard",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "https://spark-backend-fixed-v2.onrender.com",
+    "REACT_APP_WS_URL": "wss://spark-backend-fixed-v2.onrender.com",
+    "REACT_APP_NAME": "Spark RAT Dashboard",
+    "REACT_APP_VERSION": "2.0.0",
+    "REACT_APP_ENVIRONMENT": "production",
+    "REACT_APP_ENABLE_HTTPS": "true",
+    "REACT_APP_ENABLE_WEBSOCKETS": "true",
+    "REACT_APP_ENABLE_TERMINAL": "true",
+    "REACT_APP_ENABLE_DESKTOP": "true",
+    "REACT_APP_ENABLE_FILE_MANAGER": "true",
+    "REACT_APP_ENABLE_PROCESS_MANAGER": "true",
+    "REACT_APP_ENABLE_SCREENSHOT": "true",
+    "REACT_APP_ENABLE_SYSTEM_CONTROL": "true"
+  },
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
-  ]
+  ],
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

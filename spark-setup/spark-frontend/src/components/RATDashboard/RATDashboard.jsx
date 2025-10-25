@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Statistic, Progress, Tag, Button, Space, Tooltip } from 'antd';
 import {
   DesktopOutlined,
-  TerminalOutlined,
+  CodeOutlined,
   FileTextOutlined,
   SettingOutlined,
   CameraOutlined,
@@ -49,7 +49,7 @@ const RATDashboard = ({ devices = [] }) => {
     {
       key: 'terminal',
       name: 'Terminal Access',
-      icon: <TerminalOutlined />,
+      icon: <CodeOutlined />,
       enabled: isFeatureEnabled('TERMINAL'),
       description: 'Execute commands remotely on target devices',
       color: '#52c41a'
