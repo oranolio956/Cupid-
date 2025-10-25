@@ -42,14 +42,14 @@ echo "- Salt: ${SPARK_SALT:0:8}..."
 mkdir -p logs
 
 # Check if binary exists and is executable
-if [ ! -f "./spark-server" ]; then
+if [ ! -f "/app/spark-server" ]; then
     echo "❌ Error: spark-server binary not found!"
     echo "📋 Available files:"
     ls -la /app/
     exit 1
 fi
 
-if [ ! -x "./spark-server" ]; then
+if [ ! -x "/app/spark-server" ]; then
     echo "❌ Error: spark-server binary is not executable!"
     echo "📋 File permissions:"
     ls -la /app/spark-server
@@ -59,4 +59,4 @@ fi
 echo "✅ Binary found and executable, starting server..."
 
 # Start the server
-exec ./spark-server
+exec /app/spark-server
