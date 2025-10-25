@@ -372,14 +372,17 @@ func checkAuth() gin.HandlerFunc {
 			})
 			token := utils.GetStrUUID()
 			tokens.Set(token, now)
-			// Use secure cookie manager
-		cookieMgr := auth.NewCookieManager(config.Config.Environment == "production", "")
-		cookieMgr.SetAuthCookie(ctx.Writer, token)
-		
-		// Generate and set CSRF token
-		csrfMgr := auth.NewCSRFManager()
-		csrfToken := csrfMgr.GenerateCSRFToken()
-		ctx.SetCookie("CSRF-Token", csrfToken, 1800, "/", "", config.Config.Environment == "production", true)
+			// Set secure authentication cookie
+		cookie := &http.Cookie{
+			Name:     "Authorization",
+			Value:    token,
+			Path:     "/",
+			MaxAge:   1800,  // 30 minutes
+			HttpOnly: true,  // Prevent XSS
+			Secure:   config.Config.Environment == "production",  // HTTPS only in production
+			SameSite: http.SameSiteStrictMode,  // CSRF protection
+		}
+		http.SetCookie(ctx.Writer, cookie)
 		}
 		lastRequest = now
 	}

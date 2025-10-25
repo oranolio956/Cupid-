@@ -1,6 +1,6 @@
 {
   "listen": ":8000",
-  "salt": "a2dac101827c8d47f00831f2",
+  "salt": "WG/Cc6eZUXWuqfi2+NNr2dso",
   "auth": {
     "admin": "$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG"
   },
