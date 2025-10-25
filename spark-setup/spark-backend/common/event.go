@@ -1,7 +1,7 @@
 package common
 
 import (
-	"Spark/modules"
+	"."
 	"Spark/utils/cmap"
 	"Spark/utils/melody"
 	"time"

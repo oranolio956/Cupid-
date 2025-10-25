@@ -1,10 +1,10 @@
 package generate
 
 import (
-	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/config"
-	"Spark/utils"
+	"."
+	"Spark/common"
+	"Spark/config"
+	"."
 	"bytes"
 	"encoding/hex"
 	"errors"

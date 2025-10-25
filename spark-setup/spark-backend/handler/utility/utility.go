@@ -1,10 +1,10 @@
 package utility
 
 import (
-	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/config"
-	"Spark/utils"
+	"."
+	"Spark/common"
+	"Spark/config"
+	"."
 	"Spark/utils/melody"
 	"bytes"
 	"context"

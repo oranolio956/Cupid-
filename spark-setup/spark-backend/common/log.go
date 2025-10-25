@@ -1,8 +1,8 @@
 package common
 
 import (
-	"Spark/server/config"
-	"Spark/utils"
+	"Spark/config"
+	"."
 	"Spark/utils/melody"
 	"fmt"
 	"github.com/gin-gonic/gin"

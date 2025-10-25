@@ -1,11 +1,11 @@
 package screenshot
 
 import (
-	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/handler/bridge"
-	"Spark/server/handler/utility"
-	"Spark/utils"
+	"."
+	"Spark/common"
+	"Spark/handler/bridge"
+	"Spark/handler/utility"
+	"."
 	"Spark/utils/melody"
 	"github.com/gin-gonic/gin"
 	"net/http"
