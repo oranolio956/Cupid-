@@ -16,6 +16,9 @@ COPY spark-setup/spark-backend/ ./
 # Build server
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o spark-server ./server
 
+# Debug: List files to verify build
+RUN ls -la /app/
+
 # Final stage
 FROM alpine:latest
 
@@ -32,8 +35,11 @@ WORKDIR /app
 COPY --from=go-builder /app/spark-server ./
 COPY spark-setup/spark-backend/start.sh ./
 
-# Make startup script executable
-RUN chmod +x start.sh
+# Debug: List files to verify copy
+RUN ls -la /app/
+
+# Make files executable
+RUN chmod +x start.sh spark-server
 
 # Create logs directory
 RUN mkdir -p logs && chown -R spark:spark /app
