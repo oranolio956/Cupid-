@@ -42,6 +42,7 @@ COPY spark-setup/spark-backend/start.sh ./
 
 # Debug: List files to verify copy
 RUN ls -la /app/ && echo "Files in /app after copy:"
+RUN echo "Checking startup script:" && ls -la /app/start.sh && head -5 /app/start.sh
 
 # Make files executable
 RUN chmod +x start.sh spark-server
@@ -64,3 +65,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 
 # Run the server with startup script
 ENTRYPOINT ["./start.sh"]
+
+# Fallback CMD in case ENTRYPOINT doesn't work
+CMD ["./start.sh"]
