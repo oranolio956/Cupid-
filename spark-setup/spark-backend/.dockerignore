@@ -1,19 +1,27 @@
 # Git
 .git
 .gitignore
+
 # Backups
 BACKUPS/
 *.backup
+
 # Build artifacts
 spark-server
 spark-backend
 *.exe
+
 # Logs
 logs/
 *.log
+
 # IDE
 .vscode/
 .idea/
+
 # OS
 .DS_Store
 Thumbs.db
+
+# Documentation
+*.md
