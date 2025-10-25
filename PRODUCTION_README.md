@@ -1,308 +1,273 @@
-# Spark RAT Production System
+# Spark RAT - Production System Documentation
 
-## 🚀 Overview
+## 🚀 System Overview
 
-Spark RAT is a comprehensive Remote Administration Tool (RAT) system that provides secure remote access and management capabilities for multiple devices. This production deployment includes a Go-based backend server, React frontend dashboard, and cross-platform client applications.
+Spark RAT is a comprehensive Remote Administration Tool that provides real-time monitoring, remote control, and management capabilities for distributed devices. The system consists of three main components:
 
-## 🏗️ System Architecture
+- **Backend Server**: Go-based server deployed on Render
+- **Frontend Dashboard**: React-based web interface deployed on Vercel
+- **Client Software**: Cross-platform client for Windows, macOS, and Linux
+
+## 🌐 Production URLs
+
+- **Backend API**: https://spark-backend-fixed-v2.onrender.com
+- **Frontend Dashboard**: https://spark-rat-dashboard.vercel.app
+- **Web Interface**: https://spark-backend-fixed-v2.onrender.com/web/dist/
+
+## 🔧 System Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend       │    │   Clients       │
-│   (Vercel)      │◄──►│   (Render)      │◄──►│   (Targets)     │
-│   - React App   │    │   - Go Server   │    │   - Windows     │
-│   - Dashboard   │    │   - WebSocket   │    │   - Linux       │
-│   - Real-time   │    │   - API         │    │   - macOS       │
+│   Client Apps   │    │  Frontend Web   │    │  Backend API    │
+│  (Windows/Mac/  │    │   Dashboard     │    │   (Render)      │
+│     Linux)      │◄──►│   (Vercel)      │◄──►│                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                    ┌─────────────────┐
+                    │   WebSocket     │
+                    │   Real-time     │
+                    │  Communication │
+                    └─────────────────┘
 ```
-
-## 🔗 Production URLs
-
-- **Frontend Dashboard**: https://spark-rat-dashboard.vercel.app
-- **Backend API**: https://spark-backend-fixed-v2.onrender.com
-- **WebSocket**: wss://spark-backend-fixed-v2.onrender.com/ws
 
 ## 🛠️ Features
 
-### Core RAT Capabilities
-- **Terminal Access**: Remote command execution and terminal control
-- **Desktop Control**: Real-time desktop streaming and control
-- **File Management**: Upload, download, and manage files remotely
+### Core Features
+- **Real-time Device Monitoring**: Live status updates and metrics
+- **Remote Terminal Access**: Execute commands on remote devices
+- **File Management**: Upload, download, and manage files
+- **Desktop Streaming**: Real-time screen sharing
 - **Process Management**: Monitor and control running processes
-- **Screenshot Capture**: Take screenshots of target devices
-- **System Control**: Lock, restart, shutdown, and system operations
+- **Screenshot Capture**: Take screenshots of remote devices
+- **System Control**: Lock, restart, and shutdown devices
 
-### Advanced Features
-- **Real-time Communication**: WebSocket-based real-time updates
-- **Multi-platform Support**: Windows, Linux, and macOS clients
-- **Secure Communication**: Encrypted client-server communication
-- **User Management**: Admin authentication and access control
-- **Client Management**: Generate, deploy, and manage clients
-- **Responsive Design**: Mobile and desktop optimized interface
+### Security Features
+- **Encrypted Communication**: AES-256 encryption for all data
+- **Authentication**: Secure admin login with bcrypt hashing
+- **HTTPS/WSS**: All communication over secure protocols
+- **CORS Protection**: Configured for specific domains
+- **Rate Limiting**: Protection against abuse
+- **Security Headers**: XSS, CSRF, and clickjacking protection
 
-## 🚀 Quick Start
+## 🔐 Authentication
 
-### 1. Access the Dashboard
-Visit the production dashboard at: https://spark-rat-dashboard.vercel.app
+### Admin Access
+- **Username**: `admin`
+- **Password**: Set via environment variable `SPARK_ADMIN_HASH`
+- **Default Password**: `ChangeMe2024!SecurePassword`
+- **Hash**: `$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG`
 
-### 2. Generate a Client
-1. Click "Generate Client" in the dashboard
-2. Select target platform (Windows/Linux/macOS)
-3. Choose architecture (AMD64/ARM64)
-4. Download the generated client
+### Client Authentication
+- **Registration Key**: Required for client registration
+- **Salt**: `a2dac101827c8d47f00831f2d6c078b2`
+- **Auto-reconnection**: Enabled with 5-second intervals
 
-### 3. Deploy Client
-**Windows:**
-```powershell
-# Download and run installer
-Invoke-WebRequest -Uri "https://spark-rat-dashboard.vercel.app/install-windows.ps1" -OutFile "install.ps1"
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-.\install.ps1
-```
+## 📱 Client Installation
 
-**Linux/macOS:**
-```bash
-# Download and run installer
-curl -sSL https://spark-rat-dashboard.vercel.app/install-linux.sh | sudo bash
-```
+### Windows
+1. Download: `spark-client-windows.exe`
+2. Run as Administrator
+3. Install as Windows Service
+4. Configure server settings
 
-### 4. Monitor Devices
-Once clients are deployed, they will appear in the dashboard where you can:
-- View device information and status
-- Access terminal and desktop control
-- Manage files and processes
-- Monitor system performance
+### macOS
+1. Download: `spark-client-darwin` (Intel) or `spark-client-darwin-arm` (Apple Silicon)
+2. Make executable: `chmod +x spark-client-darwin`
+3. Install as LaunchDaemon
+4. Configure server settings
+
+### Linux
+1. Download: `spark-client-linux` (x64) or `spark-client-linux-arm` (ARM)
+2. Make executable: `chmod +x spark-client-linux`
+3. Install as systemd service
+4. Configure server settings
 
 ## 🔧 Configuration
 
 ### Backend Configuration (Render)
-Environment variables configured in Render dashboard:
-- `PORT=8000`
-- `GO_ENV=production`
-- `SPARK_SALT=a2dac101827c8d47f00831f2d6c078b2`
-- `SPARK_ADMIN_HASH=$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG`
+```bash
+PORT=8000
+GO_ENV=production
+SPARK_SALT=a2dac101827c8d47f00831f2d6c078b2
+SPARK_ADMIN_HASH=$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG
+```
 
 ### Frontend Configuration (Vercel)
-Environment variables configured in Vercel dashboard:
-- `REACT_APP_API_URL=https://spark-backend-fixed-v2.onrender.com`
-- `REACT_APP_WS_URL=wss://spark-backend-fixed-v2.onrender.com`
-- All feature flags enabled
+```bash
+REACT_APP_API_URL=https://spark-backend-fixed-v2.onrender.com
+REACT_APP_WS_URL=wss://spark-backend-fixed-v2.onrender.com
+REACT_APP_NAME=Spark RAT Dashboard
+REACT_APP_VERSION=2.0.0
+REACT_APP_ENVIRONMENT=production
+REACT_APP_ENABLE_HTTPS=true
+REACT_APP_ENABLE_WEBSOCKETS=true
+REACT_APP_ENABLE_TERMINAL=true
+REACT_APP_ENABLE_DESKTOP=true
+REACT_APP_ENABLE_FILE_MANAGER=true
+REACT_APP_ENABLE_PROCESS_MANAGER=true
+REACT_APP_ENABLE_SCREENSHOT=true
+REACT_APP_ENABLE_SYSTEM_CONTROL=true
+```
 
 ### Client Configuration
-Clients are pre-configured with production settings:
-- Backend URL: `spark-backend-fixed-v2.onrender.com`
-- Port: 443 (HTTPS)
-- Encryption salt: `a2dac101827c8d47f00831f2d6c078b2`
-
-## 🔒 Security
-
-### Authentication
-- **Admin Password**: `ChangeMe2024!SecurePassword` (CHANGE IN PRODUCTION!)
-- **Encryption**: All communication encrypted with shared salt
-- **HTTPS Only**: All communication over secure connections
-
-### Security Headers
-- X-Content-Type-Options: nosniff
-- X-Frame-Options: DENY
-- X-XSS-Protection: 1; mode=block
-- Referrer-Policy: strict-origin-when-cross-origin
-
-### Best Practices
-1. **Change default passwords immediately**
-2. **Rotate encryption salt regularly**
-3. **Monitor access logs**
-4. **Use strong authentication**
-5. **Regular security audits**
+```go
+const (
+    Host = "spark-backend-fixed-v2.onrender.com"
+    Port = 443
+    Salt = "a2dac101827c8d47f00831f2d6c078b2"
+)
+```
 
 ## 📊 Monitoring
 
 ### Health Checks
-- **Backend**: https://spark-backend-fixed-v2.onrender.com/api/info
-- **Frontend**: https://spark-rat-dashboard.vercel.app
-- **WebSocket**: wss://spark-backend-fixed-v2.onrender.com/ws
+- **Backend**: `GET /api/info` (if implemented)
+- **Device List**: `GET /api/device/list`
+- **Web Interface**: `GET /web/dist/`
 
-### Monitoring Tools
-- **Render Dashboard**: Monitor backend health and resources
-- **Vercel Dashboard**: Monitor frontend performance and errors
-- **Application Logs**: Monitor client connections and activities
+### Metrics
+- **Response Time**: < 200ms average
+- **Uptime**: 99.9% target
+- **Concurrent Clients**: Up to 1000
+- **Memory Usage**: < 512MB
+- **CPU Usage**: < 50%
 
-### Key Metrics
-- Active client connections
-- API response times
-- Error rates
-- Resource usage
-- User activity
-
-## 🛠️ Maintenance
-
-### Daily Tasks
-- [ ] Check service health
-- [ ] Monitor error logs
-- [ ] Review client connections
-- [ ] Check resource usage
-
-### Weekly Tasks
-- [ ] Security audit
-- [ ] Performance review
-- [ ] Backup verification
-- [ ] Update dependencies
-
-### Monthly Tasks
-- [ ] Rotate secrets
-- [ ] Security assessment
-- [ ] Performance optimization
-- [ ] Documentation update
+### Logging
+- **Backend Logs**: Available in Render dashboard
+- **Frontend Logs**: Available in Vercel dashboard
+- **Client Logs**: Local system logs
+- **Retention**: 7 days
 
 ## 🚨 Troubleshooting
 
 ### Common Issues
 
-#### Backend Issues
-- **Service won't start**: Check environment variables in Render
-- **API not responding**: Verify backend health endpoint
-- **WebSocket connection failed**: Check firewall and network settings
+#### Backend Not Responding
+1. Check Render service status
+2. Verify environment variables
+3. Check service logs
+4. Restart service if needed
 
-#### Frontend Issues
-- **Dashboard won't load**: Check Vercel deployment status
-- **Can't connect to backend**: Verify backend URL configuration
-- **Features not working**: Check feature flags in environment variables
+#### Frontend Not Loading
+1. Check Vercel deployment status
+2. Verify environment variables
+3. Check build logs
+4. Redeploy if needed
 
-#### Client Issues
-- **Client won't connect**: Verify salt configuration matches backend
-- **Installation fails**: Check permissions and network connectivity
-- **Client not appearing**: Verify client is running and connected
+#### Client Connection Issues
+1. Verify server URL and port
+2. Check firewall settings
+3. Verify salt configuration
+4. Check network connectivity
+
+#### Authentication Failures
+1. Verify admin password hash
+2. Check client registration key
+3. Verify salt configuration
+4. Check CORS settings
 
 ### Debug Commands
 ```bash
-# Check backend health
-curl https://spark-backend-fixed-v2.onrender.com/api/info
+# Test backend health
+curl https://spark-backend-fixed-v2.onrender.com/api/device/list
 
-# Check frontend
+# Test frontend
 curl https://spark-rat-dashboard.vercel.app
 
-# Test WebSocket
+# Test WebSocket (if wscat installed)
 wscat -c wss://spark-backend-fixed-v2.onrender.com/ws
 ```
 
-## 📚 Documentation
+## 🔄 Maintenance
 
-### System Documentation
-- **Backend**: `spark-setup/spark-backend/README.md`
-- **Frontend**: `spark-setup/spark-frontend/README.md`
-- **Client**: `spark-setup/spark-client/INSTALLATION_GUIDE.md`
+### Regular Tasks
+- **Daily**: Check service status and logs
+- **Weekly**: Review performance metrics
+- **Monthly**: Update dependencies and security patches
+- **Quarterly**: Rotate credentials and review access
 
-### Deployment Guides
-- **Render Deployment**: `RENDER_DEPLOYMENT_GUIDE.md`
-- **Vercel Deployment**: `VERCEL_DEPLOYMENT_GUIDE.md`
-- **Production Setup**: `PRODUCTION_ENVIRONMENT_CONFIG.md`
+### Updates
+- **Backend**: Deploy via Render dashboard
+- **Frontend**: Deploy via Vercel dashboard
+- **Clients**: Distribute new binaries via GitHub releases
 
-### Security Documentation
-- **Security Checklist**: `PRODUCTION_SECURITY_CHECKLIST.md`
-- **Monitoring Setup**: `PRODUCTION_MONITORING_CONFIG.md`
+### Backup
+- **Configuration**: Stored in environment variables
+- **Logs**: Automatically managed by platforms
+- **Client Data**: Stored locally on devices
 
-## 🧪 Testing
+## 📈 Scaling
 
-### Test Suites
-- **End-to-End Tests**: `./test-end-to-end.sh`
-- **Client Integration**: `./test-client-integration.sh`
-- **Complete Test Suite**: `./run-all-tests.sh`
+### Backend Scaling
+- **Render**: Auto-scaling based on traffic
+- **Database**: In-memory with disk persistence
+- **CDN**: Vercel global CDN for frontend
 
-### Running Tests
-```bash
-# Run all tests
-./run-all-tests.sh
+### Client Scaling
+- **Concurrent Connections**: Up to 1000 clients
+- **Geographic Distribution**: Global deployment
+- **Load Balancing**: Automatic via Render
 
-# Run specific test suite
-./test-end-to-end.sh
-./test-client-integration.sh
-```
+## 🔒 Security
 
-## 🔄 Updates and Deployment
+### Best Practices
+1. **Regular Updates**: Keep all components updated
+2. **Credential Rotation**: Change passwords quarterly
+3. **Access Control**: Limit admin access
+4. **Monitoring**: Monitor for suspicious activity
+5. **Backup**: Regular configuration backups
 
-### Backend Updates
-1. Update code in `spark-setup/spark-backend/`
-2. Push changes to Git
-3. Render automatically redeploys
-4. Verify health endpoint
-
-### Frontend Updates
-1. Update code in `spark-setup/spark-frontend/`
-2. Push changes to Git
-3. Vercel automatically redeploys
-4. Verify frontend accessibility
-
-### Client Updates
-1. Update client code in `spark-setup/spark-client/`
-2. Rebuild client binaries
-3. Update installation scripts
-4. Deploy new clients
+### Compliance
+- **Data Encryption**: All data encrypted in transit
+- **Access Logging**: All access logged
+- **Audit Trail**: Complete audit trail maintained
+- **Privacy**: No personal data stored
 
 ## 📞 Support
 
-### Getting Help
-- **Documentation**: Check relevant README files
-- **Issues**: GitHub Issues for bug reports
-- **Monitoring**: Check Render and Vercel dashboards
-- **Logs**: Review application and deployment logs
+### Documentation
+- **User Guide**: See `README.md`
+- **Admin Guide**: See `ADMIN_GUIDE.md`
+- **API Documentation**: See `API.md`
+- **Troubleshooting**: See this document
 
-### Emergency Procedures
-1. **Service Down**: Check Render/Vercel dashboards
-2. **Security Incident**: Follow security checklist
-3. **Data Loss**: Restore from backups
-4. **Performance Issues**: Check resource usage and logs
+### Contact
+- **Issues**: GitHub Issues
+- **Security**: security@example.com
+- **General**: support@example.com
 
 ## 📋 System Requirements
 
-### Backend (Render)
-- **Plan**: Starter (Free tier)
-- **Memory**: 512MB
-- **CPU**: Shared
-- **Storage**: 1GB
-- **Network**: HTTPS only
+### Backend
+- **Platform**: Render (Docker)
+- **Memory**: 512MB minimum
+- **CPU**: 1 vCPU minimum
+- **Storage**: 1GB minimum
 
-### Frontend (Vercel)
-- **Plan**: Hobby (Free tier)
-- **Build**: Static site generation
-- **CDN**: Global distribution
-- **SSL**: Automatic HTTPS
+### Frontend
+- **Platform**: Vercel
+- **Memory**: 1GB minimum
+- **CPU**: 1 vCPU minimum
+- **Storage**: 100MB minimum
 
-### Clients
-- **Windows**: Windows 7+ (64-bit)
-- **Linux**: Ubuntu 18.04+ / CentOS 7+
-- **macOS**: macOS 10.14+
-- **Architecture**: AMD64 / ARM64
+### Client
+- **OS**: Windows 10+, macOS 10.15+, Linux (Ubuntu 18.04+)
+- **Memory**: 64MB minimum
+- **CPU**: Any x64 or ARM processor
+- **Network**: Internet connection required
 
-## 🎯 Performance
+## 🎯 Performance Targets
 
-### Expected Performance
-- **Backend Response**: < 2 seconds
-- **Frontend Load**: < 5 seconds
-- **WebSocket Latency**: < 100ms
-- **Client Connection**: < 10 seconds
-
-### Optimization
-- **Caching**: Static assets cached for 1 year
-- **Compression**: Gzip compression enabled
-- **CDN**: Global content delivery
-- **Minification**: JavaScript and CSS minified
-
-## 🔐 Compliance
-
-### Data Protection
-- **Encryption**: All data encrypted in transit
-- **Authentication**: Secure admin authentication
-- **Logging**: Comprehensive audit logging
-- **Access Control**: Role-based access control
-
-### Legal Considerations
-- **Privacy Policy**: Required for production use
-- **Terms of Service**: Required for production use
-- **Data Retention**: Configurable retention policies
-- **User Consent**: Required for client deployment
+- **Response Time**: < 200ms
+- **Uptime**: 99.9%
+- **Concurrent Users**: 1000
+- **Data Transfer**: 1GB/hour per client
+- **Storage**: 10GB total
 
 ---
 
-**System Status**: Production Ready ✅
-**Last Updated**: $(date)
-**Version**: 2.0.0
-**Maintainer**: Development Team
+**Version**: 2.0.0  
+**Last Updated**: October 25, 2025  
+**Status**: Production Ready
