@@ -47,6 +47,9 @@ RUN echo "Checking startup script:" && ls -la /app/start.sh && head -5 /app/star
 # Make files executable
 RUN chmod +x start.sh spark-server
 
+# Verify files are executable and in correct location
+RUN ls -la /app/ && echo "Final file check:" && file /app/start.sh && file /app/spark-server
+
 # Debug: Verify files are executable
 RUN ls -la /app/
 
@@ -64,7 +67,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8000}/api/health || exit 1
 
 # Run the server with startup script
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["/app/start.sh"]
 
 # Fallback CMD in case ENTRYPOINT doesn't work
-CMD ["./start.sh"]
+CMD ["/app/start.sh"]
