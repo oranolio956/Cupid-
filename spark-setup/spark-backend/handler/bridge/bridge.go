@@ -1,8 +1,8 @@
 package bridge
 
 import (
-	"Spark/modules"
-	"Spark/utils"
+	"."
+	"."
 	"Spark/utils/cmap"
 	"github.com/gin-gonic/gin"
 	"io"

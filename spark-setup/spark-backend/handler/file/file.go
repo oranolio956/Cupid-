@@ -1,11 +1,11 @@
 package file
 
 import (
-	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/handler/bridge"
-	"Spark/server/handler/utility"
-	"Spark/utils"
+	"."
+	"Spark/common"
+	"Spark/handler/bridge"
+	"Spark/handler/utility"
+	"."
 	"Spark/utils/melody"
 	"fmt"
 	"github.com/gin-gonic/gin"

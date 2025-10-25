@@ -1,10 +1,10 @@
 package terminal
 
 import (
-	"Spark/modules"
-	"Spark/server/common"
-	"Spark/server/handler/utility"
-	"Spark/utils"
+	"."
+	"Spark/common"
+	"Spark/handler/utility"
+	"."
 	"Spark/utils/melody"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"

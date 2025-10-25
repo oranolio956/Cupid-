@@ -1,15 +1,15 @@
 package main
 
 import (
-	"Spark/modules"
-	"Spark/auth"
-	"Spark/common"
-	"Spark/config"
-	"Spark/handler"
-	"Spark/handler/desktop"
-	"Spark/handler/terminal"
-	"Spark/handler/utility"
-	"Spark/utils/cmap"
+	"."
+	".auth"
+	".common"
+	".config"
+	".handler"
+	".handler/desktop"
+	".handler/terminal"
+	".handler/utility"
+	"./cmap"
 	"bytes"
 	"context"
 	"encoding/hex"
@@ -24,9 +24,9 @@ import (
 	"syscall"
 	"time"
 
-	_ "Spark/embed/web"
-	"Spark/utils"
-	"Spark/utils/melody"
+	_ ".embed/web"
+	"."
+	"./melody"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -36,6 +36,9 @@ var blocked = cmap.New[int64]()
 var lastRequest = time.Now().Unix()
 
 func main() {
+	// Load environment variable overrides
+	config.LoadFromEnv()
+	
 	webFS, err := fs.NewWithNamespace(`web`)
 	if err != nil {
 		common.Fatal(nil, `LOAD_STATIC_RES`, `fail`, err.Error(), nil)

@@ -1,8 +1,8 @@
 package common
 
 import (
-	"Spark/modules"
-	"Spark/utils"
+	"."
+	"."
 	"Spark/utils/cmap"
 	"Spark/utils/melody"
 	"bytes"
