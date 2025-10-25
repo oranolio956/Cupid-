@@ -2,7 +2,7 @@ services:
   - type: web
     name: spark-backend-fixed-v2
     env: docker
-    dockerfilePath: spark-setup/spark-backend/Dockerfile.simple
+    dockerfilePath: Dockerfile.simple
     dockerContext: ./spark-setup/spark-backend/
     plan: starter
     region: oregon
