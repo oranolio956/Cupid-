@@ -34,9 +34,11 @@ RUN adduser -D -s /bin/sh spark
 # Set working directory
 WORKDIR /app
 
-# Copy binary and startup script from builder
+# Copy binary from builder
 COPY --from=go-builder /app/spark-server ./
-COPY --from=go-builder /app/start.sh ./
+
+# Copy startup script from host
+COPY spark-setup/spark-backend/start.sh ./
 
 # Debug: List files to verify copy
 RUN ls -la /app/ && echo "Files in /app after copy:"
