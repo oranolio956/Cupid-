@@ -1,253 +1,131 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
+	"os/signal"
+	"path/filepath"
 	"runtime"
-	"time"
+	"syscall"
 
-	"github.com/shirou/gopsutil/v3/cpu"
-	"github.com/shirou/gopsutil/v3/disk"
-	"github.com/shirou/gopsutil/v3/host"
-	"github.com/shirou/gopsutil/v3/mem"
-	"github.com/shirou/gopsutil/v3/net"
+	"./config"
+	"./core"
+	"./service"
 )
 
-// Device represents the device information sent to server
-type Device struct {
-	ID       string    `json:"id"`
-	Hostname string    `json:"hostname"`
-	Username string    `json:"username"`
-	OS       string    `json:"os"`
-	Arch     string    `json:"arch"`
-	MAC      string    `json:"mac"`
-	LAN      string    `json:"lan"`
-	WAN      string    `json:"wan"`
-	Latency  int       `json:"latency"` // milliseconds
-	Uptime   int64     `json:"uptime"`  // seconds
-
-	// System resources
-	CPU struct {
-		Model string  `json:"model"`
-		Usage float64 `json:"usage"`
-		Cores struct {
-			Physical int `json:"physical"`
-			Logical  int `json:"logical"`
-		} `json:"cores"`
-	} `json:"cpu"`
-
-	RAM struct {
-		Usage float64 `json:"usage"` // percentage
-		Total int64   `json:"total"` // bytes
-		Used  int64   `json:"used"`  // bytes
-	} `json:"ram"`
-
-	Disk struct {
-		Usage float64 `json:"usage"` // percentage
-		Total int64   `json:"total"` // bytes
-		Used  int64   `json:"used"`  // bytes
-	} `json:"disk"`
-
-	// Network stats
-	NetSent int64     `json:"net_sent"` // bytes per second
-	NetRecv int64     `json:"net_recv"` // bytes per second
-
-	// Connection metadata
-	LastSeen    time.Time `json:"last_seen"`
-	ConnectedAt time.Time `json:"connected_at"`
-}
+const (
+	ServiceName = "spark-client"
+	Version     = "1.0.0"
+)
 
 var (
-	serverURL = "https://spark-backend-fixed-v2.onrender.com"
-	apiKey    = "default-insecure-key-CHANGE-ME"
-	deviceID  = ""
+	installService = flag.Bool("install", false, "Install as service")
+	uninstallService = flag.Bool("uninstall", false, "Uninstall service")
+	serviceStatus = flag.Bool("status", false, "Check service status")
+	version = flag.Bool("version", false, "Show version")
+	help = flag.Bool("help", false, "Show help")
 )
 
 func main() {
-	// Parse command line arguments
-	if len(os.Args) > 1 {
-		serverURL = os.Args[1]
-	}
-	if len(os.Args) > 2 {
-		apiKey = os.Args[2]
-	}
+	flag.Parse()
 
-	log.Printf("Starting Spark client...")
-	log.Printf("Server: %s", serverURL)
-	log.Printf("API Key: %s", apiKey)
-
-	// Register device first
-	if err := registerDevice(); err != nil {
-		log.Fatalf("Failed to register device: %v", err)
+	// Show version
+	if *version {
+		fmt.Printf("Spark Client v%s\n", Version)
+		fmt.Printf("OS: %s\n", runtime.GOOS)
+		fmt.Printf("Arch: %s\n", runtime.GOARCH)
+		return
 	}
 
-	// Start update loop
-	ticker := time.NewTicker(3 * time.Second)
-	defer ticker.Stop()
+	// Show help
+	if *help {
+		showHelp()
+		return
+	}
 
-	for range ticker.C {
-		if err := updateDevice(); err != nil {
-			log.Printf("Failed to update device: %v", err)
+	// Get executable path
+	execPath, err := os.Executable()
+	if err != nil {
+		log.Fatalf("Failed to get executable path: %v", err)
+	}
+
+	// Service management
+	serviceManager := service.NewServiceManager(ServiceName, execPath)
+
+	// Install service
+	if *installService {
+		if err := serviceManager.Install(); err != nil {
+			log.Fatalf("Failed to install service: %v", err)
 		}
-	}
-}
-
-func registerDevice() error {
-	device, err := getDeviceInfo()
-	if err != nil {
-		return err
+		fmt.Println("Service installed successfully")
+		return
 	}
 
-	deviceID = device.ID
-	device.ConnectedAt = time.Now()
-	device.LastSeen = time.Now()
-
-	jsonData, err := json.Marshal(device)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("POST", serverURL+"/api/device/register", bytes.NewBuffer(jsonData))
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-API-Key", apiKey)
-
-	client := &http.Client{Timeout: 10 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("registration failed with status: %d", resp.StatusCode)
-	}
-
-	log.Printf("Device registered successfully: %s", device.Hostname)
-	return nil
-}
-
-func updateDevice() error {
-	device, err := getDeviceInfo()
-	if err != nil {
-		return err
-	}
-
-	device.ID = deviceID
-	device.LastSeen = time.Now()
-
-	jsonData, err := json.Marshal(device)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("POST", serverURL+"/api/device/update", bytes.NewBuffer(jsonData))
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-API-Key", apiKey)
-
-	client := &http.Client{Timeout: 10 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("update failed with status: %d", resp.StatusCode)
-	}
-
-	return nil
-}
-
-func getDeviceInfo() (*Device, error) {
-	device := &Device{}
-
-	// Get host info
-	hostInfo, err := host.Info()
-	if err != nil {
-		return nil, err
-	}
-
-	device.Hostname = hostInfo.Hostname
-	device.OS = hostInfo.Platform + " " + hostInfo.PlatformVersion
-	device.Arch = hostInfo.KernelArch
-	device.Uptime = int64(hostInfo.Uptime)
-
-	// Get username
-	device.Username = os.Getenv("USER")
-	if device.Username == "" {
-		device.Username = os.Getenv("USERNAME")
-	}
-
-	// Get CPU info
-	cpuInfo, err := cpu.Info()
-	if err == nil && len(cpuInfo) > 0 {
-		device.CPU.Model = cpuInfo[0].ModelName
-		device.CPU.Cores.Physical = int(cpuInfo[0].Cores)
-		device.CPU.Cores.Logical = runtime.NumCPU()
-	}
-
-	// Get CPU usage
-	cpuUsage, err := cpu.Percent(time.Second, false)
-	if err == nil && len(cpuUsage) > 0 {
-		device.CPU.Usage = cpuUsage[0]
-	}
-
-	// Get memory info
-	memInfo, err := mem.VirtualMemory()
-	if err == nil {
-		device.RAM.Usage = memInfo.UsedPercent
-		device.RAM.Total = int64(memInfo.Total)
-		device.RAM.Used = int64(memInfo.Used)
-	}
-
-	// Get disk info
-	diskInfo, err := disk.Usage("/")
-	if err == nil {
-		device.Disk.Usage = diskInfo.UsedPercent
-		device.Disk.Total = int64(diskInfo.Total)
-		device.Disk.Used = int64(diskInfo.Used)
-	}
-
-	// Get network info
-	netStats, err := net.IOCounters(false)
-	if err == nil && len(netStats) > 0 {
-		device.NetSent = int64(netStats[0].BytesSent)
-		device.NetRecv = int64(netStats[0].BytesRecv)
-	}
-
-	// Get network interfaces for MAC and IP
-	interfaces, err := net.Interfaces()
-	if err == nil {
-		for _, iface := range interfaces {
-			if len(iface.Addrs) > 0 && iface.HardwareAddr != "" {
-				device.MAC = iface.HardwareAddr
-				if len(iface.Addrs) > 0 {
-					device.LAN = iface.Addrs[0].Addr
-				}
-				break
-			}
+	// Uninstall service
+	if *uninstallService {
+		if err := serviceManager.Uninstall(); err != nil {
+			log.Fatalf("Failed to uninstall service: %v", err)
 		}
+		fmt.Println("Service uninstalled successfully")
+		return
 	}
 
-	// Generate device ID if not set
-	if deviceID == "" {
-		device.ID = fmt.Sprintf("device-%d", time.Now().UnixNano())
+	// Check service status
+	if *serviceStatus {
+		status, err := serviceManager.GetServiceStatus()
+		if err != nil {
+			log.Fatalf("Failed to get service status: %v", err)
+		}
+		fmt.Printf("Service status: %s\n", status)
+		return
 	}
 
-	// Simulate latency (in real implementation, ping the server)
-	device.Latency = int(50 + (time.Now().UnixNano()%100))
+	// Run client
+	runClient()
+}
 
-	return device, nil
+func runClient() {
+	// Get configuration
+	cfg := config.GetDefaultConfig()
+	
+	// Create client
+	client := core.NewClient(cfg)
+
+	// Setup signal handling
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+	// Connect to server
+	if err := client.Connect(); err != nil {
+		log.Fatalf("Failed to connect: %v", err)
+	}
+
+	// Wait for signal
+	<-sigChan
+
+	// Disconnect
+	log.Println("Shutting down...")
+	if err := client.Disconnect(); err != nil {
+		log.Printf("Error during disconnect: %v", err)
+	}
+}
+
+func showHelp() {
+	fmt.Printf("Spark Client v%s\n\n", Version)
+	fmt.Println("Usage:")
+	fmt.Printf("  %s [options]\n\n", filepath.Base(os.Args[0]))
+	fmt.Println("Options:")
+	fmt.Println("  -install      Install as system service")
+	fmt.Println("  -uninstall    Uninstall system service")
+	fmt.Println("  -status       Check service status")
+	fmt.Println("  -version      Show version information")
+	fmt.Println("  -help         Show this help message")
+	fmt.Println()
+	fmt.Println("Examples:")
+	fmt.Printf("  %s                    # Run client normally\n", filepath.Base(os.Args[0]))
+	fmt.Printf("  %s -install          # Install as service\n", filepath.Base(os.Args[0]))
+	fmt.Printf("  %s -status           # Check if service is running\n", filepath.Base(os.Args[0]))
+	fmt.Printf("  %s -uninstall        # Remove service\n", filepath.Base(os.Args[0]))
 }
