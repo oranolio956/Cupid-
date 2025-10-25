@@ -69,8 +69,8 @@ module.exports = (env, args) => {
         plugins: [
             // ADD THIS FIRST - Before HtmlWebpackPlugin
             new webpack.DefinePlugin({
-                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'http://localhost:8000'),
-                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'ws://localhost:8000'),
+                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://cupid-1-njpo.onrender.com'),
+                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'wss://cupid-1-njpo.onrender.com'),
                 'process.env.NODE_ENV': JSON.stringify(mode)
             }),
             new HtmlWebpackPlugin({

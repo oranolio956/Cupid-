@@ -90,6 +90,23 @@ var devices = []Device{
 
 var devicesMutex sync.RWMutex
 
+// CORS middleware
+func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		
+		next(w, r)
+	}
+}
+
 func main() {
 	// Load configuration
 	_, err := loadConfig()
@@ -100,10 +117,10 @@ func main() {
 	// Start WebSocket hub
 	go hub.run()
 
-	// Setup routes
-	http.HandleFunc("/api/device/list", deviceListHandler)
-	http.HandleFunc("/api/device/", deviceHandler)
-	http.HandleFunc("/api/health", healthHandler)
+	// Setup routes with CORS middleware
+	http.HandleFunc("/api/device/list", corsMiddleware(deviceListHandler))
+	http.HandleFunc("/api/device/", corsMiddleware(deviceHandler))
+	http.HandleFunc("/api/health", corsMiddleware(healthHandler))
 	http.HandleFunc("/ws", websocketHandler)
 	
 	// Serve static files (embedded frontend)
@@ -186,14 +203,6 @@ func getEnv(key, defaultValue string) string {
 
 func deviceListHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-
-	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
 
 	// Update device statuses (simulate real-time updates)
 	devicesMutex.Lock()
@@ -215,9 +224,6 @@ func deviceListHandler(w http.ResponseWriter, r *http.Request) {
 
 func deviceHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 	deviceID := filepath.Base(r.URL.Path)
 	
@@ -243,9 +249,6 @@ func deviceHandler(w http.ResponseWriter, r *http.Request) {
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status":    "healthy",

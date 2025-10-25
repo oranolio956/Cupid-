@@ -108,6 +108,23 @@ body {
   }
 }
 
+/* Mobile device grid loading and empty states */
+.mobile-device-grid.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+.mobile-device-grid.empty {
+  padding: 40px;
+  text-align: center;
+  color: #999;
+}
+.mobile-device-grid.empty::after {
+  content: 'No devices connected. Check backend connection.';
+  font-size: 16px;
+}
+
 /* Mobile device grid */
 .mobile-device-grid {
   padding: 16px;

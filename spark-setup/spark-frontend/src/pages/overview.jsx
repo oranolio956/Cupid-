@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProTable, {TableDropdown} from '@ant-design/pro-table';
-import {Button, Image, message, Modal, Progress, Tooltip} from 'antd';
+import {Button, Image, message, Modal, Progress, Tooltip, Spin} from 'antd';
 import {catchBlobReq, formatSize, request, tsToTime, waitTime} from "../utils/utils";
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import i18n from "../locale/locale";
 import DeviceCard from '../components/DeviceCard/DeviceCard';
+import axios from 'axios';
 
 // DO NOT EDIT OR DELETE THIS COPYRIGHT MESSAGE.
 if (process.env.NODE_ENV === 'development') {
@@ -446,14 +447,25 @@ function overview(props) {
 		{/* CONDITIONAL RENDERING - Mobile Card View vs Desktop Table View */}
 		{isMobile ? (
 			// Mobile Card View
-			<div className="mobile-device-grid">
-				{dataSource.map(device => (
-					<DeviceCard 
-						key={device.id}
-						device={device}
-						onAction={onMenuClick}
-					/>
-				))}
+			<div className={`mobile-device-grid ${loading ? 'loading' : ''} ${dataSource.length === 0 && !loading ? 'empty' : ''}`}>
+				{loading ? (
+					<div style={{textAlign: 'center', padding: '40px'}}>
+						<Spin size="large" tip="Loading devices..." />
+					</div>
+				) : dataSource.length === 0 ? (
+					<div style={{textAlign: 'center', padding: '40px', color: '#999'}}>
+						<p style={{fontSize: '16px', marginBottom: '8px'}}>No devices connected</p>
+						<p style={{fontSize: '14px'}}>Check backend connection at:<br/>{axios.defaults.baseURL}</p>
+					</div>
+				) : (
+					dataSource.map(device => (
+						<DeviceCard 
+							key={device.id}
+							device={device}
+							onAction={onMenuClick}
+						/>
+					))
+				)}
 			</div>
 		) : (
 			// Desktop Table View

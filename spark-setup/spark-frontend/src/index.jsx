@@ -12,8 +12,8 @@ import 'antd/dist/reset.css';
 import Overview from "./pages/overview";
 import {translate} from "./utils/utils";
 
-// Use environment variable for API URL, fallback to relative path for development
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || '.';
+// Use environment variable for API URL, fallback to production backend
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://cupid-1-njpo.onrender.com';
 // Log for debugging (remove after deployment works)
 if (process.env.NODE_ENV === 'development') {
   console.log('API Base URL:', axios.defaults.baseURL);
