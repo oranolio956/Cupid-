@@ -11,10 +11,16 @@ import (
 	"golang.org/x/time/rate"
 )
 
+// limiterEntry tracks a rate limiter and its last access time
+type limiterEntry struct {
+	limiter    *rate.Limiter
+	lastAccess time.Time
+}
+
 // AdvancedRateLimiter provides advanced rate limiting functionality
 type AdvancedRateLimiter struct {
-	// Rate limiters by key
-	limiters map[string]*rate.Limiter
+	// Rate limiters by key with access tracking
+	limiters map[string]*limiterEntry
 	
 	// Configuration
 	config *RateLimitConfig
@@ -118,7 +124,7 @@ func ProductionRateLimitConfig() *RateLimitConfig {
 // NewAdvancedRateLimiter creates a new advanced rate limiter
 func NewAdvancedRateLimiter(config *RateLimitConfig) *AdvancedRateLimiter {
 	arl := &AdvancedRateLimiter{
-		limiters:        make(map[string]*rate.Limiter),
+		limiters:        make(map[string]*limiterEntry),
 		config:          config,
 		lastCleanup:     time.Now(),
 		cleanupInterval: config.CleanupInterval,
@@ -197,13 +203,19 @@ func (arl *AdvancedRateLimiter) Allow(ip, userID string) (bool, string) {
 
 // getOrCreateLimiter gets or creates a rate limiter for a key
 func (arl *AdvancedRateLimiter) getOrCreateLimiter(key string, rps, burst int) *rate.Limiter {
-	limiter, exists := arl.limiters[key]
+	entry, exists := arl.limiters[key]
 	if !exists {
-		limiter = rate.NewLimiter(rate.Limit(rps), burst)
-		arl.limiters[key] = limiter
+		entry = &limiterEntry{
+			limiter:    rate.NewLimiter(rate.Limit(rps), burst),
+			lastAccess: time.Now(),
+		}
+		arl.limiters[key] = entry
 		arl.stats.ActiveLimiters = len(arl.limiters)
+	} else {
+		// Update last access time
+		entry.lastAccess = time.Now()
 	}
-	return limiter
+	return entry.limiter
 }
 
 // isWhitelisted checks if an IP is whitelisted
@@ -261,15 +273,15 @@ func (arl *AdvancedRateLimiter) cleanup() {
 		arl.mutex.Lock()
 		
 		now := time.Now()
-		_ = now.Add(-arl.config.MaxIdleTime) // Use cutoff variable
+		cutoff := now.Add(-arl.config.MaxIdleTime)
 		
-		// Remove old limiters
-		for key, limiter := range arl.limiters {
-			_ = limiter // Use the variable to avoid unused error
-			// Check if limiter has been idle
-			if now.Sub(arl.lastCleanup) > arl.config.MaxIdleTime {
-				// This is a simplified check - in practice, you'd track last access time
+		// Remove old limiters based on last access time
+		removedCount := 0
+		for key, entry := range arl.limiters {
+			// Check if limiter has been idle longer than MaxIdleTime
+			if entry.lastAccess.Before(cutoff) {
 				delete(arl.limiters, key)
+				removedCount++
 			}
 		}
 		
@@ -278,6 +290,12 @@ func (arl *AdvancedRateLimiter) cleanup() {
 		arl.lastCleanup = now
 		
 		arl.mutex.Unlock()
+		
+		// Log cleanup if limiters were removed
+		if removedCount > 0 {
+			fmt.Printf("[RateLimiter] Cleaned up %d idle limiters, %d active remaining\n", 
+				removedCount, len(arl.limiters))
+		}
 	}
 }
 

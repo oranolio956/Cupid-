@@ -139,9 +139,10 @@ func (c *Checker) cleanupSessions(now time.Time) {
 	}
 }
 
-// Stop stops the health checker
+// Stop stops the health checker and all workers
 func (c *Checker) Stop() {
 	close(c.quit)
+	close(c.jobs) // Close jobs channel to stop workers
 }
 
 // pingDevice sends a ping to a device and handles the response
