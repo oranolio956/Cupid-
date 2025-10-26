@@ -37,6 +37,7 @@ import (
 
 var blocked = cmap.New[int64]()
 var lastRequest = time.Now().Unix()
+var healthChecker *health.Checker
 
 func main() {
 	// Load environment variable overrides
@@ -111,6 +112,12 @@ func main() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	common.Warn(nil, `SERVICE_EXITING`, ``, ``, nil)
+
+	// Stop health checker before shutting down server
+	if healthChecker != nil {
+		healthChecker.Stop()
+		common.Info(nil, `HEALTH_CHECKER`, `stopped`, ``, nil)
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -285,9 +292,20 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 }
 
 func wsOnDisconnect(session *melody.Session) {
-	if device, ok := common.Devices.Get(session.UUID); ok {
+	// Get device info before removal (cmap operations are thread-safe)
+	device, deviceExists := common.Devices.Get(session.UUID)
+	
+	// Remove device from map immediately to prevent race conditions
+	// This ensures no other goroutine can access this device during cleanup
+	common.Devices.Remove(session.UUID)
+	
+	// Now safely cleanup device resources
+	if deviceExists {
+		// Close all sessions associated with this device
 		terminal.CloseSessionsByDevice(device.ID)
 		desktop.CloseSessionsByDevice(device.ID)
+		
+		// Log disconnect with device info
 		common.Info(nil, `CLIENT_OFFLINE`, ``, ``, map[string]any{
 			`device`: map[string]any{
 				`name`: device.Hostname,
@@ -295,18 +313,18 @@ func wsOnDisconnect(session *melody.Session) {
 			},
 		})
 	} else {
+		// Device not found in map, log with connection info
 		common.Info(nil, `CLIENT_OFFLINE`, ``, ``, map[string]any{
 			`device`: map[string]any{
 				`ip`: common.GetAddrIP(session.GetWSConn().UnderlyingConn().RemoteAddr()),
 			},
 		})
 	}
-	common.Devices.Remove(session.UUID)
 }
 
 func wsHealthCheck(container *melody.Melody) {
 	// Create health checker with worker pool (10 workers)
-	healthChecker := health.NewChecker(container, 10)
+	healthChecker = health.NewChecker(container, 10)
 	healthChecker.Start()
 }
 

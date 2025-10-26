@@ -38,24 +38,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Load state from storage
 async function loadState() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         chrome.storage.local.get([
             'hasSeenLoading',
             'hasEnteredKey',
             'hasDownloadedDeps',
             'trialKey',
-            'stats'
+            'stats',
+            'activationDate'
         ], (result) => {
-            Object.assign(AppState, result);
-            resolve();
+            if (chrome.runtime.lastError) {
+                console.error('Storage load error:', chrome.runtime.lastError);
+                reject(chrome.runtime.lastError);
+            } else {
+                Object.assign(AppState, result);
+                resolve();
+            }
         });
     });
 }
 
 // Save state to storage
 async function saveState() {
-    return new Promise((resolve) => {
-        chrome.storage.local.set(AppState, resolve);
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.set(AppState, () => {
+            if (chrome.runtime.lastError) {
+                console.error('Storage save error:', chrome.runtime.lastError);
+                reject(chrome.runtime.lastError);
+            } else {
+                resolve();
+            }
+        });
     });
 }
 

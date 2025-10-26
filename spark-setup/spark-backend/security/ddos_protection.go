@@ -37,6 +37,10 @@ type ConnectionInfo struct {
 	IsBlocked     bool
 	BlockReason   string
 	BlockUntil    time.Time
+	
+	// Sliding window tracking for rate limiting
+	WindowStart        time.Time
+	WindowRequestCount int
 }
 
 // DDoSConfig holds DDoS protection configuration
@@ -306,18 +310,37 @@ func (ddp *DDoSProtector) getIPConnectionCount(ip string) int {
 	return count
 }
 
-// isRequestRateExceeded checks if request rate is exceeded
+// isRequestRateExceeded checks if request rate is exceeded using sliding window
 func (ddp *DDoSProtector) isRequestRateExceeded(connInfo *ConnectionInfo) bool {
 	now := time.Now()
 	
-	// Check requests per minute
-	if now.Sub(connInfo.FirstSeen) < time.Minute {
-		return connInfo.RequestCount > ddp.config.MaxRequestsPerMinute
+	// Initialize window if not set
+	if connInfo.WindowStart.IsZero() {
+		connInfo.WindowStart = now
+		connInfo.WindowRequestCount = 0
 	}
 	
-	// Check requests per second (simplified)
+	// Check if window has expired (1 minute window)
+	if now.Sub(connInfo.WindowStart) > time.Minute {
+		// Reset window
+		connInfo.WindowStart = now
+		connInfo.WindowRequestCount = 0
+	}
+	
+	// Increment request count in current window
+	connInfo.WindowRequestCount++
+	
+	// Check if rate limit exceeded
+	if connInfo.WindowRequestCount > ddp.config.MaxRequestsPerMinute {
+		return true
+	}
+	
+	// Also check requests per second (last second burst)
 	if now.Sub(connInfo.LastSeen) < time.Second {
-		return connInfo.RequestCount > ddp.config.MaxRequestsPerSecond
+		// Count requests in last second (simplified check)
+		if connInfo.WindowRequestCount > ddp.config.MaxRequestsPerSecond {
+			return true
+		}
 	}
 	
 	return false
