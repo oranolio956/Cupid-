@@ -141,7 +141,7 @@ func wsHandshake(ctx *gin.Context) {
 	}
 	
 	allowedOrigins := []string{
-		"https://spark-frontend.vercel.app",
+		"https://cupid-spark-frontend.vercel.app",
 		"https://cupid-otys.vercel.app",
 		"https://spark-backend-wj4e.onrender.com",
 		"http://localhost:3000", // For development
