@@ -69,8 +69,8 @@ module.exports = (env, args) => {
         plugins: [
             // ADD THIS FIRST - Before HtmlWebpackPlugin
             new webpack.DefinePlugin({
-                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com'),
-                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'wss://spark-backend-fixed-v2.onrender.com'),
+                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://spark-backend-wj4e.onrender.com'),
+                'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'wss://spark-backend-wj4e.onrender.com'),
                 'process.env.NODE_ENV': JSON.stringify(mode)
             }),
             new HtmlWebpackPlugin({
@@ -85,20 +85,13 @@ module.exports = (env, args) => {
                 patterns: [
                     {
                         from: path.resolve(__dirname, 'public/ace.js'),
+                        to: path.resolve(__dirname, 'dist/ace.js')
                     },
                     {
                         from: path.resolve(__dirname, 'public/ext-modelist.js'),
+                        to: path.resolve(__dirname, 'dist/ext-modelist.js')
                     }
                 ]
-            }),
-            new CompressionPlugin({
-                test: /\.js$|\.css$|\.html$/,
-                filename: "[file].gz",
-                algorithm: "gzip",
-                threshold: 128 * 1024,
-                compressionOptions: {
-                    level: 9
-                }
             })
         ],
         optimization: {
@@ -108,7 +101,8 @@ module.exports = (env, args) => {
                     css: true,
                     target: 'es2015',
                     implementation: esbuild,
-                    legalComments: 'none'
+                    legalComments: 'none',
+                    drop: mode === 'production' ? ['console', 'debugger'] : []
                 })
             ],
             runtimeChunk: 'single',

@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "installCommand": "npm install",
+  "buildCommand": "cd spark-setup/spark-frontend && npm run build",
+  "outputDirectory": "spark-setup/spark-frontend/dist",
+  "installCommand": "cd spark-setup/spark-frontend && npm install",
   "framework": null,
   "headers": [
     {

@@ -17,20 +17,17 @@ import ProtectedRoute from './components/ProtectedRoute';
 import {translate} from "./utils/utils";
 
 // Use environment variable for API URL, fallback to production backend
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-wj4e.onrender.com';
 // Enable cookies for authentication (Spark uses cookie-based auth)
 axios.defaults.withCredentials = true;
+// Set timeout immediately to prevent hanging requests
+axios.defaults.timeout = 30000;
 // Development logging removed for production
 axios.interceptors.response.use(async res => {
 	let data = res.data;
 	if (data.hasOwnProperty('code')) {
 		if (data.code !== 0){
 			message.warn(translate(data.msg));
-		} else {
-			// The first request will ask user to provide user/pass.
-			// If set timeout at the beginning, then timeout warning
-			// might be triggered before authentication finished.
-			axios.defaults.timeout = 5000;
 		}
 	}
 	return Promise.resolve(res);
@@ -46,8 +43,8 @@ axios.interceptors.response.use(async res => {
 	// Handle authentication errors
 	if (res?.status === 401) {
 		message.error('Authentication required. Please login.');
-		// Redirect to login page
-		window.location.href = '/login';
+		// Redirect to login page (HashRouter requires #/)
+		window.location.href = '/#/login';
 		return Promise.reject(err);
 	}
 	
