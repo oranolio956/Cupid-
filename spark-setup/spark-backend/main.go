@@ -141,8 +141,9 @@ func wsHandshake(ctx *gin.Context) {
 	}
 	
 	allowedOrigins := []string{
+		"https://spark-frontend.vercel.app",
 		"https://cupid-otys.vercel.app",
-		"https://spark-backend-fixed-v2.onrender.com",
+		"https://spark-backend-wj4e.onrender.com",
 		"http://localhost:3000", // For development
 	}
 	
@@ -411,7 +412,7 @@ func checkAuth() gin.HandlerFunc {
 			MaxAge:   1800,  // 30 minutes
 			HttpOnly: true,  // Prevent XSS
 			Secure:   true,  // Always require HTTPS for security
-			SameSite: http.SameSiteStrictMode,  // CSRF protection
+			SameSite: http.SameSiteNoneMode,  // Allow cross-origin (Vercel frontend)
 		}
 		http.SetCookie(ctx.Writer, cookie)
 		}

@@ -24,8 +24,10 @@ type CORSConfig struct {
 func DefaultCORSConfig() *CORSConfig {
 	return &CORSConfig{
 		AllowedOrigins: []string{
-			"https://spark-rat-dashboard.vercel.app",
-			"https://spark-backend-fixed-v2.onrender.com",
+			"https://spark-frontend.vercel.app",
+			"https://cupid-otys.vercel.app",
+			"https://spark-backend-wj4e.onrender.com",
+			"http://localhost:3000",
 		},
 		AllowedMethods: []string{
 			"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH",
@@ -63,7 +65,8 @@ func DefaultCORSConfig() *CORSConfig {
 func ProductionCORSConfig() *CORSConfig {
 	return &CORSConfig{
 		AllowedOrigins: []string{
-			"https://spark-rat-dashboard.vercel.app",
+			"https://spark-frontend.vercel.app",
+			"https://cupid-otys.vercel.app",
 		},
 		AllowedMethods: []string{
 			"GET", "POST", "PUT", "DELETE", "OPTIONS",

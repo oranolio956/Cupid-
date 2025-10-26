@@ -20,8 +20,8 @@ import {translate} from "./utils/utils";
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-wj4e.onrender.com';
 // Enable cookies for authentication (Spark uses cookie-based auth)
 axios.defaults.withCredentials = true;
-// Set timeout immediately to prevent hanging requests
-axios.defaults.timeout = 30000;
+// Set timeout to handle Render cold starts (can take 30-60 seconds)
+axios.defaults.timeout = 90000;
 // Development logging removed for production
 axios.interceptors.response.use(async res => {
 	let data = res.data;

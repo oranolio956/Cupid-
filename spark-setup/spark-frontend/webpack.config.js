@@ -101,7 +101,7 @@ module.exports = (env, args) => {
                     target: 'es2015',
                     implementation: esbuild,
                     legalComments: 'none',
-                    drop: mode === 'production' ? ['console', 'debugger'] : []
+                    drop: mode === 'production' ? ['debugger'] : []  // Keep console for debugging
                 })
             ],
             runtimeChunk: 'single',
