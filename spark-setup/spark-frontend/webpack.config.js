@@ -70,6 +70,15 @@ module.exports = (env, args) => {
             new webpack.DefinePlugin({
                 'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://spark-backend-wj4e.onrender.com'),
                 'process.env.REACT_APP_WS_URL': JSON.stringify(process.env.REACT_APP_WS_URL || 'wss://spark-backend-wj4e.onrender.com'),
+                'process.env.REACT_APP_ENVIRONMENT': JSON.stringify(process.env.REACT_APP_ENVIRONMENT || 'production'),
+                'process.env.REACT_APP_ENABLE_TERMINAL': JSON.stringify(process.env.REACT_APP_ENABLE_TERMINAL || 'true'),
+                'process.env.REACT_APP_ENABLE_DESKTOP': JSON.stringify(process.env.REACT_APP_ENABLE_DESKTOP || 'true'),
+                'process.env.REACT_APP_ENABLE_FILE_MANAGER': JSON.stringify(process.env.REACT_APP_ENABLE_FILE_MANAGER || 'true'),
+                'process.env.REACT_APP_ENABLE_PROCESS_MANAGER': JSON.stringify(process.env.REACT_APP_ENABLE_PROCESS_MANAGER || 'true'),
+                'process.env.REACT_APP_ENABLE_SCREENSHOT': JSON.stringify(process.env.REACT_APP_ENABLE_SCREENSHOT || 'true'),
+                'process.env.REACT_APP_ENABLE_SYSTEM_CONTROL': JSON.stringify(process.env.REACT_APP_ENABLE_SYSTEM_CONTROL || 'true'),
+                'process.env.REACT_APP_ENABLE_WEBSOCKETS': JSON.stringify(process.env.REACT_APP_ENABLE_WEBSOCKETS || 'true'),
+                'process.env.REACT_APP_ENABLE_HTTPS': JSON.stringify(process.env.REACT_APP_ENABLE_HTTPS || 'true'),
                 'process.env.NODE_ENV': JSON.stringify(mode)
             }),
             new HtmlWebpackPlugin({
