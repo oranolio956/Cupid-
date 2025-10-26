@@ -224,17 +224,19 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 						return
 					}
 					event := hex.EncodeToString(data[6:22])
-					// Bounds check before copy operation
-					if dataLen >= 22+16 {
-						copy(data[6:], data[22:])
+					// Safe buffer allocation instead of in-place copy
+					if dataLen > 22 {
+						payloadLen := dataLen - 22
+						payload := make([]byte, payloadLen)
+						copy(payload, data[22:dataLen])
+						common.CallEvent(modules.Packet{
+							Act:   `RAW_DATA_ARRIVE`,
+							Event: event,
+							Data: gin.H{
+								`data`: payload[:payloadLen-16],
+							},
+						}, session)
 					}
-					common.CallEvent(modules.Packet{
-						Act:   `RAW_DATA_ARRIVE`,
-						Event: event,
-						Data: gin.H{
-							`data`: utils.GetSlicePrefix(&data, dataLen-16),
-						},
-					}, session)
 				}
 			case 21:
 				switch op {
@@ -244,17 +246,19 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 						return
 					}
 					event := hex.EncodeToString(data[6:22])
-					// Bounds check before copy operation
-					if dataLen >= 22+16 {
-						copy(data[6:], data[22:])
+					// Safe buffer allocation instead of in-place copy
+					if dataLen > 22 {
+						payloadLen := dataLen - 22
+						payload := make([]byte, payloadLen)
+						copy(payload, data[22:dataLen])
+						common.CallEvent(modules.Packet{
+							Act:   `RAW_DATA_ARRIVE`,
+							Event: event,
+							Data: gin.H{
+								`data`: payload[:payloadLen-16],
+							},
+						}, session)
 					}
-					common.CallEvent(modules.Packet{
-						Act:   `RAW_DATA_ARRIVE`,
-						Event: event,
-						Data: gin.H{
-							`data`: utils.GetSlicePrefix(&data, dataLen-16),
-						},
-					}, session)
 				}
 			}
 			return
@@ -388,7 +392,7 @@ func checkAuth() gin.HandlerFunc {
 			Path:     "/",
 			MaxAge:   1800,  // 30 minutes
 			HttpOnly: true,  // Prevent XSS
-			Secure:   config.Config.Environment == "production",  // HTTPS only in production
+			Secure:   true,  // Always require HTTPS for security
 			SameSite: http.SameSiteStrictMode,  // CSRF protection
 		}
 		http.SetCookie(ctx.Writer, cookie)

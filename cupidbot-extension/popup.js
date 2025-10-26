@@ -151,7 +151,7 @@ function setupKeyEntry() {
     activateBtn.addEventListener('click', async () => {
         const key = input.value.trim();
         
-        if (!validateKey(key)) {
+        if (!validateKeyFormat(key)) {
             showError('Invalid trial key format. Please check and try again.');
             return;
         }
@@ -159,25 +159,67 @@ function setupKeyEntry() {
         activateBtn.classList.add('loading');
         activateBtn.disabled = true;
         
-        // Simulate API validation
-        await sleep(1500);
-        
-        // For demo, accept any properly formatted key
-        AppState.trialKey = key;
-        AppState.hasEnteredKey = true;
-        await saveState();
-        
-        activateBtn.classList.remove('loading');
-        
-        // Show download screen
-        showScreen('downloadScreen');
-        startDependencyDownload();
+        // Validate key with server
+        try {
+            const isValid = await validateKeyWithServer(key);
+            
+            if (!isValid) {
+                activateBtn.classList.remove('loading');
+                activateBtn.disabled = false;
+                showError('Invalid or expired trial key. Please check your key or request a new one.');
+                return;
+            }
+            
+            // Key is valid, proceed
+            AppState.trialKey = key;
+            AppState.hasEnteredKey = true;
+            AppState.activationDate = new Date().toISOString();
+            await saveState();
+            
+            activateBtn.classList.remove('loading');
+            
+            // Show download screen
+            showScreen('downloadScreen');
+            startDependencyDownload();
+        } catch (error) {
+            activateBtn.classList.remove('loading');
+            activateBtn.disabled = false;
+            showError('Unable to verify key. Please check your internet connection and try again.');
+            console.error('Key validation error:', error);
+        }
     });
 }
 
-function validateKey(key) {
+function validateKeyFormat(key) {
     const pattern = /^CUPID-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
     return pattern.test(key);
+}
+
+async function validateKeyWithServer(key) {
+    // Extract just the key part after CUPID-
+    const keyPart = key.replace('CUPID-', '').replace(/-/g, '');
+    
+    try {
+        const response = await fetch(`https://activation-server.com/api/verify/${key}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            return false;
+        }
+        
+        const result = await response.json();
+        return result.success && result.valid;
+    } catch (error) {
+        console.error('Server validation error:', error);
+        // In case of network error, fall back to format validation only
+        // This prevents complete lockout but logs the issue
+        console.warn('Server validation failed, using format validation only');
+        return validateKeyFormat(key);
+    }
 }
 
 function showError(message) {
