@@ -94,6 +94,17 @@ const loadingIndicator = document.getElementById('loading-indicator');
 
 console.log('Rendering React app...');
 
+// Hide loading indicator after React renders
+const hideLoadingIndicator = () => {
+	console.log('Hiding loading indicator');
+	if (loadingIndicator) {
+		loadingIndicator.style.display = 'none';
+	}
+};
+
+// Fallback: hide after 2 seconds even if React doesn't fully render
+setTimeout(hideLoadingIndicator, 2000);
+
 ReactDOM.render(
 		<ErrorBoundary>
 			<AuthProvider>
@@ -112,9 +123,7 @@ ReactDOM.render(
 		</ErrorBoundary>,
 	rootElement,
 	() => {
-		console.log('React app rendered successfully');
-		if (loadingIndicator) {
-			loadingIndicator.style.display = 'none';
-		}
+		console.log('React app mounted');
+		hideLoadingIndicator();
 	}
 );

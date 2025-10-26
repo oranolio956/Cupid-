@@ -47,14 +47,5 @@
         <div class="loading-text">Loading Spark...</div>
     </div>
     <div id="root"></div>
-    <script>
-        // Remove loading indicator once React renders
-        setTimeout(() => {
-            const loader = document.getElementById('loading-indicator');
-            if (loader && document.getElementById('root').children.length > 0) {
-                loader.style.display = 'none';
-            }
-        }, 100);
-    </script>
 </body>
 </html>
