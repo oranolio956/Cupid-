@@ -19,6 +19,9 @@ COPY . .
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -o spark-server ./main.go
 
+# Create logs directory
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+
 # Expose port
 EXPOSE 8000
 
@@ -26,5 +29,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8000/api/health || exit 1
 
-# Run the application
-CMD ["./spark-server"]
+# Run the application with explicit config path
+CMD ["./spark-server", "-config", "config.json"]

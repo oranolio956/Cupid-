@@ -3,8 +3,8 @@
 
 const BACKEND_CONFIG = {
   // Production backend URL
-  API_URL: process.env.REACT_APP_API_URL || 'https://spark-backend-fixed-v2.onrender.com',
-  WS_URL: process.env.REACT_APP_WS_URL || 'wss://spark-backend-fixed-v2.onrender.com',
+  API_URL: process.env.REACT_APP_API_URL || 'https://spark-backend-wj4e.onrender.com',
+  WS_URL: process.env.REACT_APP_WS_URL || 'wss://spark-backend-wj4e.onrender.com',
   
   // API endpoints
   ENDPOINTS: {
