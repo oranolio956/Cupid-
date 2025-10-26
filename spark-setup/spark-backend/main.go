@@ -125,6 +125,14 @@ func main() {
 func wsHandshake(ctx *gin.Context) {
 	// Validate WebSocket origin to prevent cross-site hijacking
 	origin := ctx.GetHeader("Origin")
+	
+	// Reject empty origins - they should not bypass validation
+	if origin == "" {
+		common.Warn(ctx, "WS_HANDSHAKE", "rejected", "missing origin header", nil)
+		ctx.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+	
 	allowedOrigins := []string{
 		"https://cupid-otys.vercel.app",
 		"https://spark-backend-fixed-v2.onrender.com",
@@ -139,7 +147,8 @@ func wsHandshake(ctx *gin.Context) {
 		}
 	}
 	
-	if !validOrigin && origin != "" {
+	if !validOrigin {
+		common.Warn(ctx, "WS_HANDSHAKE", "rejected", "invalid origin: "+origin, nil)
 		ctx.AbortWithStatus(http.StatusForbidden)
 		return
 	}
