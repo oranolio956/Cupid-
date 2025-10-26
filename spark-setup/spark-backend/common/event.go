@@ -32,7 +32,12 @@ func CallEvent(pack modules.Packet, session *melody.Session) {
 	}
 	ev.callback(pack, session)
 	if ev.finish != nil {
-		ev.finish <- true
+		// Use select with default to prevent panic on closed channel
+		select {
+		case ev.finish <- true:
+		default:
+			// Channel closed or full, ignore
+		}
 	}
 }
 
@@ -43,8 +48,8 @@ func AddEventOnce(fn EventCallback, connUUID, trigger string, timeout time.Durat
 	ev := &event{
 		connection: connUUID,
 		callback:   fn,
-		finish:     make(chan bool),
-		remove:     make(chan bool),
+		finish:     make(chan bool, 1), // Buffered to prevent goroutine leak
+		remove:     make(chan bool, 1), // Buffered to prevent goroutine leak
 	}
 	events.Set(trigger, ev)
 	defer close(ev.remove)
@@ -81,10 +86,15 @@ func RemoveEvent(trigger string, ok ...bool) {
 	}
 	events.Remove(trigger)
 	if ev.remove != nil {
+		// Use select with default to prevent panic on closed channel
+		value := false
 		if len(ok) > 0 {
-			ev.remove <- ok[0]
-		} else {
-			ev.remove <- false
+			value = ok[0]
+		}
+		select {
+		case ev.remove <- value:
+		default:
+			// Channel closed or full, ignore
 		}
 	}
 	ev = nil

@@ -125,6 +125,14 @@ func main() {
 func wsHandshake(ctx *gin.Context) {
 	// Validate WebSocket origin to prevent cross-site hijacking
 	origin := ctx.GetHeader("Origin")
+	
+	// Reject empty origins - they should not bypass validation
+	if origin == "" {
+		common.Warn(ctx, "WS_HANDSHAKE", "rejected", "missing origin header", nil)
+		ctx.AbortWithStatus(http.StatusForbidden)
+		return
+	}
+	
 	allowedOrigins := []string{
 		"https://cupid-otys.vercel.app",
 		"https://spark-backend-fixed-v2.onrender.com",
@@ -139,7 +147,8 @@ func wsHandshake(ctx *gin.Context) {
 		}
 	}
 	
-	if !validOrigin && origin != "" {
+	if !validOrigin {
+		common.Warn(ctx, "WS_HANDSHAKE", "rejected", "invalid origin: "+origin, nil)
 		ctx.AbortWithStatus(http.StatusForbidden)
 		return
 	}
@@ -215,17 +224,19 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 						return
 					}
 					event := hex.EncodeToString(data[6:22])
-					// Bounds check before copy operation
-					if dataLen >= 22+16 {
-						copy(data[6:], data[22:])
+					// Safe buffer allocation instead of in-place copy
+					if dataLen > 22 {
+						payloadLen := dataLen - 22
+						payload := make([]byte, payloadLen)
+						copy(payload, data[22:dataLen])
+						common.CallEvent(modules.Packet{
+							Act:   `RAW_DATA_ARRIVE`,
+							Event: event,
+							Data: gin.H{
+								`data`: payload[:payloadLen-16],
+							},
+						}, session)
 					}
-					common.CallEvent(modules.Packet{
-						Act:   `RAW_DATA_ARRIVE`,
-						Event: event,
-						Data: gin.H{
-							`data`: utils.GetSlicePrefix(&data, dataLen-16),
-						},
-					}, session)
 				}
 			case 21:
 				switch op {
@@ -235,17 +246,19 @@ func wsOnMessageBinary(session *melody.Session, data []byte) {
 						return
 					}
 					event := hex.EncodeToString(data[6:22])
-					// Bounds check before copy operation
-					if dataLen >= 22+16 {
-						copy(data[6:], data[22:])
+					// Safe buffer allocation instead of in-place copy
+					if dataLen > 22 {
+						payloadLen := dataLen - 22
+						payload := make([]byte, payloadLen)
+						copy(payload, data[22:dataLen])
+						common.CallEvent(modules.Packet{
+							Act:   `RAW_DATA_ARRIVE`,
+							Event: event,
+							Data: gin.H{
+								`data`: payload[:payloadLen-16],
+							},
+						}, session)
 					}
-					common.CallEvent(modules.Packet{
-						Act:   `RAW_DATA_ARRIVE`,
-						Event: event,
-						Data: gin.H{
-							`data`: utils.GetSlicePrefix(&data, dataLen-16),
-						},
-					}, session)
 				}
 			}
 			return
@@ -379,7 +392,7 @@ func checkAuth() gin.HandlerFunc {
 			Path:     "/",
 			MaxAge:   1800,  // 30 minutes
 			HttpOnly: true,  // Prevent XSS
-			Secure:   config.Config.Environment == "production",  // HTTPS only in production
+			Secure:   true,  // Always require HTTPS for security
 			SameSite: http.SameSiteStrictMode,  // CSRF protection
 		}
 		http.SetCookie(ctx.Writer, cookie)

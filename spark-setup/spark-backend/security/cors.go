@@ -2,6 +2,7 @@ package security
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -147,8 +148,8 @@ func handlePreflightRequest(c *gin.Context, config *CORSConfig, origin string) {
 	// Set allowed headers
 	c.Header("Access-Control-Allow-Headers", strings.Join(config.AllowedHeaders, ", "))
 	
-	// Set max age
-	c.Header("Access-Control-Max-Age", string(rune(config.MaxAge)))
+	// Set max age (convert int to string properly)
+	c.Header("Access-Control-Max-Age", strconv.Itoa(config.MaxAge))
 	
 	// Handle private network requests
 	if config.AllowPrivateNetwork {

@@ -5,13 +5,62 @@ const url = require('url');
 // In-memory storage (replace with database in production)
 const activations = new Map();
 
-// CORS headers for development
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Content-Type': 'application/json'
-};
+// Rate limiting storage
+const rateLimit = new Map();
+
+// CORS headers - restrict to known origins
+function getCorsHeaders(origin) {
+    const allowedOrigins = [
+        'https://cupidbot.org',
+        'https://cupid-otys.vercel.app',
+        'http://localhost:3000'
+    ];
+    
+    const headers = {
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+    };
+    
+    if (allowedOrigins.includes(origin)) {
+        headers['Access-Control-Allow-Origin'] = origin;
+        headers['Access-Control-Allow-Credentials'] = 'true';
+    }
+    
+    return headers;
+}
+
+// Rate limiting function
+function checkRateLimit(ip) {
+    const now = Date.now();
+    const limit = rateLimit.get(ip) || { count: 0, resetTime: now + 3600000 }; // 1 hour window
+    
+    // Reset if window expired
+    if (now > limit.resetTime) {
+        limit.count = 0;
+        limit.resetTime = now + 3600000;
+    }
+    
+    // Check if limit exceeded (5 requests per hour)
+    if (limit.count >= 5) {
+        return false;
+    }
+    
+    // Increment counter
+    limit.count++;
+    rateLimit.set(ip, limit);
+    return true;
+}
+
+// Cleanup old rate limit entries every hour
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, limit] of rateLimit.entries()) {
+        if (now > limit.resetTime + 3600000) {
+            rateLimit.delete(ip);
+        }
+    }
+}, 3600000);
 
 // Generate cryptographically secure activation key
 function generateActivationKey() {
@@ -37,6 +86,12 @@ function isValidEmail(email) {
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
+    const origin = req.headers.origin || '';
+    const corsHeaders = getCorsHeaders(origin);
+    
+    // Get client IP for rate limiting
+    const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
+                     req.socket.remoteAddress;
 
     // Handle CORS preflight
     if (req.method === 'OPTIONS') {
@@ -47,9 +102,33 @@ const server = http.createServer((req, res) => {
 
     // POST /api/activate - Generate activation key
     if (pathname === '/api/activate' && req.method === 'POST') {
+        // Check rate limit
+        if (!checkRateLimit(clientIP)) {
+            res.writeHead(429, corsHeaders);
+            res.end(JSON.stringify({
+                success: false,
+                error: 'Rate limit exceeded. Maximum 5 activation requests per hour.',
+                retryAfter: 3600
+            }));
+            console.log(`[${new Date().toISOString()}] Rate limit exceeded for IP: ${clientIP}`);
+            return;
+        }
+        
         let body = '';
+        const MAX_BODY_SIZE = 10 * 1024; // 10KB limit
+        let bodySize = 0;
 
         req.on('data', chunk => {
+            bodySize += chunk.length;
+            if (bodySize > MAX_BODY_SIZE) {
+                res.writeHead(413, corsHeaders);
+                res.end(JSON.stringify({
+                    success: false,
+                    error: 'Request body too large'
+                }));
+                req.destroy();
+                return;
+            }
             body += chunk.toString();
         });
 
@@ -178,6 +257,10 @@ server.listen(PORT, () => {
     console.log(`  POST   /api/activate     - Generate activation key`);
     console.log(`  GET    /api/verify/:key  - Verify activation key`);
     console.log(`  GET    /api/stats        - Server statistics`);
+    console.log('\nSecurity Features:');
+    console.log(`  ✓ Rate limiting: 5 requests per hour per IP`);
+    console.log(`  ✓ Request body size limit: 10KB`);
+    console.log(`  ✓ Restricted CORS origins`);
     console.log('='.repeat(60));
 });
 
