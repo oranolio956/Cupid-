@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const {ESBuildMinifyPlugin} = require("esbuild-loader");
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = (env, args) => {
     let mode = args.mode;
