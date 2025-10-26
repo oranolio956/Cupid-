@@ -16,6 +16,37 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import {translate} from "./utils/utils";
 
+// Global error handlers for debugging
+window.addEventListener('error', (event) => {
+	console.error('Global error caught:', {
+		message: event.message,
+		filename: event.filename,
+		lineno: event.lineno,
+		colno: event.colno,
+		error: event.error
+	});
+	// Show visual indicator
+	const errorDiv = document.createElement('div');
+	errorDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#ff4d4f;color:white;padding:10px;z-index:99999;font-family:monospace;font-size:12px;';
+	errorDiv.innerHTML = `ERROR: ${event.message} at ${event.filename}:${event.lineno}`;
+	document.body.appendChild(errorDiv);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+	console.error('Unhandled promise rejection:', event.reason);
+	const errorDiv = document.createElement('div');
+	errorDiv.style.cssText = 'position:fixed;top:40px;left:0;right:0;background:#ff7a45;color:white;padding:10px;z-index:99999;font-family:monospace;font-size:12px;';
+	errorDiv.innerHTML = `PROMISE REJECTION: ${event.reason}`;
+	document.body.appendChild(errorDiv);
+});
+
+console.log('Spark Frontend Starting...', {
+	apiUrl: process.env.REACT_APP_API_URL,
+	wsUrl: process.env.REACT_APP_WS_URL,
+	environment: process.env.REACT_APP_ENVIRONMENT,
+	nodeEnv: process.env.NODE_ENV
+});
+
 // Use environment variable for API URL, fallback to production backend
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'https://spark-backend-wj4e.onrender.com';
 // Enable cookies for authentication (Spark uses cookie-based auth)
@@ -57,6 +88,12 @@ axios.interceptors.response.use(async res => {
 	return Promise.reject(err);
 });
 
+// Remove loading indicator and render app
+const rootElement = document.getElementById('root');
+const loadingIndicator = document.getElementById('loading-indicator');
+
+console.log('Rendering React app...');
+
 ReactDOM.render(
 		<ErrorBoundary>
 			<AuthProvider>
@@ -73,5 +110,11 @@ ReactDOM.render(
 				</Router>
 			</AuthProvider>
 		</ErrorBoundary>,
-	document.getElementById('root')
+	rootElement,
+	() => {
+		console.log('React app rendered successfully');
+		if (loadingIndicator) {
+			loadingIndicator.style.display = 'none';
+		}
+	}
 );
