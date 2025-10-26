@@ -2,7 +2,7 @@
   "listen": ":8000",
   "salt": "WG/Cc6eZUXWuqfi2+NNr2dso",
   "auth": {
-    "admin": "$bcrypt$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG"
+    "admin": "$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG"
   },
   "log": {
     "level": "info",

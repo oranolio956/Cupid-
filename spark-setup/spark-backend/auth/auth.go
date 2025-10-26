@@ -40,6 +40,14 @@ func BasicAuth(accounts map[string]string, realm string) gin.HandlerFunc {
 	reg := regexp.MustCompile(`^\$([a-zA-Z0-9]+)\$(.*)$`)
 	stdAccounts := make(map[string]cipher)
 	for user, pass := range accounts {
+		// Check if password is bcrypt format ($2a$, $2b$, $2y$)
+		if strings.HasPrefix(pass, "$2a$") || strings.HasPrefix(pass, "$2b$") || strings.HasPrefix(pass, "$2y$") {
+			stdAccounts[user] = cipher{
+				algorithm: `bcrypt`,
+				password:  pass, // Keep full bcrypt hash including version
+			}
+			continue
+		}
 		if match := reg.FindStringSubmatch(pass); len(match) > 0 {
 			match[1] = strings.ToLower(match[1])
 			if _, ok := algorithms[match[1]]; ok {
