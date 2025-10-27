@@ -146,6 +146,7 @@ func wsHandshake(ctx *gin.Context) {
 		"https://cupid-otys.vercel.app",
 		"https://spark-backend-wj4e.onrender.com",
 		"http://localhost:3000", // For development
+		"https://3000--019a1f90-3b3f-7970-8bf4-5f56b02fd4d7.us-east-1-01.gitpod.dev", // Gitpod preview
 	}
 	
 	validOrigin := false
