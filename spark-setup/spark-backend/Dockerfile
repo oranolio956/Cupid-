@@ -25,9 +25,8 @@ RUN mkdir -p /app/logs && chmod 777 /app/logs
 # Expose port (Render sets PORT env var, default 10000)
 EXPOSE 10000
 
-# Health check for Render - use PORT env var or default to 10000
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-10000}/api/health || exit 1
+# Note: Removed Docker HEALTHCHECK - Render handles health checks via HTTP
+# Render will check /api/health endpoint configured in service settings
 
 # Run the application with explicit config path
 CMD ["./spark-server", "-config", "config.json"]
