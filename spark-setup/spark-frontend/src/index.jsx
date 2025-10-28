@@ -63,19 +63,40 @@ axios.interceptors.response.use(async res => {
 	}
 	return Promise.resolve(res);
 }, err => {
-	// console.error(err);
+	console.error('Axios interceptor error:', err);
+	
+	// Handle network errors and connection issues
 	if (err.code === 'ECONNABORTED') {
 		message.error(i18n.t('COMMON.REQUEST_TIMEOUT'));
 		return Promise.reject(err);
 	}
+	
+	// Handle network errors (502, 503, 504)
+	if (err.code === 'ERR_NETWORK' || !err.response) {
+		message.error('Network error: Unable to connect to server. Please check your connection.');
+		return Promise.reject(err);
+	}
+	
 	let res = err.response;
 	let data = res?.data ?? {};
+	
+	// Handle server errors (502, 503, 504)
+	if (res?.status >= 500) {
+		message.error(`Server error (${res.status}): Backend is temporarily unavailable. Please try again later.`);
+		return Promise.reject(err);
+	}
 	
 	// Handle authentication errors
 	if (res?.status === 401) {
 		message.error('Authentication required. Please login.');
 		// Redirect to login page (HashRouter requires #/)
 		window.location.href = '/#/login';
+		return Promise.reject(err);
+	}
+	
+	// Handle 404 errors
+	if (res?.status === 404) {
+		message.error('API endpoint not found. Please check the backend configuration.');
 		return Promise.reject(err);
 	}
 	

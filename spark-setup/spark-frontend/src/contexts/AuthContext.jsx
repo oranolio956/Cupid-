@@ -41,12 +41,13 @@ export const AuthProvider = ({ children }) => {
         password: password
       };
       
-      // Test authentication
+      // Test authentication with better error handling
       const response = await axios.post('/api/device/list', {}, {
-        auth: creds
+        auth: creds,
+        timeout: 30000 // 30 second timeout
       });
       
-      if (response.data.code === 0) {
+      if (response.data && response.data.code === 0) {
         setCredentials(creds);
         setIsAuthenticated(true);
         // Save credentials for future requests
@@ -55,9 +56,22 @@ export const AuthProvider = ({ children }) => {
         axios.defaults.auth = creds;
         return true;
       }
+      console.error('Login failed: Invalid response code', response.data);
       return false;
     } catch (error) {
       console.error('Login error:', error);
+      
+      // Handle specific error types
+      if (error.code === 'ECONNABORTED') {
+        console.error('Login timeout: Server took too long to respond');
+      } else if (error.code === 'ERR_NETWORK') {
+        console.error('Login network error: Unable to connect to server');
+      } else if (error.response) {
+        console.error('Login server error:', error.response.status, error.response.data);
+      } else {
+        console.error('Login unknown error:', error.message);
+      }
+      
       return false;
     }
   };
