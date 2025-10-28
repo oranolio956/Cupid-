@@ -18,7 +18,7 @@ type ProductionConfig struct {
 func LoadProductionConfig() {
 	// Default production values for Render deployment
 	prodConfig := ProductionConfig{
-		Host:   "spark-backend-fixed-v2.onrender.com",
+		Host:   "spark-backend-wj4e.onrender.com", // Current production backend
 		Port:   443, // Render uses HTTPS, so port 443
 		Path:   "/api",
 		Secure: true, // Render only supports HTTPS
