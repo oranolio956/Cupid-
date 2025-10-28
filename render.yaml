@@ -15,6 +15,6 @@ services:
       - key: SPARK_SALT
         value: WG/Cc6eZUXWuqfi2+NNr2dso
       - key: SPARK_ADMIN_HASH
-        value: $2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG
+        value: $2a$10$PTBYNGa/qxsw7abNWZxhRu8eV0WjZyJ5NSQFqpjkqIJb6fGDL4YvG
     healthCheckPath: /api/health
     autoDeploy: true
