@@ -1,8 +1,8 @@
 // Ultra-Premium CupidBot Extension
 // Configuration
 const CONFIG = {
-    // Activation server URL - will be updated after deployment
-    ACTIVATION_SERVER_URL: 'https://activation-server-placeholder.onrender.com'
+    // Activation server URL - LIVE PRODUCTION
+    ACTIVATION_SERVER_URL: 'https://cupid-activation-server.onrender.com'
 };
 
 // State Management
