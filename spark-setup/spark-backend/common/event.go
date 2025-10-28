@@ -52,19 +52,23 @@ func AddEventOnce(fn EventCallback, connUUID, trigger string, timeout time.Durat
 		remove:     make(chan bool, 1), // Buffered to prevent goroutine leak
 	}
 	events.Set(trigger, ev)
-	defer close(ev.remove)
-	defer close(ev.finish)
+	
+	var result bool
 	select {
 	case ok := <-ev.finish:
-		events.Remove(trigger)
-		return ok
+		result = ok
 	case ok := <-ev.remove:
-		events.Remove(trigger)
-		return ok
+		result = ok
 	case <-time.After(timeout):
-		events.Remove(trigger)
-		return false
+		result = false
 	}
+	
+	// Clean up after receiving result
+	events.Remove(trigger)
+	close(ev.finish)
+	close(ev.remove)
+	
+	return result
 }
 
 // AddEvent adds a new event and client can call back

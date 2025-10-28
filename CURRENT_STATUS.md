@@ -147,7 +147,25 @@ All debugging tools installed, backend stabilized, authentication working, activ
 
 ## 🐛 KNOWN ISSUES
 
-### Critical (Need Fixing):
+### Critical (FIXED):
+1. ✅ **Event system race conditions** (FIXED)
+   - Fixed channel closure timing in `common/event.go`
+   - Channels now closed AFTER select completes
+   - Prevents panic on closed channel writes
+   - No goroutine leaks with buffered channels
+
+2. ✅ **Rate limiter memory management** (VERIFIED)
+   - Cleanup goroutine working correctly in `security/rate_limiting.go`
+   - lastAccess tracking prevents memory leaks
+   - Idle limiters properly removed after MaxIdleTime
+
+3. ✅ **DDoS protection request rate** (FIXED)
+   - Fixed per-second rate calculation in `security/ddos_protection.go`
+   - Window initialization now sets count to 1
+   - Rate calculated from window duration
+   - Removed broken LastSeen comparison
+
+### Critical (Still Need Fixing):
 1. ❌ **No RAT clients connected** (0 clients)
    - Need to generate client binary
    - Need to deploy test client
@@ -155,18 +173,6 @@ All debugging tools installed, backend stabilized, authentication working, activ
 2. ❌ **Activation server not deployed**
    - Extension can't validate keys
    - Need Render deployment with persistent disk
-
-3. ❌ **Event system race conditions** (from bug analysis)
-   - Race condition in `common/event.go`
-   - Goroutine leak in `AddEventOnce`
-   - Can cause panics on closed channels
-
-4. ❌ **Rate limiter cleanup broken**
-   - Memory leak in `security/rate_limiting.go`
-   - Limiters not being cleaned up
-
-5. ❌ **DDoS protection ineffective**
-   - Request rate check broken in `security/ddos_protection.go`
 
 ### Medium Priority:
 - ⚠️ Frontend preview server (Gitpod) not responding

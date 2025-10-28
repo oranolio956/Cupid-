@@ -317,28 +317,33 @@ func (ddp *DDoSProtector) isRequestRateExceeded(connInfo *ConnectionInfo) bool {
 	// Initialize window if not set
 	if connInfo.WindowStart.IsZero() {
 		connInfo.WindowStart = now
-		connInfo.WindowRequestCount = 0
+		connInfo.WindowRequestCount = 1
+		return false
 	}
 	
+	// Calculate time since window started
+	windowDuration := now.Sub(connInfo.WindowStart)
+	
 	// Check if window has expired (1 minute window)
-	if now.Sub(connInfo.WindowStart) > time.Minute {
+	if windowDuration > time.Minute {
 		// Reset window
 		connInfo.WindowStart = now
-		connInfo.WindowRequestCount = 0
+		connInfo.WindowRequestCount = 1
+		return false
 	}
 	
 	// Increment request count in current window
 	connInfo.WindowRequestCount++
 	
-	// Check if rate limit exceeded
+	// Check if rate limit exceeded for the minute
 	if connInfo.WindowRequestCount > ddp.config.MaxRequestsPerMinute {
 		return true
 	}
 	
-	// Also check requests per second (last second burst)
-	if now.Sub(connInfo.LastSeen) < time.Second {
-		// Count requests in last second (simplified check)
-		if connInfo.WindowRequestCount > ddp.config.MaxRequestsPerSecond {
+	// Check requests per second (calculate rate based on window duration)
+	if windowDuration > 0 {
+		requestsPerSecond := float64(connInfo.WindowRequestCount) / windowDuration.Seconds()
+		if requestsPerSecond > float64(ddp.config.MaxRequestsPerSecond) {
 			return true
 		}
 	}
