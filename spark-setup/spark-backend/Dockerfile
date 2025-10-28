@@ -22,8 +22,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o spark-server ./main.go
 # Create logs directory
 RUN mkdir -p /app/logs && chmod 777 /app/logs
 
-# Expose port (Render sets PORT env var, default 10000)
-EXPOSE 10000
+# Expose port (Render sets PORT env var, default 8000)
+EXPOSE 8000
 
 # Note: Removed Docker HEALTHCHECK - Render handles health checks via HTTP
 # Render will check /api/health endpoint configured in service settings
