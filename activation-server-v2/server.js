@@ -59,11 +59,23 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+        // Allow requests with no origin (like mobile apps, curl, Postman)
+        if (!origin) {
+            return callback(null, true);
         }
+        
+        // Allow Chrome extension origins (chrome-extension://...)
+        if (origin.startsWith('chrome-extension://')) {
+            return callback(null, true);
+        }
+        
+        // Allow whitelisted origins
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        
+        // Reject all others
+        callback(new Error('Not allowed by CORS'));
     },
     credentials: true
 }));
