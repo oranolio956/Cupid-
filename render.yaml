@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: spark-backend-fixed-v2
+    name: spark-backend
     env: docker
     dockerfilePath: Dockerfile
     dockerContext: ./spark-setup/spark-backend/
