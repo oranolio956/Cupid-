@@ -1,10 +1,15 @@
 // Ultra-Premium CupidBot Extension
+// Configuration
+const CONFIG = {
+    // Activation server URL - will be updated after deployment
+    ACTIVATION_SERVER_URL: 'https://activation-server-placeholder.onrender.com'
+};
+
 // State Management
 const AppState = {
     currentScreen: 'loading',
     hasSeenLoading: false,
     hasEnteredKey: false,
-    hasDownloadedDeps: false,
     trialKey: null,
     stats: {
         messages: 0,
@@ -12,14 +17,7 @@ const AppState = {
     }
 };
 
-// Dependencies to "download"
-const dependencies = [
-    { name: 'AI Model Weights', size: '847 MB', duration: 3000, icon: '🧠' },
-    { name: 'Conversation Engine', size: '234 MB', duration: 2000, icon: '💬' },
-    { name: 'NLP Processor', size: '156 MB', duration: 1500, icon: '📝' },
-    { name: 'Sentiment Analyzer', size: '89 MB', duration: 1000, icon: '😊' },
-    { name: 'Response Generator', size: '67 MB', duration: 800, icon: '✨' }
-];
+// Removed fake download dependencies - user requested immediate activation
 
 // Loading messages
 const loadingMessages = [
@@ -42,7 +40,6 @@ async function loadState() {
         chrome.storage.local.get([
             'hasSeenLoading',
             'hasEnteredKey',
-            'hasDownloadedDeps',
             'trialKey',
             'stats',
             'activationDate'
@@ -79,9 +76,6 @@ function initializeApp() {
     } else if (!AppState.hasEnteredKey) {
         showScreen('keyScreen');
         setupKeyEntry();
-    } else if (!AppState.hasDownloadedDeps) {
-        showScreen('downloadScreen');
-        startDependencyDownload();
     } else {
         showScreen('dashboardScreen');
         setupDashboard();
@@ -183,7 +177,7 @@ function setupKeyEntry() {
                 return;
             }
             
-            // Key is valid, proceed
+            // Key is valid, proceed directly to dashboard
             AppState.trialKey = key;
             AppState.hasEnteredKey = true;
             AppState.activationDate = new Date().toISOString();
@@ -191,9 +185,15 @@ function setupKeyEntry() {
             
             activateBtn.classList.remove('loading');
             
-            // Show download screen
-            showScreen('downloadScreen');
-            startDependencyDownload();
+            // Show success screen briefly, then dashboard
+            showScreen('successScreen');
+            showSuccessAnimation();
+            
+            // Auto-proceed to dashboard after 2 seconds
+            setTimeout(() => {
+                showScreen('dashboardScreen');
+                setupDashboard();
+            }, 2000);
         } catch (error) {
             activateBtn.classList.remove('loading');
             activateBtn.disabled = false;
@@ -209,11 +209,12 @@ function validateKeyFormat(key) {
 }
 
 async function validateKeyWithServer(key) {
-    // Extract just the key part after CUPID-
+    // Extract just the key part after CUPID- for server validation
     const keyPart = key.replace('CUPID-', '').replace(/-/g, '');
     
     try {
-        const response = await fetch(`https://activation-server.com/api/verify/${key}`, {
+        // Call activation server API - GET /api/verify/:key
+        const response = await fetch(`${CONFIG.ACTIVATION_SERVER_URL}/api/verify/${keyPart}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -221,11 +222,15 @@ async function validateKeyWithServer(key) {
         });
         
         if (!response.ok) {
+            console.error('Server returned error:', response.status);
             return false;
         }
         
         const result = await response.json();
-        return result.success && result.valid;
+        console.log('Validation result:', result);
+        
+        // Server returns { valid: true/false, ... }
+        return result.valid === true;
     } catch (error) {
         console.error('Server validation error:', error);
         // In case of network error, fall back to format validation only
@@ -241,79 +246,8 @@ function showError(message) {
     errorMsg.classList.add('show');
 }
 
-// ===== DEPENDENCY DOWNLOAD SCREEN =====
-async function startDependencyDownload() {
-    const container = document.getElementById('dependenciesList');
-    const overallProgress = document.getElementById('overallProgress');
-    const overallPercent = document.getElementById('overallPercent');
-    
-    // Create dependency items
-    container.innerHTML = dependencies.map((dep, index) => `
-        <div class="dependency-item" id="dep-${index}">
-            <div class="dep-icon">${dep.icon}</div>
-            <div class="dep-info">
-                <div class="dep-name">${dep.name}</div>
-                <div class="dep-size">${dep.size}</div>
-                <div class="dep-progress">
-                    <div class="dep-progress-fill" id="dep-progress-${index}"></div>
-                </div>
-            </div>
-            <div class="dep-status" id="dep-status-${index}">⏳</div>
-        </div>
-    `).join('');
-    
-    // Download each dependency sequentially
-    let totalProgress = 0;
-    const progressPerDep = 100 / dependencies.length;
-    
-    for (let i = 0; i < dependencies.length; i++) {
-        await downloadDependency(i, dependencies[i]);
-        totalProgress += progressPerDep;
-        overallProgress.style.width = totalProgress + '%';
-        overallPercent.textContent = Math.floor(totalProgress) + '%';
-    }
-    
-    // Mark as complete
-    AppState.hasDownloadedDeps = true;
-    await saveState();
-    
-    // Show success screen
-    await sleep(500);
-    showScreen('successScreen');
-    showSuccessAnimation();
-}
-
-async function downloadDependency(index, dep) {
-    const item = document.getElementById(`dep-${index}`);
-    const progressBar = document.getElementById(`dep-progress-${index}`);
-    const status = document.getElementById(`dep-status-${index}`);
-    
-    item.classList.add('downloading');
-    
-    return new Promise((resolve) => {
-        let progress = 0;
-        const steps = 20;
-        const stepDuration = dep.duration / steps;
-        
-        const interval = setInterval(() => {
-            progress += 100 / steps;
-            
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                
-                progressBar.style.width = '100%';
-                status.textContent = '✓';
-                item.classList.remove('downloading');
-                item.classList.add('completed');
-                
-                resolve();
-            } else {
-                progressBar.style.width = progress + '%';
-            }
-        }, stepDuration);
-    });
-}
+// ===== REMOVED FAKE DOWNLOAD SCREEN =====
+// User requested immediate activation without fake download progress bars
 
 // ===== SUCCESS SCREEN =====
 function showSuccessAnimation() {
