@@ -143,90 +143,6 @@
       --install-transition: cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    body.install-page {
-      min-height: 100vh;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background:
-        radial-gradient(circle at 12% 18%, rgba(255, 0, 110, 0.18) 0%, transparent 42%),
-        radial-gradient(circle at 82% 0%, rgba(101, 88, 255, 0.18) 0%, transparent 46%),
-        linear-gradient(170deg, #03030a 0%, #060518 40%, #02010c 100%);
-      color: var(--install-text-primary);
-      -webkit-font-smoothing: antialiased;
-      position: relative;
-    }
-
-    body.install-page::before,
-    body.install-page::after {
-      content: "";
-      position: fixed;
-      width: 46vw;
-      max-width: 600px;
-      aspect-ratio: 1;
-      pointer-events: none;
-      border-radius: 50%;
-      filter: blur(140px);
-      opacity: 0.55;
-      z-index: 0;
-      transition: opacity 0.6s var(--install-transition);
-    }
-
-    body.install-page::before {
-      top: -160px;
-      left: -200px;
-      background: radial-gradient(circle, rgba(255, 0, 110, 0.55) 0%, rgba(255, 0, 110, 0) 75%);
-    }
-
-    body.install-page::after {
-      right: -180px;
-      bottom: -220px;
-      background: radial-gradient(circle, rgba(85, 92, 255, 0.45) 0%, rgba(85, 92, 255, 0) 80%);
-    }
-
-    .install-main {
-      position: relative;
-      z-index: 1;
-    }
-
-    .install-shell {
-      max-width: var(--install-max-width);
-      margin: 0 auto;
-      padding: 72px 28px 120px;
-      display: flex;
-      flex-direction: column;
-      gap: 96px;
-    }
-
-    .install-hero {
-      position: relative;
-      padding: 56px;
-      border-radius: var(--install-radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      background: linear-gradient(155deg, rgba(20, 17, 34, 0.96) 0%, rgba(10, 9, 24, 0.94) 48%, rgba(26, 14, 40, 0.92) 100%);
-      box-shadow: var(--install-shadow);
-      overflow: hidden;
-    }
-
-    .install-hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 18% 0%, rgba(255, 0, 110, 0.32) 0%, transparent 58%),
-        radial-gradient(circle at 86% 26%, rgba(101, 88, 255, 0.28) 0%, transparent 54%);
-      mix-blend-mode: screen;
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .install-hero_inner {
-      position: relative;
-      z-index: 1;
-      max-width: 720px;
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-    }
-
     .install-eyebrow {
       display: inline-flex;
       align-items: center;
@@ -248,27 +164,6 @@
       border-radius: 50%;
       background: linear-gradient(135deg, var(--install-accent) 0%, var(--install-accent-alt) 100%);
       box-shadow: 0 0 12px rgba(255, 0, 110, 0.6);
-    }
-
-    .install-hero h1 {
-      font-family: 'Syne', 'Inter', sans-serif;
-      font-size: clamp(42px, 5vw, 70px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-    }
-
-    .install-hero p {
-      font-size: 20px;
-      line-height: 1.6;
-      color: var(--install-text-secondary);
-      max-width: 640px;
-    }
-
-    .install-hero_actions {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      margin-top: 8px;
     }
 
     .install-btn_primary,
@@ -307,34 +202,6 @@
     .install-btn_primary.install-btn_primary--compact {
       padding: 16px 28px;
       font-size: 14px;
-    }
-
-    .install-hero_meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .install-meta_tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--install-text-secondary);
-      font-size: 13px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .install-meta_tag::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.35);
     }
 
     .install-flow {
@@ -931,15 +798,6 @@
     }
 
     @media (max-width: 860px) {
-      .install-hero {
-        padding: 42px 32px;
-      }
-
-      .install-shell {
-        padding: 48px 20px 80px;
-        gap: 72px;
-      }
-
       .install-flow {
         padding: 40px 30px 44px;
       }
@@ -961,26 +819,9 @@
     }
 
     @media (max-width: 540px) {
-      .install-hero {
-        padding: 34px 24px;
-      }
-
-      .install-hero_actions {
-        align-items: stretch;
-      }
-
       .install-btn_primary,
       .install-btn_secondary,
       .install-btn_ghost {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .install-hero_meta {
-        gap: 10px;
-      }
-
-      .install-meta_tag {
         width: 100%;
         justify-content: center;
       }
@@ -1025,7 +866,7 @@
     }
   </style>
 </head>
-<body class="body install-page">
+<body class="body">
   <div class="page-wrapper">
     <div class="global-styles w-embed"><style>
 .w-richtext>:first-child {
@@ -1114,217 +955,262 @@ a {
         </div>
       </div>
     </header>
-    <main class="main-wrapper install-main">
-      <div class="install-shell">
-        <section class="install-hero" id="installHero">
-          <div class="install-hero_inner">
-            <span class="install-eyebrow">Chrome install guide</span>
-            <h1>Try CupidBot OFM for free</h1>
-            <p>Deploy the official CupidBot OFM Chrome workspace your operators rely on. This guided install mirrors our internal rollout playbook—precise, secure, and production ready.</p>
-            <div class="install-hero_actions">
-              <button type="button" class="install-btn_primary" id="startGuide">Start guided install</button>
-              <div class="install-hero_meta">
-                <span class="install-meta_tag">No credit card required</span>
-                <span class="install-meta_tag">Chrome desktop 114+</span>
-                <span class="install-meta_tag">3-minute setup</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="install-flow" id="installGuide">
-          <div class="install-progress">
-            <div class="install-progress_header">
-              <span class="install-progress_primary" data-progress-label>Step 1 of 4</span>
-              <span class="install-progress_secondary" data-progress-secondary>0 steps complete</span>
-            </div>
-            <div class="install-progress_track">
-              <div class="install-progress_fill" data-progress-fill></div>
-            </div>
-          </div>
-          <div class="install-flow_grid">
-            <nav class="install-steps_nav" aria-label="CupidBot OFM install steps">
-              <button type="button" class="install-step_btn active" data-step-selector="0" aria-current="step">
-                <span class="install-step_index">1</span>
-                <div class="install-step_copy">
-                  <span class="install-step_title">Confirm your setup</span>
-                  <span class="install-step_status" data-step-status>In progress</span>
-                </div>
-              </button>
-              <button type="button" class="install-step_btn" data-step-selector="1">
-                <span class="install-step_index">2</span>
-                <div class="install-step_copy">
-                  <span class="install-step_title">Download the package</span>
-                  <span class="install-step_status" data-step-status>Ready</span>
-                </div>
-              </button>
-              <button type="button" class="install-step_btn" data-step-selector="2">
-                <span class="install-step_index">3</span>
-                <div class="install-step_copy">
-                  <span class="install-step_title">Load in Chrome</span>
-                  <span class="install-step_status" data-step-status>Ready</span>
-                </div>
-              </button>
-              <button type="button" class="install-step_btn" data-step-selector="3">
-                <span class="install-step_index">4</span>
-                <div class="install-step_copy">
-                  <span class="install-step_title">Finish &amp; verify</span>
-                  <span class="install-step_status" data-step-status>Ready</span>
-                </div>
-              </button>
-            </nav>
-            <div class="install-panels">
-              <article class="install-panel active" data-step-panel="0">
-                <h2 class="install-panel_heading">1. Confirm your setup</h2>
-                <div class="install-panel_body">
-                  <p>Match the environment our OFM operators use before loading the extension.</p>
-                  <ul class="install-checklist">
-                    <li>Chrome desktop on macOS or Windows, signed into the profile tied to your OFM seat.</li>
-                    <li>Version 114 or later with automatic updates enabled.</li>
-                    <li>Local admin access so you can manage extensions.</li>
-                  </ul>
-                  <div class="install-panel_actions">
-                    <button type="button" class="install-btn_secondary" data-open-settings>Open Chrome version check</button>
-                    <button type="button" class="install-btn_ghost" data-complete-step="0">This matches our setup</button>
-                  </div>
-                  <p class="install-footnote">Chrome opens <em>chrome://settings/help</em> in a new tab to confirm your version.</p>
-                </div>
-              </article>
-              <article class="install-panel" data-step-panel="1">
-                <h2 class="install-panel_heading">2. Download CupidBot OFM</h2>
-                <div class="install-panel_body">
-                  <p>We distribute the workspace as a signed package so you can bypass the public Chrome Web Store.</p>
-                  <div class="install-file">
-                    <div>
-                      <div class="install-file_meta">
-                        <span>ZIP package</span>
-                        <span>Version 1.0.0</span>
-                        <span>Updated Nov 2025</span>
+      <main class="main-wrapper">
+        <section class="section-home-hero">
+          <div class="page-padding">
+            <div class="container-xxlarge">
+              <div class="padding-vertical padding-xlarge">
+                <div class="home-hero-grid">
+                  <div class="home-hero-grid-left">
+                    <div class="margin-bottom margin-small">
+                      <div class="text-meta">Chrome install guide</div>
+                    </div>
+                    <div class="margin-bottom margin-small">
+                      <h1 class="heading-medium">Try CupidBot OFM for free</h1>
+                    </div>
+                    <div class="max-width-medium">
+                      <div class="text-size-xlarge">Deploy the official CupidBot OFM Chrome workspace your operators rely on. This guided install mirrors our internal rollout playbook—precise, secure, and production ready.</div>
+                      <div class="margin-top margin-medium">
+                        <a href="#installGuide" id="startGuide" class="button primary ga-event w-inline-block">
+                          <div class="button-inner">
+                            <div class="button-inner-text">Start guided install</div>
+                            <div class="button-inner-text-hover">Start guided install</div>
+                          </div>
+                        </a>
                       </div>
-                      <h3>cupidbot-ofm-extension.zip</h3>
-                      <p>Contains the unpacked extension, assets, and manifest. Keep the extracted folder on secure shared storage.</p>
-                    </div>
-                    <div class="install-panel_actions">
-                        <a class="install-btn_primary install-btn_primary--compact" id="downloadPackage" href="../cupidbot-extension.zip" download>Download package</a>
-                      <button type="button" class="install-btn_secondary" data-open-release>Review manifest</button>
+                      <div class="margin-top margin-small">
+                        <div class="text-meta">No credit card required • Chrome desktop 114+ • 3-minute setup</div>
+                      </div>
                     </div>
                   </div>
-                  <ul class="install-checklist">
-                    <li>Unzip the download to reveal the <code>cupidbot-extension</code> folder.</li>
-                    <li>Store the folder somewhere it will not move (Desktop or Applications works well).</li>
-                  </ul>
-                  <div class="install-panel_actions">
-                    <button type="button" class="install-btn_ghost" data-complete-step="1">Package ready</button>
+                  <div class="home-hero-grid-right">
+                    <img class="image" src="../cdn.prod.website-files.com/6440ef10d027f956128da952/6495e5706d54f2a07e225499_cupidbot-scrnshots.png" loading="lazy" alt="CupidBot OFM Chrome extension preview">
                   </div>
                 </div>
-              </article>
-              <article class="install-panel" data-step-panel="2">
-                <h2 class="install-panel_heading">3. Load the extension in Chrome</h2>
-                <div class="install-panel_body">
-                  <p>Enable developer mode, then point Chrome at the unpacked folder.</p>
-                  <ol class="install-ordered">
-                    <li>Open Chrome → click the puzzle icon → <strong>Manage Extensions</strong> (or use the shortcut below).</li>
-                    <li>Toggle <strong>Developer mode</strong> in the top-right corner.</li>
-                    <li>Select <strong>Load unpacked</strong> and choose the <code>cupidbot-extension</code> folder you just extracted.</li>
-                  </ol>
-                  <div class="install-panel_callout">
-                    <strong>Heads up</strong>
-                    <p>Chrome may prompt you to confirm loading the folder. Approve it—this is the signed production build we ship to operators.</p>
-                  </div>
-                  <div class="install-panel_actions">
-                    <button type="button" class="install-btn_secondary" data-open-extensions>Open extensions tab</button>
-                    <button type="button" class="install-btn_ghost" data-complete-step="2">Extension is loaded</button>
-                  </div>
-                </div>
-              </article>
-              <article class="install-panel" data-step-panel="3">
-                <h2 class="install-panel_heading">4. Finish &amp; verify</h2>
-                <div class="install-panel_body">
-                  <p>Lock in the install so your operators can start session work immediately.</p>
-                  <ul class="install-checklist">
-                    <li>Pin the CupidBot icon from the extensions tray for quick access.</li>
-                    <li>Open the popup and sign in with your OFM workspace credentials.</li>
-                    <li>Enter the workspace token from ops to sync scripts and routing.</li>
-                  </ul>
-                  <div class="install-panel_actions">
-                    <button type="button" class="install-btn_ghost" data-complete-step="3">Mark install complete</button>
-                  </div>
-                  <div class="install-completion" data-completion>
-                    <strong>✓ Install verified</strong>
-                    <p>Keep the extracted folder in place; future updates replace it in-place. Repeat this guide for any additional seats.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-        <section class="install-seo" aria-labelledby="installSeoHeading">
-          <div class="install-seo_header">
-            <span class="install-eyebrow install-eyebrow--alt">CupidBot SEO advantage</span>
-            <h2 id="installSeoHeading">Why CupidBot OFM dominates OnlyFans management search results</h2>
-            <p>Every line of this install guide is engineered to signal relevance for searchers typing “CupidBot”, “CupidBot OFM”, “CupidBot AI”, or broader OnlyFans management queries. We combine authoritative copy, structured data, and fast load times so this page outranks generic aggregator posts and sends operators straight into the official workspace.</p>
-            <div class="install-seo_links">
-              <a class="install-btn_ghost" href="https://cupidbot.org" target="_blank" rel="noopener">Explore CupidBot.ai</a>
-              <a class="install-btn_ghost" href="../product/bot.html">View the product tour</a>
-              <a class="install-btn_ghost" href="../contact.html">Talk with the OFM team</a>
-            </div>
-          </div>
-          <div class="install-seo_grid">
-            <article class="install-seo_card">
-              <h3>Semantic coverage for CupidBot keywords</h3>
-              <p>Rich headings, descriptive alt copy, and internal linking reinforce the exact phrases fans and OFM operators type into Google—so “CupidBot OFM install”, “CupidBot AI chrome extension”, and related searches all map directly to this authoritative page.</p>
-              <ul>
-                <li>CupidBot OFM install</li>
-                <li>CupidBot AI Chrome</li>
-                <li>OnlyFans management automation</li>
-              </ul>
-            </article>
-            <article class="install-seo_card">
-              <h3>Structured data Google trusts</h3>
-              <p>Schema.org Product and FAQ markup broadcast key facts—free trial availability, compliance posture, and install duration—so search engines surface rich snippets that dwarf competing summaries or scraped content.</p>
-              <p><a href="#installFaqHeading">Skip to the FAQ</a> to see the answers Google picks up.</p>
-            </article>
-            <article class="install-seo_card">
-              <h3>Authority from the source</h3>
-              <p>This guide lives on the same stack as the rest of CupidBot.ai, inherits our high domain signals, and links back into the product ecosystem. Operators land on the verified workspace instead of risky clones or outdated “trial key” blogs.</p>
-              <p><a href="https://twitter.com/cupidbotai" target="_blank" rel="noopener">Follow CupidBot AI updates</a> for release notes and SEO announcements.</p>
-            </article>
-          </div>
-          <div class="install-faq" aria-labelledby="installFaqHeading">
-            <h2 id="installFaqHeading">CupidBot OFM quick answers</h2>
-            <div class="install-faq_list">
-              <div class="install-faq_item">
-                <h3>What is CupidBot OFM?</h3>
-                <p>CupidBot OFM is the professional OnlyFans management workspace powered by our proprietary AI. The Chrome extension you download here synchronizes scripts, chat automations, and booking workflows for multi-seat teams.</p>
-              </div>
-              <div class="install-faq_item">
-                <h3>Is the install really free?</h3>
-                <p>Yes. The `/trial/` route delivers a zero-cost onboarding flow—no credit card required—and lets you experience the CupidBot AI stack before upgrading to a paid seat.</p>
-              </div>
-              <div class="install-faq_item">
-                <h3>How fast can we deploy?</h3>
-                <p>The guided wizard takes under three minutes: download, toggle developer mode, load the folder, and verify inside the OFM dashboard.</p>
-              </div>
-              <div class="install-faq_item">
-                <h3>Does CupidBot stay compliant?</h3>
-                <p>Absolutely. CupidBot OFM mirrors human pacing, logs every action for audit, and keeps OnlyFans policies front-and-center so long-term account health is never compromised.</p>
               </div>
             </div>
           </div>
         </section>
-        <section class="install-support">
-          <div class="install-support_card">
-            <div>
-              <h2>Need our team live on the call?</h2>
-              <p>Ping the OFM room or drop us a note—our operators will screenshare, confirm policy, and finish the setup alongside you.</p>
-            </div>
-            <div class="install-support_actions">
-              <a class="install-btn_secondary" href="https://t.me/cupidbotg" target="_blank" rel="noopener">Open Telegram</a>
-              <a class="install-btn_secondary" href="mailto:team@cupidbot.org">Email support</a>
+        <section id="installGuide" class="section">
+          <div class="page-padding">
+            <div class="container-xxlarge">
+              <div class="line"></div>
+              <div class="padding-vertical padding-xlarge">
+                <div class="install-flow">
+                  <div class="install-progress">
+                    <div class="install-progress_header">
+                      <span class="install-progress_primary" data-progress-label>Step 1 of 4</span>
+                      <span class="install-progress_secondary" data-progress-secondary>0 steps complete</span>
+                    </div>
+                    <div class="install-progress_track">
+                      <div class="install-progress_fill" data-progress-fill></div>
+                    </div>
+                  </div>
+                  <div class="install-flow_grid">
+                    <nav class="install-steps_nav" aria-label="CupidBot OFM install steps">
+                      <button type="button" class="install-step_btn active" data-step-selector="0" aria-current="step">
+                        <span class="install-step_index">1</span>
+                        <div class="install-step_copy">
+                          <span class="install-step_title">Confirm your setup</span>
+                          <span class="install-step_status" data-step-status>In progress</span>
+                        </div>
+                      </button>
+                      <button type="button" class="install-step_btn" data-step-selector="1">
+                        <span class="install-step_index">2</span>
+                        <div class="install-step_copy">
+                          <span class="install-step_title">Download the package</span>
+                          <span class="install-step_status" data-step-status>Ready</span>
+                        </div>
+                      </button>
+                      <button type="button" class="install-step_btn" data-step-selector="2">
+                        <span class="install-step_index">3</span>
+                        <div class="install-step_copy">
+                          <span class="install-step_title">Load in Chrome</span>
+                          <span class="install-step_status" data-step-status>Ready</span>
+                        </div>
+                      </button>
+                      <button type="button" class="install-step_btn" data-step-selector="3">
+                        <span class="install-step_index">4</span>
+                        <div class="install-step_copy">
+                          <span class="install-step_title">Finish &amp; verify</span>
+                          <span class="install-step_status" data-step-status>Ready</span>
+                        </div>
+                      </button>
+                    </nav>
+                    <div class="install-panels">
+                      <article class="install-panel active" data-step-panel="0">
+                        <h2 class="install-panel_heading">1. Confirm your setup</h2>
+                        <div class="install-panel_body">
+                          <p>Match the environment our OFM operators use before loading the extension.</p>
+                          <ul class="install-checklist">
+                            <li>Chrome desktop on macOS or Windows, signed into the profile tied to your OFM seat.</li>
+                            <li>Version 114 or later with automatic updates enabled.</li>
+                            <li>Local admin access so you can manage extensions.</li>
+                          </ul>
+                          <div class="install-panel_actions">
+                            <button type="button" class="install-btn_secondary" data-open-settings>Open Chrome version check</button>
+                            <button type="button" class="install-btn_ghost" data-complete-step="0">This matches our setup</button>
+                          </div>
+                          <p class="install-footnote">Chrome opens <em>chrome://settings/help</em> in a new tab to confirm your version.</p>
+                        </div>
+                      </article>
+                      <article class="install-panel" data-step-panel="1">
+                        <h2 class="install-panel_heading">2. Download CupidBot OFM</h2>
+                        <div class="install-panel_body">
+                          <p>We distribute the workspace as a signed package so you can bypass the public Chrome Web Store.</p>
+                          <div class="install-file">
+                            <div>
+                              <div class="install-file_meta">
+                                <span>ZIP package</span>
+                                <span>Version 1.0.0</span>
+                                <span>Updated Nov 2025</span>
+                              </div>
+                              <h3>cupidbot-ofm-extension.zip</h3>
+                              <p>Contains the unpacked extension, assets, and manifest. Keep the extracted folder on secure shared storage.</p>
+                            </div>
+                            <div class="install-panel_actions">
+                              <a class="install-btn_primary install-btn_primary--compact" id="downloadPackage" href="../cupidbot-extension.zip" download>Download package</a>
+                              <button type="button" class="install-btn_secondary" data-open-release>Review manifest</button>
+                            </div>
+                          </div>
+                          <ul class="install-checklist">
+                            <li>Unzip the download to reveal the <code>cupidbot-extension</code> folder.</li>
+                            <li>Store the folder somewhere it will not move (Desktop or Applications works well).</li>
+                          </ul>
+                          <div class="install-panel_actions">
+                            <button type="button" class="install-btn_ghost" data-complete-step="1">Package ready</button>
+                          </div>
+                        </div>
+                      </article>
+                      <article class="install-panel" data-step-panel="2">
+                        <h2 class="install-panel_heading">3. Load the extension in Chrome</h2>
+                        <div class="install-panel_body">
+                          <p>Enable developer mode, then point Chrome at the unpacked folder.</p>
+                          <ol class="install-ordered">
+                            <li>Open Chrome → click the puzzle icon → <strong>Manage Extensions</strong> (or use the shortcut below).</li>
+                            <li>Toggle <strong>Developer mode</strong> in the top-right corner.</li>
+                            <li>Select <strong>Load unpacked</strong> and choose the <code>cupidbot-extension</code> folder you just extracted.</li>
+                          </ol>
+                          <div class="install-panel_callout">
+                            <strong>Heads up</strong>
+                            <p>Chrome may prompt you to confirm loading the folder. Approve it—this is the signed production build we ship to operators.</p>
+                          </div>
+                          <div class="install-panel_actions">
+                            <button type="button" class="install-btn_secondary" data-open-extensions>Open extensions tab</button>
+                            <button type="button" class="install-btn_ghost" data-complete-step="2">Extension is loaded</button>
+                          </div>
+                        </div>
+                      </article>
+                      <article class="install-panel" data-step-panel="3">
+                        <h2 class="install-panel_heading">4. Finish &amp; verify</h2>
+                        <div class="install-panel_body">
+                          <p>Lock in the install so your operators can start session work immediately.</p>
+                          <ul class="install-checklist">
+                            <li>Pin the CupidBot icon from the extensions tray for quick access.</li>
+                            <li>Open the popup and sign in with your OFM workspace credentials.</li>
+                            <li>Enter the workspace token from ops to sync scripts and routing.</li>
+                          </ul>
+                          <div class="install-panel_actions">
+                            <button type="button" class="install-btn_ghost" data-complete-step="3">Mark install complete</button>
+                          </div>
+                          <div class="install-completion" data-completion>
+                            <strong>✓ Install verified</strong>
+                            <p>Keep the extracted folder in place; future updates replace it in-place. Repeat this guide for any additional seats.</p>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
-      </div>
-    </main>
+        <section class="section">
+          <div class="page-padding">
+            <div class="container-xxlarge">
+              <div class="line"></div>
+              <div class="padding-vertical padding-xlarge">
+                <div class="install-seo" aria-labelledby="installSeoHeading">
+                  <div class="install-seo_header">
+                    <span class="install-eyebrow install-eyebrow--alt">CupidBot SEO advantage</span>
+                    <h2 id="installSeoHeading">Why CupidBot OFM dominates OnlyFans management search results</h2>
+                    <p>Every line of this install guide is engineered to signal relevance for searchers typing “CupidBot”, “CupidBot OFM”, “CupidBot AI”, or broader OnlyFans management queries. We combine authoritative copy, structured data, and fast load times so this page outranks generic aggregator posts and sends operators straight into the official workspace.</p>
+                    <div class="install-seo_links">
+                      <a class="install-btn_ghost" href="https://cupidbot.org" target="_blank" rel="noopener">Explore CupidBot.ai</a>
+                      <a class="install-btn_ghost" href="../product/bot.html">View the product tour</a>
+                      <a class="install-btn_ghost" href="../contact.html">Talk with the OFM team</a>
+                    </div>
+                  </div>
+                  <div class="install-seo_grid">
+                    <article class="install-seo_card">
+                      <h3>Semantic coverage for CupidBot keywords</h3>
+                      <p>Rich headings, descriptive alt copy, and internal linking reinforce the exact phrases fans and OFM operators type into Google—so “CupidBot OFM install”, “CupidBot AI chrome extension”, and related searches all map directly to this authoritative page.</p>
+                      <ul>
+                        <li>CupidBot OFM install</li>
+                        <li>CupidBot AI Chrome</li>
+                        <li>OnlyFans management automation</li>
+                      </ul>
+                    </article>
+                    <article class="install-seo_card">
+                      <h3>Structured data Google trusts</h3>
+                      <p>Schema.org Product and FAQ markup broadcast key facts—free trial availability, compliance posture, and install duration—so search engines surface rich snippets that dwarf competing summaries or scraped content.</p>
+                      <p><a href="#installFaqHeading">Skip to the FAQ</a> to see the answers Google picks up.</p>
+                    </article>
+                    <article class="install-seo_card">
+                      <h3>Authority from the source</h3>
+                      <p>This guide lives on the same stack as the rest of CupidBot.ai, inherits our high domain signals, and links back into the product ecosystem. Operators land on the verified workspace instead of risky clones or outdated “trial key” blogs.</p>
+                      <p><a href="https://twitter.com/cupidbotai" target="_blank" rel="noopener">Follow CupidBot AI updates</a> for release notes and SEO announcements.</p>
+                    </article>
+                  </div>
+                  <div class="install-faq" aria-labelledby="installFaqHeading">
+                    <h2 id="installFaqHeading">CupidBot OFM quick answers</h2>
+                    <div class="install-faq_list">
+                      <div class="install-faq_item">
+                        <h3>What is CupidBot OFM?</h3>
+                        <p>CupidBot OFM is the professional OnlyFans management workspace powered by our proprietary AI. The Chrome extension you download here synchronizes scripts, chat automations, and booking workflows for multi-seat teams.</p>
+                      </div>
+                      <div class="install-faq_item">
+                        <h3>Is the install really free?</h3>
+                        <p>Yes. The `/trial/` route delivers a zero-cost onboarding flow—no credit card required—and lets you experience the CupidBot AI stack before upgrading to a paid seat.</p>
+                      </div>
+                      <div class="install-faq_item">
+                        <h3>How fast can we deploy?</h3>
+                        <p>The guided wizard takes under three minutes: download, toggle developer mode, load the folder, and verify inside the OFM dashboard.</p>
+                      </div>
+                      <div class="install-faq_item">
+                        <h3>Does CupidBot stay compliant?</h3>
+                        <p>Absolutely. CupidBot OFM mirrors human pacing, logs every action for audit, and keeps OnlyFans policies front-and-center so long-term account health is never compromised.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="section">
+          <div class="page-padding">
+            <div class="container-xxlarge">
+              <div class="line"></div>
+              <div class="padding-vertical padding-xlarge">
+                <div class="install-support">
+                  <div class="install-support_card">
+                    <div>
+                      <h2>Need our team live on the call?</h2>
+                      <p>Ping the OFM room or drop us a note—our operators will screenshare, confirm policy, and finish the setup alongside you.</p>
+                    </div>
+                    <div class="install-support_actions">
+                      <a class="install-btn_secondary" href="https://t.me/cupidbotg" target="_blank" rel="noopener">Open Telegram</a>
+                      <a class="install-btn_secondary" href="mailto:team@cupidbot.org">Email support</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     <div class="footer">
       <div class="page-padding">
         <div class="container-xxlarge">
@@ -1538,7 +1424,8 @@ a {
 
       const startGuide = document.getElementById('startGuide');
       if (startGuide) {
-        startGuide.addEventListener('click', () => {
+        startGuide.addEventListener('click', (event) => {
+          event.preventDefault();
           document.getElementById('installGuide')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           setActiveStep(0);
         });
