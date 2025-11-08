@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Console Error Checker - CupidBot</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #d4d4d4; }
+    .error { color: #f48771; background: #3f1d1d; padding: 10px; margin: 5px 0; border-left: 4px solid #f48771; }
+    .warning { color: #dcdcaa; background: #3a3a2a; padding: 10px; margin: 5px 0; border-left: 4px solid #dcdcaa; }
+    .info { color: #4fc1ff; background: #1d2d3f; padding: 10px; margin: 5px 0; border-left: 4px solid #4fc1ff; }
+    .success { color: #89d185; background: #1d3f1d; padding: 10px; margin: 5px 0; border-left: 4px solid #89d185; }
+    h1 { color: #4fc1ff; }
+    button { padding: 10px 20px; margin: 5px; background: #007acc; color: white; border: none; cursor: pointer; }
+    button:hover { background: #005a9e; }
+    #output { margin-top: 20px; }
+    #frame-container { position: absolute; left: -9999px; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Console Error Checker</h1>
+  <p>Check console errors on any page</p>
+  
+  <div>
+    <input type="text" id="url" value="index.html" style="width: 400px; padding: 10px; background: #2d2d2d; color: #d4d4d4; border: 1px solid #555;">
+    <button onclick="checkPage()">Check Page</button>
+    <button onclick="clearOutput()">Clear</button>
+  </div>
+  
+  <div id="output"></div>
+  <div id="frame-container"></div>
+  
+  <script>
+    const output = document.getElementById('output');
+    const container = document.getElementById('frame-container');
+    let errorCount = 0;
+    let warningCount = 0;
+    
+    window.addEventListener('error', (e) => {
+      log('error', `Global Error: ${e.message} at ${e.filename}:${e.lineno}`);
+    });
+    
+    function log(type, message) {
+      const div = document.createElement('div');
+      div.className = type;
+      div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      output.appendChild(div);
+      if (type === 'error') errorCount++;
+      if (type === 'warning') warningCount++;
+    }
+    
+    function checkPage() {
+      const url = document.getElementById('url').value;
+      errorCount = 0;
+      warningCount = 0;
+      output.innerHTML = '';
+      
+      log('info', `Checking: ${url}`);
+      
+      // Create iframe to load the page
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url;
+      
+      iframe.onload = function() {
+        log('success', 'Page loaded successfully');
+        
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          
+          // Check for missing resources
+          const links = doc.querySelectorAll('link[rel="stylesheet"]');
+          const scripts = doc.querySelectorAll('script[src]');
+          const images = doc.querySelectorAll('img[src]');
+          
+          log('info', `Found ${links.length} stylesheets, ${scripts.length} scripts, ${images.length} images`);
+          
+          // Check CSP
+          const csp = doc.querySelector('meta[http-equiv="Content-Security-Policy"]');
+          if (csp) {
+            log('info', 'CSP detected: ' + csp.content.substring(0, 100) + '...');
+            if (csp.content.includes('upgrade-insecure-requests')) {
+              log('warning', 'CSP has upgrade-insecure-requests (may break HTTP testing)');
+            }
+          }
+          
+          // Check for common issues
+          if (doc.body.children.length === 0) {
+            log('error', 'Body is empty!');
+          }
+          
+          // Summary
+          log('success', `Check complete: ${errorCount} errors, ${warningCount} warnings`);
+          
+        } catch(e) {
+          log('error', 'Cannot access iframe content (CORS or CSP issue): ' + e.message);
+        }
+        
+        setTimeout(() => iframe.remove(), 1000);
+      };
+      
+      iframe.onerror = function(e) {
+        log('error', 'Failed to load page: ' + e);
+        iframe.remove();
+      };
+      
+      container.appendChild(iframe);
+      
+      // Also try direct fetch
+      fetch(url)
+        .then(r => r.text())
+        .then(html => {
+          // Basic HTML checks
+          if (!html.includes('<!DOCTYPE')) log('warning', 'Missing DOCTYPE');
+          if (!html.includes('<body')) log('error', 'No <body> tag');
+          if (html.length < 1000) log('warning', 'HTML is suspiciously short: ' + html.length + ' bytes');
+          
+          log('info', `HTML size: ${html.length} bytes`);
+        })
+        .catch(e => log('error', 'Fetch failed: ' + e.message));
+    }
+    
+    function clearOutput() {
+      output.innerHTML = '';
+      errorCount = 0;
+      warningCount = 0;
+    }
+    
+    // Auto-check on load
+    setTimeout(() => checkPage(), 500);
+  </script>
+</body>
+</html>
