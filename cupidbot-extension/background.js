@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     
     if (details.reason === 'install') {
         // First install - open trial page
-        chrome.tabs.create({ url: 'https://cupidbot.org/trial.html' });
+        chrome.tabs.create({ url: 'https://cupidbot.org/trial/' });
     }
 });
 

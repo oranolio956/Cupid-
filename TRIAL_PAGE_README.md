@@ -34,7 +34,7 @@
 
 ## 📁 Files
 
-- **trial.html** - Main trial page
+- **trial/index.html** - Main install guide (served at `/trial/`)
 - **cupidbot-extension/** - Chrome extension folder
   - manifest.json
   - popup.html / popup.js
@@ -46,17 +46,17 @@
 ## 🚀 How to View
 
 ### Option 1: Direct File
-Simply open `trial.html` in your browser
+Simply open `trial/index.html` in your browser
 
 ### Option 2: Local Server
 ```bash
 cd /workspaces/Cupid-
 python3 -m http.server 8080
 ```
-Then visit: `http://localhost:8080/trial.html`
+Then visit: `http://localhost:8080/trial/`
 
 ### Option 3: Live Server (VS Code)
-1. Right-click on `trial.html`
+1. Right-click on `trial/index.html`
 2. Select "Open with Live Server"
 
 ## 🎯 Design Matches Your Site

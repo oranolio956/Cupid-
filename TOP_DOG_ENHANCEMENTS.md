@@ -251,4 +251,4 @@ The page now **proves** the AI is "perfectly made" through flawless execution. E
 
 **Status:** ✅ Complete "Top Dog" Implementation
 
-**Preview:** [https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial.html](https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial.html)
+**Preview:** [https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial/](https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial/)

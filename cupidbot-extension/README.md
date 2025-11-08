@@ -42,7 +42,7 @@
 
 ## 🔑 Getting a Trial Key
 
-Visit [https://cupidbot.org/trial.html](https://cupidbot.org/trial.html) to generate your free 30-day trial key.
+Visit [https://cupidbot.org/trial/](https://cupidbot.org/trial/) to generate your free 30-day trial key.
 
 ## 🎯 What Gets "Downloaded"
 
@@ -146,7 +146,7 @@ This extension was designed to feel like a $100,000 product:
 ## 🔗 Links
 
 - Website: [https://cupidbot.org](https://cupidbot.org)
-- Trial Page: [https://cupidbot.org/trial.html](https://cupidbot.org/trial.html)
+- Trial Page: [https://cupidbot.org/trial/](https://cupidbot.org/trial/)
 - Support: [https://cupidbot.org/contact.html](https://cupidbot.org/contact.html)
 
 ---

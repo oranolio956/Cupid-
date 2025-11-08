@@ -289,11 +289,11 @@ A "Top Dog" brand doesn't need to shout. It speaks with quiet confidence through
 
 ## Files Modified
 
-- `trial.html` - Complete premium overhaul
+- `trial/index.html` - Complete premium overhaul (served at `/trial/`)
 
 ## Testing
 
-**Live Preview:** [https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial.html](https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial.html)
+**Live Preview:** [https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial/](https://8080--019a1d0f-c68e-7ac8-8bf7-2baa263d0b70.us-east-1-01.gitpod.dev/trial/)
 
 **Test Checklist:**
 - ✅ Font feels professional, not amateur
