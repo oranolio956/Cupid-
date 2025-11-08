@@ -63,7 +63,7 @@ curl https://cupid-activation-server.onrender.com/health
 
 ### 6. Update Chrome Extension
 
-Update `cupidbot-extension/popup.js`:
+Update `cupidbotofm_0.19.151/popup.js`:
 ```javascript
 const CONFIG = {
     ACTIVATION_SERVER_URL: 'https://cupid-activation-server.onrender.com'

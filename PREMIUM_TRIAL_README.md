@@ -155,7 +155,7 @@ State expires after 24 hours to maintain security.
 - `activation-server.js` - Node.js activation API server
 
 ### Supporting Files
-- `cupidbot-extension.zip` - Extension package for download
+- `cupidbotofm_0.19.151.zip` - Extension package for download
 
 ## Running Locally
 

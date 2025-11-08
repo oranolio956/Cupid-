@@ -53,7 +53,7 @@ Expected response:
 ```
 
 ### 7. Update Chrome Extension
-Edit `cupidbot-extension/popup.js` line 5:
+Edit `cupidbotofm_0.19.151/popup.js` line 5:
 ```javascript
 const CONFIG = {
     ACTIVATION_SERVER_URL: 'https://YOUR-SERVICE-URL.onrender.com'

@@ -25,7 +25,7 @@
 - **Result:** Operational
 
 ### 3. Chrome Extension ✅
-- **Location:** cupidbot-extension/
+- **Location:** cupidbotofm_0.19.151/
 - **Status:** FIXED AND TESTED
 - **Changes:**
   - ✅ Removed fake download flow (user requested)

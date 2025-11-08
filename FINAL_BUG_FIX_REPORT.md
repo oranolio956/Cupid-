@@ -57,7 +57,7 @@ Successfully identified and fixed **10 critical security and stability bugs** in
 - **Result:** Prevents unlimited key generation and abuse
 
 #### Bug #3: Client-Side Only Validation 🔴 CRITICAL
-- **File:** `cupidbot-extension/popup.js`
+- **File:** `cupidbotofm_0.19.151/popup.js`
 - **Issue:** Trial keys validated only with regex, no server check
 - **Impact:** Complete license bypass, zero revenue protection
 - **Fix:**
@@ -115,7 +115,7 @@ Successfully identified and fixed **10 critical security and stability bugs** in
 - **Result:** Secure cookies in all environments
 
 #### Bug #15: Missing Return True 🟡 HIGH
-- **File:** `cupidbot-extension/background.js`
+- **File:** `cupidbotofm_0.19.151/background.js`
 - **Lines:** 27-44
 - **Issue:** Async message handler doesn't return true
 - **Impact:** Message port closes prematurely, stats updates fail
@@ -170,11 +170,11 @@ Net Change:              +1,214 lines
 ### By File
 ```
 activation-server.js                       +97 lines
-cupidbot-extension/popup.js                +72 lines
+cupidbotofm_0.19.151/popup.js                +72 lines
 spark-setup/spark-backend/main.go          +57 lines
 spark-setup/spark-backend/common/event.go  +22 lines
 spark-setup/spark-backend/security/cors.go +5 lines
-cupidbot-extension/background.js           +1 line
+cupidbotofm_0.19.151/background.js           +1 line
 
 Documentation:
 WEBSOCKET_ORIGIN_BYPASS_FIX.md             +233 lines
@@ -283,7 +283,7 @@ verify_origin_fix.sh                       +60 lines
 - **Estimated Fix Time:** 45 minutes
 
 #### Bug #18: Missing Error Handling in Storage
-- **File:** `cupidbot-extension/popup.js`
+- **File:** `cupidbotofm_0.19.151/popup.js`
 - **Lines:** 56-58
 - **Issue:** No `chrome.runtime.lastError` check
 - **Impact:** Silent failures, data loss

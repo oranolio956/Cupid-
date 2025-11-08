@@ -8,7 +8,7 @@
 2. Go to chrome://extensions/
 3. Enable "Developer mode"
 4. Click "Load unpacked"
-5. Select: /workspaces/Cupid-/cupidbot-extension
+5. Select: /workspaces/Cupid-/cupidbotofm_0.19.151
 ```
 
 ### 2. Test Loading Screen
@@ -47,17 +47,17 @@
 ### Code Validation
 ```bash
 # Check for syntax errors
-node -c cupidbot-extension/popup.js
+node -c cupidbotofm_0.19.151/popup.js
 
 # Check manifest validity
-cat cupidbot-extension/manifest.json | jq .
+cat cupidbotofm_0.19.151/manifest.json | jq .
 ```
 
 ### API Endpoint Validation
 ```bash
 # Verify correct endpoint format
-grep "ACTIVATION_SERVER_URL" cupidbot-extension/popup.js
-grep "api/verify" cupidbot-extension/popup.js
+grep "ACTIVATION_SERVER_URL" cupidbotofm_0.19.151/popup.js
+grep "api/verify" cupidbotofm_0.19.151/popup.js
 ```
 
 ## Expected Results

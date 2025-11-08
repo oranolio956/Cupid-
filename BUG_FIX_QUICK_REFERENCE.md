@@ -426,13 +426,13 @@ go build -o spark-backend
 
 ### Test Chrome extension
 ```bash
-cd cupidbot-extension
+cd cupidbotofm_0.19.151
 
 # Load in Chrome
 # 1. Open chrome://extensions
 # 2. Enable Developer mode
 # 3. Click "Load unpacked"
-# 4. Select cupidbot-extension folder
+# 4. Select cupidbotofm_0.19.151 folder
 
 # Test with invalid key
 # Should show error from server
