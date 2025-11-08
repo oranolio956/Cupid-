@@ -1,807 +1,1092 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CupidBot - The AI for Top Creators</title>
-    
-    <!-- Premium Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Three.js for Interactive Background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <!-- GSAP for Premium Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
-    <style>
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent: #ff006e;
-            --accent-glow: rgba(255, 0, 110, 0.3);
-            --success: #00ff88;
-            --error: #ff3b3b;
-            --border: rgba(255, 255, 255, 0.1);
-            --surface: rgba(255, 255, 255, 0.03);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CupidBot OFM Install — Guided Chrome Setup</title>
+  <meta name="description" content="Launch the CupidBot OFM Chrome extension in minutes. Follow the guided install, enable developer mode, and onboard your team without any guesswork.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050510;
+      --bg-layer: rgba(14, 14, 26, 0.76);
+      --bg-solid: rgba(13, 13, 24, 0.92);
+      --surface: rgba(18, 18, 34, 0.92);
+      --surface-bright: rgba(26, 26, 44, 0.95);
+      --border: rgba(255, 255, 255, 0.08);
+      --divider: rgba(255, 255, 255, 0.05);
+      --text-primary: #f5f6fb;
+      --text-secondary: #a0a6c3;
+      --text-muted: #6f7391;
+      --accent: #ff3d7f;
+      --accent-alt: #7b5cff;
+      --accent-soft: rgba(255, 61, 127, 0.15);
+      --accent-strong: rgba(255, 61, 127, 0.32);
+      --success: #6dffcb;
+      --success-soft: rgba(109, 255, 203, 0.12);
+      --shadow: 0 24px 120px rgba(5, 5, 20, 0.65);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+      --max-width: 1160px;
+      --transition: cubic-bezier(0.23, 1, 0.32, 1);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 12% 18%, rgba(255, 61, 127, 0.12) 0%, transparent 42%),
+        radial-gradient(circle at 82% 0%, rgba(123, 92, 255, 0.18) 0%, transparent 45%),
+        linear-gradient(160deg, #04040b 0%, #080818 40%, #02020c 100%);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
 
-        /* Three.js Canvas */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 46vw;
+      max-width: 600px;
+      aspect-ratio: 1;
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.5;
+      z-index: 0;
+      transition: opacity 0.6s var(--transition);
+    }
 
-        /* Main Container */
-        .container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
+    body::before {
+      top: -120px;
+      left: -160px;
+      background: radial-gradient(circle, rgba(255, 61, 127, 0.55) 0%, rgba(255, 61, 127, 0) 80%);
+    }
 
-        /* Act States */
-        .act {
-            display: none;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    body::after {
+      bottom: -220px;
+      right: -160px;
+      background: radial-gradient(circle, rgba(123, 92, 255, 0.48) 0%, rgba(123, 92, 255, 0) 82%);
+    }
 
-        .act.active {
-            display: block;
-        }
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 64px 28px 120px;
+    }
 
-        /* Typography - EXAGGERATED HIERARCHY */
-        .headline {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(48px, 10vw, 120px);
-            font-weight: 700;
-            line-height: 1.0;
-            letter-spacing: -0.02em;
-            margin-bottom: 24px;
-            text-align: center;
-            color: var(--text-primary);
-        }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 64px;
+      padding: 16px 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: linear-gradient(135deg, rgba(14, 14, 26, 0.95) 0%, rgba(10, 10, 22, 0.7) 100%);
+      box-shadow: 0 18px 70px rgba(3, 3, 12, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(18px);
+    }
 
-        .headline-accent {
-            color: var(--text-primary);
-            display: block;
-        }
+    .brand {
+      font-family: 'Syne', 'Inter', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .subheadline {
-            font-size: clamp(18px, 3vw, 28px);
-            line-height: 1.4;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 48px;
-            font-weight: 500;
-        }
+    .brand span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
 
-        /* Form */
-        .form-group {
-            margin-bottom: 32px;
-        }
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
 
-        .label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-secondary);
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: block;
-        }
+    .top-link {
+      color: var(--text-secondary);
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s var(--transition);
+    }
 
-        .input-wrapper {
-            position: relative;
-        }
+    .top-link:hover,
+    .top-link:focus-visible {
+      color: var(--text-primary);
+    }
 
-        input[type="email"] {
-            width: 100%;
-            padding: 20px 24px;
-            font-size: 18px;
-            background: var(--surface);
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            outline: none;
-        }
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 96px;
+    }
 
-        input[type="email"]:focus {
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-        }
+    .hero {
+      padding: 52px 56px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: linear-gradient(155deg, rgba(15, 15, 30, 0.96) 0%, rgba(7, 7, 18, 0.94) 50%, rgba(24, 12, 42, 0.92) 100%);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
 
-        /* VALID = CALM GREEN */
-        input[type="email"].valid {
-            border-color: var(--success);
-            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
-        }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(255, 61, 127, 0.32) 0%, transparent 60%),
+        radial-gradient(circle at 80% 30%, rgba(123, 92, 255, 0.32) 0%, transparent 54%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      pointer-events: none;
+    }
 
-        /* INVALID = PULSING RED */
-        input[type="email"].invalid {
-            border-color: var(--error);
-            animation: errorPulse 1.5s ease-in-out infinite;
-        }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
 
-        @keyframes errorPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 59, 59, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(255, 59, 59, 0.6); }
-        }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
 
-        .input-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%) scale(0);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            font-size: 24px;
-        }
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+      box-shadow: 0 0 12px rgba(255, 61, 127, 0.6);
+    }
 
-        .input-icon.show {
-            opacity: 1;
-            transform: translateY(-50%) scale(1);
-        }
+    h1 {
+      font-family: 'Syne', 'Inter', sans-serif;
+      font-size: clamp(42px, 5vw, 72px);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 28px;
+    }
 
-        /* Premium Button - SINGLE ACCENT COLOR */
-        .btn-primary {
-            width: 100%;
-            padding: 24px 48px;
-            font-size: 18px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: var(--accent);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            font-family: inherit;
-        }
+    .hero p {
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 620px;
+    }
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
 
-        .btn-primary.loading {
-            pointer-events: none;
-        }
+    .primary-cta {
+      align-self: flex-start;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 18px 32px;
+      border-radius: 999px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+      cursor: pointer;
+      box-shadow: 0 18px 40px rgba(255, 61, 127, 0.28);
+      transition: transform 0.28s var(--transition), box-shadow 0.28s var(--transition);
+    }
 
-        .btn-text {
-            position: relative;
-            z-index: 1;
-            transition: opacity 0.3s;
-        }
+    .primary-cta:hover,
+    .primary-cta:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 60px rgba(255, 61, 127, 0.35);
+    }
 
-        .btn-primary.loading .btn-text {
-            opacity: 0;
-        }
+    .primary-cta:active {
+      transform: translateY(0);
+    }
 
-        .btn-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 28px;
-            height: 28px;
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            border-top-color: white;
-            border-radius: 50%;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+    .primary-cta.small {
+      padding: 14px 26px;
+      font-size: 14px;
+    }
 
-        .btn-primary.loading .btn-spinner {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-            animation: spin 0.6s linear infinite;
-        }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
 
-        /* Act II - Key Display */
-        .key-display {
-            background: rgba(255, 0, 110, 0.05);
-            border: 2px solid var(--accent);
-            border-radius: 12px;
-            padding: 48px 32px;
-            text-align: center;
-            margin-bottom: 32px;
-        }
+    .meta-tag::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+    }
 
-        .key-value {
-            font-family: 'Space Grotesk', 'Courier New', monospace;
-            font-size: clamp(24px, 4vw, 40px);
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin: 32px 0;
-            word-break: break-all;
-        }
+    .workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 48px 52px 56px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(160deg, rgba(10, 10, 24, 0.96) 0%, rgba(12, 12, 28, 0.96) 45%, rgba(16, 12, 40, 0.92) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow);
+    }
 
-        .btn-copy {
-            background: var(--surface);
-            border: 2px solid var(--accent);
-            color: var(--text-primary);
-            padding: 16px 32px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+    .progress {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
 
-        .btn-copy:hover {
-            background: rgba(255, 0, 110, 0.1);
-            transform: translateY(-2px);
-        }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
 
-        /* Act III - Wizard */
-        .wizard-step {
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
-        }
+    .progress-primary {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
 
-        .wizard-step:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
+    .progress-secondary {
+      font-size: 14px;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
 
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 16px;
-        }
+    .progress-track {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
 
-        .step-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255, 61, 127, 0.85) 0%, rgba(123, 92, 255, 0.85) 100%);
+      transition: width 0.4s var(--transition);
+    }
 
-        .step-description {
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 40px;
+    }
 
-        .step-visual {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 24px;
-            margin-top: 16px;
-            text-align: center;
-        }
+    .step-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-        .btn-secondary {
-            background: var(--surface);
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            padding: 14px 28px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+    .step-button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      width: 100%;
+      padding: 20px 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.3s var(--transition), background 0.3s var(--transition), transform 0.25s var(--transition);
+    }
 
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            background: rgba(255, 0, 110, 0.05);
-            transform: translateY(-2px);
-        }
+    .step-button:hover,
+    .step-button:focus-visible {
+      border-color: rgba(255, 255, 255, 0.12);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
 
-        .success-final {
-            border-color: var(--accent);
-            background: rgba(255, 0, 110, 0.05);
-        }
+    .step-button.active {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: var(--text-primary);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
 
-        .success-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-        }
+    .step-button.completed {
+      border-color: rgba(109, 255, 203, 0.4);
+      background: linear-gradient(135deg, rgba(109, 255, 203, 0.12) 0%, rgba(109, 255, 203, 0.04) 100%);
+      color: var(--text-primary);
+    }
 
-        /* Back Link */
-        .back-link {
-            position: fixed;
-            top: 32px;
-            left: 32px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 100;
-            transition: color 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+    .step-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
 
-        .back-link:hover {
-            color: var(--text-primary);
-        }
+    .step-button.completed .step-index {
+      background: var(--success-soft);
+      color: var(--success);
+    }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 60px 20px 40px;
-            }
+    .step-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-            .back-link {
-                top: 20px;
-                left: 20px;
-            }
-        }
+    .step-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
 
-        .text-center {
-            text-align: center;
-        }
+    .step-status {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
 
-        .mt-32 {
-            margin-top: 32px;
-        }
-    </style>
+    .step-button.completed .step-status {
+      color: var(--success);
+    }
+
+    .step-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .step-panel {
+      display: none;
+      flex-direction: column;
+      gap: 22px;
+      padding: 36px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(145deg, rgba(26, 26, 46, 0.94) 0%, rgba(17, 17, 32, 0.92) 60%, rgba(30, 18, 52, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 30px 90px rgba(3, 3, 12, 0.5);
+    }
+
+    .step-panel.active {
+      display: flex;
+    }
+
+    .panel-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      letter-spacing: -0.01em;
+    }
+
+    .panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .panel-body strong {
+      color: var(--text-primary);
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      list-style: none;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .checklist li::before {
+      content: "•";
+      font-size: 18px;
+      color: var(--accent);
+      line-height: 1;
+      transform: translateY(2px);
+    }
+
+    .ordered {
+      list-style: none;
+      counter-reset: ordered;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .ordered li {
+      position: relative;
+      padding-left: 42px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .ordered li::before {
+      counter-increment: ordered;
+      content: counter(ordered);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel-callout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 24px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-callout strong {
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .panel-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .secondary-cta,
+    .ghost-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 26px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.28s var(--transition), border-color 0.28s var(--transition), background 0.28s var(--transition), color 0.28s var(--transition);
+    }
+
+    .secondary-cta {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+    }
+
+    .ghost-cta {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      color: var(--text-primary);
+    }
+
+    .secondary-cta:hover,
+    .secondary-cta:focus-visible,
+    .ghost-cta:hover,
+    .ghost-cta:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.32);
+      box-shadow: 0 16px 32px rgba(5, 5, 16, 0.35);
+    }
+
+    .file-card {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 28px 32px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .file-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .file-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .file-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .completion {
+      display: none;
+      margin-top: 12px;
+      padding: 26px 28px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(109, 255, 203, 0.45);
+      background: var(--success-soft);
+      color: var(--text-primary);
+      gap: 12px;
+    }
+
+    .completion.visible {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .completion strong {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--success);
+      font-size: 14px;
+    }
+
+    .footnote {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .support {
+      display: flex;
+      justify-content: center;
+    }
+
+    .support-card {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 36px 42px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: linear-gradient(135deg, rgba(18, 18, 36, 0.94) 0%, rgba(10, 10, 24, 0.9) 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .support-card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+    }
+
+    .support-card p {
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .support-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .support-actions .secondary-cta {
+      padding: 14px 24px;
+    }
+
+    @media (max-width: 1080px) {
+      .workflow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .step-button {
+        min-width: 240px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        padding: 40px 20px 80px;
+      }
+
+      .top-bar {
+        flex-direction: column;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding: 40px 30px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .workflow {
+        padding: 36px 26px;
+      }
+
+      .step-panel {
+        padding: 28px 24px;
+      }
+
+      .support-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .top-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+      }
+
+      .hero-meta {
+        gap: 10px;
+      }
+
+      .meta-tag {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .step-nav {
+        flex-direction: column;
+      }
+
+      .step-button {
+        min-width: unset;
+      }
+
+      .panel-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .secondary-cta,
+      .ghost-cta,
+      .primary-cta,
+      .primary-cta.small {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .file-card {
+        padding: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Three.js Background -->
-    <canvas id="bg-canvas"></canvas>
+  <div class="page">
+    <header class="top-bar">
+      <a class="brand" href="index.html">CupidBot<span>OFM</span></a>
+      <div class="top-links">
+        <a class="top-link" href="index.html">Main site</a>
+        <a class="top-link" href="contact.html">Talk to support</a>
+        <a class="top-link" href="https://t.me/cupidbotg" target="_blank" rel="noopener">OFM operations channel</a>
+      </div>
+    </header>
 
-    <!-- Back Link -->
-    <a href="index.html" class="back-link">← Back</a>
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <span class="eyebrow">Chrome install guide</span>
+          <h1>Try CupidBot OFM for free</h1>
+          <p>
+            Deploy the official CupidBot OFM Chrome workspace your team uses to close fans faster. This guided install mirrors our internal rollout playbook—crisp, secure, and ready for production traffic.
+          </p>
+          <div class="hero-actions">
+            <button type="button" class="primary-cta" id="startGuide">Start guided install</button>
+            <div class="hero-meta">
+              <span class="meta-tag">No credit card required</span>
+              <span class="meta-tag">Chrome desktop 114+</span>
+              <span class="meta-tag">3-minute setup</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- ACT I: The Invitation -->
-        <div id="act1" class="act active">
-            <h1 class="headline">
-                The AI for
-                <span class="headline-accent">Top Creators</span>
-            </h1>
-            
-            <p class="subheadline">
-                Stop chatting. Start earning. Join the elite using AI to scale intimate fan relationships.
-            </p>
+      <section class="workflow" id="install">
+        <div class="progress">
+          <div class="progress-header">
+            <span class="progress-primary" data-progress-label>Step 1 of 4</span>
+            <span class="progress-secondary" data-progress-secondary>0 steps complete</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" data-progress-fill></div>
+          </div>
+        </div>
 
-            <form id="emailForm" class="form-group">
-                <label class="label">Your Email</label>
-                <div class="input-wrapper">
-                    <input 
-                        type="email" 
-                        id="emailInput" 
-                        placeholder="you@example.com"
-                        required
-                    >
-                    <span class="input-icon" id="emailIcon">✓</span>
-                </div>
-            </form>
-
-            <button class="btn-primary" id="submitBtn">
-                <span class="btn-text">ACCESS THE AI</span>
-                <div class="btn-spinner"></div>
+        <div class="workflow-grid">
+          <nav class="step-nav" aria-label="Install navigation">
+            <button type="button" class="step-button active" data-step-selector="0" aria-current="step">
+              <span class="step-index">1</span>
+              <div class="step-copy">
+                <span class="step-title">Confirm your setup</span>
+                <span class="step-status" data-step-status>In progress</span>
+              </div>
             </button>
-
-            <p class="text-center mt-32" style="font-size: 14px; color: var(--text-secondary);">
-                30-day trial • No credit card • Enterprise security
-            </p>
-        </div>
-
-        <!-- ACT II: The Activation Key -->
-        <div id="act2" class="act">
-            <div class="success-icon text-center">🔑</div>
-            
-            <h1 class="headline" style="font-size: clamp(36px, 6vw, 64px);">
-                Your Unique
-                <span class="headline-accent">Activation Key</span>
-            </h1>
-
-            <div class="key-display">
-                <label class="label">Activation Key</label>
-                <div class="key-value" id="activationKey">LOADING...</div>
-                <button class="btn-copy" id="copyBtn">
-                    <span>📋</span>
-                    <span id="copyText">Copy Key</span>
-                </button>
-            </div>
-
-            <button class="btn-primary" id="continueBtn">
-                <span class="btn-text">Copy Key & Continue</span>
+            <button type="button" class="step-button" data-step-selector="1">
+              <span class="step-index">2</span>
+              <div class="step-copy">
+                <span class="step-title">Download the package</span>
+                <span class="step-status" data-step-status>Ready</span>
+              </div>
             </button>
+            <button type="button" class="step-button" data-step-selector="2">
+              <span class="step-index">3</span>
+              <div class="step-copy">
+                <span class="step-title">Load in Chrome</span>
+                <span class="step-status" data-step-status>Ready</span>
+              </div>
+            </button>
+            <button type="button" class="step-button" data-step-selector="3">
+              <span class="step-index">4</span>
+              <div class="step-copy">
+                <span class="step-title">Finish & verify</span>
+                <span class="step-status" data-step-status>Ready</span>
+              </div>
+            </button>
+          </nav>
+
+          <div class="step-panels">
+            <article class="step-panel active" data-step-panel="0">
+              <h2 class="panel-heading">1. Confirm your setup</h2>
+              <div class="panel-body">
+                <p>Ensure your environment matches what our operators use in production.</p>
+                <ul class="checklist">
+                  <li>Chrome desktop on macOS or Windows (profiles linked to your OFM seat).</li>
+                  <li>Browser version 114 or later with automatic updates enabled.</li>
+                  <li>Local admin access to install and manage extensions.</li>
+                </ul>
+                <div class="panel-actions">
+                  <button type="button" class="secondary-cta" data-open-settings>Open Chrome version check</button>
+                  <button type="button" class="ghost-cta" data-complete-step="0">This matches our setup</button>
+                </div>
+                <p class="footnote">Chrome will launch <em>chrome://settings/help</em> in a new tab to confirm your version.</p>
+              </div>
+            </article>
+
+            <article class="step-panel" data-step-panel="1">
+              <h2 class="panel-heading">2. Download CupidBot OFM</h2>
+              <div class="panel-body">
+                <p>We distribute the extension as a signed package so you can deploy without waiting on the Chrome Web Store.</p>
+                <div class="file-card">
+                  <div>
+                    <div class="file-meta">
+                      <span>ZIP package</span>
+                      <span>Version 1.0.0</span>
+                      <span>Updated Nov 2025</span>
+                    </div>
+                    <h3>cupidbot-ofm-extension.zip</h3>
+                    <p>Includes the unpacked extension folder, assets, and manifest. Keep the folder in a secure drive your operators can access.</p>
+                  </div>
+                  <div class="panel-actions">
+                    <a class="primary-cta small" href="cupidbot-extension.zip" download>Download package</a>
+                    <button type="button" class="secondary-cta" data-open-release>Review manifest</button>
+                  </div>
+                </div>
+                <ul class="checklist">
+                  <li>After downloading, unzip the file to reveal the <code>cupidbot-extension</code> folder.</li>
+                  <li>Store the folder where it will not be moved (Desktop or Applications is perfect).</li>
+                </ul>
+                <div class="panel-actions">
+                  <button type="button" class="ghost-cta" data-complete-step="1">Package ready</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="step-panel" data-step-panel="2">
+              <h2 class="panel-heading">3. Load the extension in Chrome</h2>
+              <div class="panel-body">
+                <p>Enable developer mode, then point Chrome at the unpacked folder.</p>
+                <ol class="ordered">
+                  <li>Open Chrome → click the puzzle icon → <strong>Manage Extensions</strong> (or use the shortcut below).</li>
+                  <li>Toggle <strong>Developer mode</strong> in the top-right corner.</li>
+                  <li>Choose <strong>Load unpacked</strong> and select the unzipped <code>cupidbot-extension</code> folder.</li>
+                </ol>
+                <div class="panel-callout">
+                  <strong>Heads up</strong>
+                  <p>Chrome may prompt you to confirm loading the folder. Approve it—this is our signed production build.</p>
+                </div>
+                <div class="panel-actions">
+                  <button type="button" class="secondary-cta" data-open-extensions>Open extensions tab</button>
+                  <button type="button" class="ghost-cta" data-complete-step="2">Extension is loaded</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="step-panel" data-step-panel="3">
+              <h2 class="panel-heading">4. Finish & verify</h2>
+              <div class="panel-body">
+                <p>Lock in the install so your operators can start session work immediately.</p>
+                <ul class="checklist">
+                  <li>Pin the CupidBot icon from the extensions tray for fast access.</li>
+                  <li>Open the popup and sign in with your OFM workspace credentials.</li>
+                  <li>Enter the workspace token provided by ops to sync scripts and routing.</li>
+                </ul>
+                <div class="panel-actions">
+                  <button type="button" class="ghost-cta" data-complete-step="3">Mark install complete</button>
+                </div>
+                <div class="completion" data-completion>
+                  <strong>✓ Install verified</strong>
+                  <p>Your Chrome seat is ready. Keep the extracted folder untouched; future updates will replace it. For additional seats, repeat this guide.</p>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
+      </section>
 
-        <!-- ACT III: Pro-Mode Installation -->
-        <div id="act3" class="act">
-            <h1 class="headline" style="font-size: clamp(32px, 5vw, 56px);">
-                Activate
-                <span class="headline-accent">Pro-Mode</span>
-            </h1>
-
-            <p class="subheadline">
-                To chat, optimize, and manage for you 24/7, our AI needs deep-level browser access. The standard Chrome Store doesn't permit this level of power. This 3-step guided setup unlocks your full potential.
-            </p>
-
-            <!-- Step 1: Download -->
-            <div class="wizard-step">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Download Your AI Core</h3>
-                <p class="step-description">
-                    Download the secure, enterprise-grade AI package.
-                </p>
-                <button class="btn-secondary" id="downloadBtn">
-                    ⬇ Download AI Core
-                </button>
-            </div>
-
-            <!-- Step 2: Open Extensions -->
-            <div class="wizard-step">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Open Your Extensions Tab</h3>
-                <p class="step-description">
-                    Navigate to Chrome's extension management.
-                </p>
-                <div class="step-visual">
-                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">
-                        Click the puzzle icon (🧩) → "Manage Extensions"
-                    </p>
-                </div>
-                <button class="btn-secondary" id="openExtensionsBtn">
-                    🧩 Click Here to Open Extensions
-                </button>
-            </div>
-
-            <!-- Step 3: Toggle Pro-Mode -->
-            <div class="wizard-step">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Toggle 'Developer Mode'</h3>
-                <p class="step-description">
-                    Enable Pro-Mode by toggling "Developer mode" in the top-right corner.
-                </p>
-                <div class="step-visual">
-                    <p style="color: var(--text-secondary); font-size: 14px;">
-                        Look for the toggle switch labeled "Developer mode" and turn it <strong style="color: var(--accent);">ON</strong>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Step 4: Activate -->
-            <div class="wizard-step">
-                <div class="step-number">4</div>
-                <h3 class="step-title">Activate Your AI</h3>
-                <p class="step-description">
-                    Click "Load unpacked" and select the downloaded CupidBot folder.
-                </p>
-                <div class="step-visual">
-                    <p style="color: var(--text-secondary); font-size: 14px;">
-                        Click "Load unpacked" → Select the CupidBot folder → Done
-                    </p>
-                </div>
-            </div>
-
-            <!-- Success -->
-            <div class="wizard-step success-final">
-                <div class="success-icon text-center">🎉</div>
-                <h3 class="step-title text-center" style="color: var(--accent);">Welcome to the Inner Circle</h3>
-                <p class="step-description text-center" style="color: var(--text-primary);">
-                    Your AI is now active. You're part of the elite using AI to dominate the creator economy.
-                </p>
-            </div>
+      <section class="support">
+        <div class="support-card">
+          <div>
+            <h2>Need our team on the call?</h2>
+            <p>Ping the OFM room or drop us a note—our operators can screen share, confirm policies, and finish the setup with you.</p>
+          </div>
+          <div class="support-actions">
+            <a class="secondary-cta" href="https://t.me/cupidbotg" target="_blank" rel="noopener">Open Telegram</a>
+            <a class="secondary-cta" href="mailto:team@cupidbot.org">Email support</a>
+          </div>
         </div>
-    </div>
+      </section>
+    </main>
+  </div>
 
-    <script>
-        // ============================================
-        // THREE.JS INTERACTIVE BACKGROUND
-        // ============================================
-        let scene, camera, renderer, mesh;
-        let mouseX = 0, mouseY = 0;
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const stepButtons = Array.from(document.querySelectorAll('[data-step-selector]'));
+      const stepPanels = Array.from(document.querySelectorAll('[data-step-panel]'));
+      const progressFill = document.querySelector('[data-progress-fill]');
+      const progressLabel = document.querySelector('[data-progress-label]');
+      const progressSecondary = document.querySelector('[data-progress-secondary]');
+      const completionBanner = document.querySelector('[data-completion]');
+      const totalSteps = stepPanels.length;
+      const completedSteps = new Set();
+      let activeStep = 0;
 
-        function initBackground() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 50;
+      function updateStepStatuses() {
+        stepButtons.forEach((button, index) => {
+          const status = button.querySelector('[data-step-status]');
+          const isActive = index === activeStep;
+          const isCompleted = completedSteps.has(index);
 
-            renderer = new THREE.WebGLRenderer({ 
-                canvas: document.getElementById('bg-canvas'),
-                alpha: true,
-                antialias: true
-            });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+          button.classList.toggle('active', isActive);
+          button.classList.toggle('completed', isCompleted);
+          button.setAttribute('aria-current', isActive ? 'step' : 'false');
 
-            // Create intelligent, morphing mesh
-            const geometry = new THREE.IcosahedronGeometry(30, 2);
-            const material = new THREE.MeshBasicMaterial({
-                color: 0xff006e,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.15
-            });
+          if (isCompleted) {
+            status.textContent = 'Complete';
+          } else if (isActive) {
+            status.textContent = 'In progress';
+          } else {
+            status.textContent = 'Ready';
+          }
+        });
+      }
 
-            mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
+      function updatePanels() {
+        stepPanels.forEach((panel, index) => {
+          const isActive = index === activeStep;
+          panel.classList.toggle('active', isActive);
+          panel.hidden = !isActive;
+        });
+      }
 
-            // Mouse tracking
-            document.addEventListener('mousemove', (e) => {
-                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-                mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-            });
+      function updateProgress() {
+        const completedCount = completedSteps.size;
+        const progressPercent = Math.max((completedCount / totalSteps) * 100, (activeStep / totalSteps) * 100);
+        progressFill.style.width = `${progressPercent}%`;
+        progressLabel.textContent = `Step ${activeStep + 1} of ${totalSteps}`;
+        progressSecondary.textContent = `${completedCount} step${completedCount === 1 ? '' : 's'} complete`;
 
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-
-            animate();
+        if (completionBanner) {
+          completionBanner.classList.toggle('visible', completedCount === totalSteps);
         }
+      }
 
-        function animate() {
-            requestAnimationFrame(animate);
+      function setActiveStep(index) {
+        activeStep = Math.min(Math.max(index, 0), totalSteps - 1);
+        updateStepStatuses();
+        updatePanels();
+        updateProgress();
+      }
 
-            // Slow, intelligent rotation
-            mesh.rotation.x += 0.0005;
-            mesh.rotation.y += 0.0008;
-
-            // Subtle camera shift based on mouse
-            camera.position.x += (mouseX * 3 - camera.position.x) * 0.02;
-            camera.position.y += (mouseY * 3 - camera.position.y) * 0.02;
-            camera.lookAt(scene.position);
-
-            renderer.render(scene, camera);
-        }
-
-        // ============================================
-        // ACT I: EMAIL VALIDATION & SUBMISSION
-        // ============================================
-        const emailInput = document.getElementById('emailInput');
-        const emailIcon = document.getElementById('emailIcon');
-        const submitBtn = document.getElementById('submitBtn');
-        const emailForm = document.getElementById('emailForm');
-
-        // Real-time validation
-        emailInput.addEventListener('input', () => {
-            const email = emailInput.value;
-            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-            if (email.length > 0) {
-                if (isValid) {
-                    emailInput.classList.add('valid');
-                    emailInput.classList.remove('invalid');
-                    emailIcon.classList.add('show');
-                    emailIcon.textContent = '✓';
-                    emailIcon.style.color = 'var(--success)';
-                } else {
-                    emailInput.classList.add('invalid');
-                    emailInput.classList.remove('valid');
-                    emailIcon.classList.add('show');
-                    emailIcon.textContent = '✕';
-                    emailIcon.style.color = 'var(--error)';
-                }
-            } else {
-                emailInput.classList.remove('valid', 'invalid');
-                emailIcon.classList.remove('show');
-            }
+      stepButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const nextStep = Number(button.dataset.stepSelector);
+          setActiveStep(nextStep);
         });
+      });
 
-        // GSAP Magnetic Effect
-        function addMagneticEffect(element) {
-            element.addEventListener('mousemove', (e) => {
-                const rect = element.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                gsap.to(element, {
-                    x: x * 0.15,
-                    y: y * 0.15,
-                    duration: 0.3,
-                    ease: 'power4.out'
-                });
-
-                // Subtle sheen
-                const glowX = (e.clientX - rect.left) / rect.width * 100;
-                const glowY = (e.clientY - rect.top) / rect.height * 100;
-                element.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255, 255, 255, 0.2), var(--accent))`;
-            });
-
-            element.addEventListener('mouseleave', () => {
-                gsap.to(element, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.5,
-                    ease: 'power4.out'
-                });
-                element.style.background = 'var(--accent)';
-            });
-        }
-
-        // Form submission
-        emailForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = emailInput.value;
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-
-            submitBtn.classList.add('loading');
-
-            try {
-                // Server-side key generation
-                const response = await fetch('http://localhost:3000/api/activate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-
-                const data = await response.json();
-                
-                if (!data.success) throw new Error(data.error);
-                
-                document.getElementById('activationKey').textContent = data.key;
-
-                // Transition to Act II
-                setTimeout(() => {
-                    transitionToAct('act2');
-                    submitBtn.classList.remove('loading');
-                }, 800);
-
-            } catch (error) {
-                console.error('Error:', error);
-                submitBtn.classList.remove('loading');
-                
-                // Fallback demo key
-                const demoKey = generateDemoKey();
-                document.getElementById('activationKey').textContent = demoKey;
-                
-                setTimeout(() => {
-                    transitionToAct('act2');
-                    submitBtn.classList.remove('loading');
-                }, 800);
-            }
+      document.querySelectorAll('[data-complete-step]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const stepIndex = Number(button.dataset.completeStep);
+          completedSteps.add(stepIndex);
+          const targetStep = stepIndex + 1 < totalSteps ? stepIndex + 1 : stepIndex;
+          setActiveStep(targetStep);
         });
+      });
 
-        function generateDemoKey() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let key = '';
-            for (let i = 0; i < 16; i++) {
-                if (i > 0 && i % 4 === 0) key += '-';
-                key += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return key;
-        }
-
-        // ============================================
-        // ACT II: KEY COPY
-        // ============================================
-        const copyBtn = document.getElementById('copyBtn');
-        const copyText = document.getElementById('copyText');
-        const continueBtn = document.getElementById('continueBtn');
-
-        copyBtn.addEventListener('click', () => {
-            const key = document.getElementById('activationKey').textContent;
-            navigator.clipboard.writeText(key).then(() => {
-                copyText.textContent = 'Copied!';
-                setTimeout(() => {
-                    copyText.textContent = 'Copy Key';
-                }, 2000);
-            });
+      const startGuide = document.getElementById('startGuide');
+      if (startGuide) {
+        startGuide.addEventListener('click', () => {
+          document.getElementById('install')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setActiveStep(0);
         });
+      }
 
-        continueBtn.addEventListener('click', () => {
-            transitionToAct('act3');
+      document.querySelectorAll('[data-open-settings]').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.open('chrome://settings/help', '_blank');
         });
+      });
 
-        // ============================================
-        // ACT III: WIZARD
-        // ============================================
-        const downloadBtn = document.getElementById('downloadBtn');
-        const openExtensionsBtn = document.getElementById('openExtensionsBtn');
-
-        downloadBtn.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = 'cupidbot-extension.zip';
-            link.download = 'cupidbot-extension.zip';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            downloadBtn.textContent = '✓ Downloaded';
-            downloadBtn.style.borderColor = 'var(--success)';
+      document.querySelectorAll('[data-open-extensions]').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.open('chrome://extensions/', '_blank');
         });
+      });
 
-        openExtensionsBtn.addEventListener('click', () => {
-            window.open('chrome://extensions/', '_blank');
-            openExtensionsBtn.textContent = '✓ Opened';
-            openExtensionsBtn.style.borderColor = 'var(--success)';
+      document.querySelectorAll('[data-open-release]').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.open('cupidbot-extension/manifest.json', '_blank');
         });
+      });
 
-        // ============================================
-        // PROGRESSIVE DISCLOSURE
-        // ============================================
-        function transitionToAct(actId) {
-            const currentAct = document.querySelector('.act.active');
-            const nextAct = document.getElementById(actId);
-
-            gsap.to(currentAct, {
-                opacity: 0,
-                y: -30,
-                duration: 0.4,
-                ease: 'power4.out',
-                onComplete: () => {
-                    currentAct.classList.remove('active');
-                    nextAct.classList.add('active');
-                    
-                    gsap.fromTo(nextAct,
-                        { opacity: 0, y: 30 },
-                        { opacity: 1, y: 0, duration: 0.6, ease: 'power4.out' }
-                    );
-                }
-            });
-        }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            initBackground();
-            addMagneticEffect(submitBtn);
-            addMagneticEffect(continueBtn);
-        });
-    </script>
+      // Initialise first step
+      setActiveStep(0);
+    });
+  </script>
 </body>
 </html>
