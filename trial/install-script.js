@@ -85,62 +85,76 @@
       }
 
       function detectEnvironment() {
-        const uaData = navigator.userAgentData;
-        const ua = navigator.userAgent || '';
-        let version = null;
+        try {
+          const uaData = navigator.userAgentData;
+          const ua = navigator.userAgent || '';
+          let version = null;
 
-        if (uaData && Array.isArray(uaData.brands)) {
-          const brandEntry = uaData.brands.find((item) => /Chrom(e|ium)/i.test(item.brand));
-          if (brandEntry && brandEntry.version) {
-            version = parseInt(brandEntry.version, 10);
+          if (uaData && Array.isArray(uaData.brands)) {
+            const brandEntry = uaData.brands.find((item) => /Chrom(e|ium)/i.test(item.brand));
+            if (brandEntry && brandEntry.version) {
+              version = parseInt(brandEntry.version, 10);
+            }
           }
-        }
-        if (!version) {
-          const chromeMatch = ua.match(/Chrome\/(\d+)/);
-          if (chromeMatch && chromeMatch[1]) {
-            version = parseInt(chromeMatch[1], 10);
+          if (!version) {
+            const chromeMatch = ua.match(/Chrome\/(\d+)/);
+            if (chromeMatch && chromeMatch[1]) {
+              version = parseInt(chromeMatch[1], 10);
+            }
           }
+
+          const isEdge = /Edg\//.test(ua);
+          const isOpera = /OPR\//.test(ua) || /Opera\//.test(ua);
+          const isBrave = typeof navigator.brave !== 'undefined';
+          const isChrome = !isEdge && !isOpera && !!version && /Chrome\//.test(ua) && !isBrave;
+
+          const platform = (uaData && uaData.platform) || navigator.platform || ua;
+          let osName = 'Unknown';
+          let osKey = 'mac';
+          if (/mac/i.test(platform)) {
+            osName = 'macOS';
+            osKey = 'mac';
+          } else if (/win/i.test(platform)) {
+            osName = 'Windows';
+            osKey = 'windows';
+          } else if (/linux/i.test(platform)) {
+            osName = 'Linux';
+            osKey = 'linux';
+          } else if (/iphone|ipad|ipod/i.test(ua)) {
+            osName = 'iOS / iPadOS';
+            osKey = 'mobile';
+          } else if (/android/i.test(platform) || /android/i.test(ua)) {
+            osName = 'Android';
+            osKey = 'mobile';
+          }
+
+          const fallbackBrand = (uaData && Array.isArray(uaData.brands))
+            ? uaData.brands.map((item) => `${item.brand} ${item.version}`).join(', ')
+            : '';
+          const browserLabel = isChrome && version ? `Chrome ${version}` : fallbackBrand || (navigator.userAgent.split(' ')[0] || 'Browser detected');
+          const isSupported = isChrome && version && version >= 114;
+
+          return {
+            isChrome,
+            version,
+            browserLabel,
+            osName,
+            osKey,
+            isSupported,
+            error: null
+          };
+        } catch (error) {
+          console.error('Environment detection failed:', error);
+          return {
+            isChrome: false,
+            version: null,
+            browserLabel: 'Detection failed',
+            osName: 'Unknown',
+            osKey: 'mac',
+            isSupported: false,
+            error: error.message || 'Unable to detect browser environment'
+          };
         }
-
-        const isEdge = /Edg\//.test(ua);
-        const isOpera = /OPR\//.test(ua) || /Opera\//.test(ua);
-        const isBrave = typeof navigator.brave !== 'undefined';
-        const isChrome = !isEdge && !isOpera && !!version && /Chrome\//.test(ua) && !isBrave;
-
-        const platform = (uaData && uaData.platform) || navigator.platform || ua;
-        let osName = 'Unknown';
-        let osKey = 'mac';
-        if (/mac/i.test(platform)) {
-          osName = 'macOS';
-          osKey = 'mac';
-        } else if (/win/i.test(platform)) {
-          osName = 'Windows';
-          osKey = 'windows';
-        } else if (/linux/i.test(platform)) {
-          osName = 'Linux';
-          osKey = 'linux';
-        } else if (/iphone|ipad|ipod/i.test(ua)) {
-          osName = 'iOS / iPadOS';
-          osKey = 'mobile';
-        } else if (/android/i.test(platform) || /android/i.test(ua)) {
-          osName = 'Android';
-          osKey = 'mobile';
-        }
-
-        const fallbackBrand = (uaData && Array.isArray(uaData.brands))
-          ? uaData.brands.map((item) => `${item.brand} ${item.version}`).join(', ')
-          : '';
-        const browserLabel = isChrome && version ? `Chrome ${version}` : fallbackBrand || (navigator.userAgent.split(' ')[0] || 'Browser detected');
-        const isSupported = isChrome && version && version >= 114;
-
-        return {
-          isChrome,
-          version,
-          browserLabel,
-          osName,
-          osKey,
-          isSupported
-        };
       }
 
       function activateOsPanel(targetKey) {
@@ -162,13 +176,43 @@
       }
 
       function renderEnvironment(info) {
-        if (!info) return;
+        if (!info) {
+          console.error('No environment info provided to renderEnvironment');
+          return;
+        }
+        
         const chromeDownloadLink = '<a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Download Chrome</a>';
 
         if (envCards.dev && envElements.devBadge && envElements.devValue) {
           envElements.devValue.textContent = 'Enable in Step 3';
           envElements.devBadge.textContent = 'Pending';
           setStatusState(envCards.dev, 'is-pending');
+        }
+
+        // Handle detection errors
+        if (info.error) {
+          if (envElements.browserValue) {
+            envElements.browserValue.textContent = 'Detection error';
+          }
+          if (envElements.browserBadge) {
+            envElements.browserBadge.textContent = 'Error';
+          }
+          if (envElements.browserMeta) {
+            envElements.browserMeta.innerHTML = `${info.error}. Try refreshing the page or use desktop Chrome. ${chromeDownloadLink}`;
+          }
+          setStatusState(envCards.browser, 'is-warning');
+          
+          if (envElements.osValue) {
+            envElements.osValue.textContent = 'Detection error';
+          }
+          if (envElements.osBadge) {
+            envElements.osBadge.textContent = 'Error';
+          }
+          if (envElements.osMeta) {
+            envElements.osMeta.textContent = 'Unable to detect operating system. Please ensure you are using a modern browser.';
+          }
+          setStatusState(envCards.os, 'is-warning');
+          return;
         }
 
         if (envElements.browserValue) {
