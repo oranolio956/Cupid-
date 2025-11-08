@@ -204,6 +204,132 @@
       font-size: 14px;
     }
 
+    .install-status_grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .install-status_card {
+      padding: 20px 24px;
+      border-radius: var(--install-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 120px;
+    }
+
+    .install-status_label {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--install-text-muted);
+      font-weight: 600;
+    }
+
+    .install-status_value {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      color: var(--install-text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .install-status_badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--install-text-primary);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .install-status_card.is-success .install-status_badge {
+      color: var(--install-success);
+      background: rgba(var(--install-success-rgb), 0.12);
+      border-color: rgba(var(--install-success-rgb), 0.3);
+    }
+
+    .install-status_card.is-warning .install-status_badge {
+      color: #ffb155;
+      background: rgba(255, 177, 85, 0.12);
+      border-color: rgba(255, 177, 85, 0.28);
+    }
+
+    .install-status_card.is-pending .install-status_badge {
+      color: var(--install-text-secondary);
+    }
+
+    .install-status_meta {
+      font-size: 13px;
+      color: var(--install-text-secondary);
+      line-height: 1.5;
+    }
+
+    .install-os-switch {
+      display: inline-flex;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin: 20px 0;
+    }
+
+    .install-os-button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--install-text-secondary);
+      cursor: pointer;
+      transition: background 0.25s var(--install-transition), color 0.25s var(--install-transition);
+    }
+
+    .install-os-button.is-active {
+      background: linear-gradient(135deg, var(--install-accent) 0%, var(--install-accent-alt) 100%);
+      color: var(--install-text-primary);
+      box-shadow: 0 12px 24px rgba(255, 61, 127, 0.25);
+    }
+
+    .install-os-panel {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--install-radius-sm);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .install-os-panel.is-active {
+      display: flex;
+    }
+
+    .install-os-panel ul {
+      margin: 0;
+      padding-left: 22px;
+      color: var(--install-text-secondary);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
     .install-flow {
       padding: 48px 52px 56px;
       border-radius: var(--install-radius-lg);
@@ -660,6 +786,43 @@
       font-size: 15px;
     }
 
+    .install-automation {
+      margin-top: 24px;
+      padding: 22px 24px;
+      border-radius: var(--install-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .install-automation h3 {
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--install-text-primary);
+    }
+
+    .install-automation p {
+      color: var(--install-text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .install-automation pre {
+      margin: 0;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      color: var(--install-text-secondary);
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
     .install-file {
       display: flex;
       flex-direction: column;
@@ -810,11 +973,17 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
       .install-seo {
         padding: 38px 26px;
       }
+
       .install-seo_grid {
         grid-template-columns: 1fr;
+      }
+
+      .install-status_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -843,14 +1012,21 @@
       .install-file {
         padding: 24px;
       }
+
       .install-faq_item {
         padding: 16px 18px;
       }
+
       .install-seo_links {
         flex-direction: column;
       }
+
       .install-seo {
         padding: 32px 22px;
+      }
+
+      .install-status_grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -969,7 +1145,7 @@ a {
                       <h1 class="heading-medium">Try CupidBot OFM for free</h1>
                     </div>
                     <div class="max-width-medium">
-                      <div class="text-size-xlarge">Deploy the official CupidBot OFM Chrome workspace your operators rely on. This guided install mirrors our internal rollout playbook—precise, secure, and production ready.</div>
+                        <div class="text-size-xlarge">Deploy the official CupidBot OFM AI chat workspace your operators rely on via Chrome. This guided install mirrors our internal rollout playbook—precise, secure, and production ready.</div>
                       <div class="margin-top margin-medium">
                         <a href="#installGuide" id="startGuide" class="button primary ga-event w-inline-block">
                           <div class="button-inner">
@@ -1006,6 +1182,26 @@ a {
                       <div class="install-progress_fill" data-progress-fill></div>
                     </div>
                   </div>
+              <div class="install-status_grid">
+                <div class="install-status_card is-pending" data-env-card="browser">
+                  <div class="install-status_label">Browser readiness</div>
+                  <div class="install-status_value" data-env-browser>Detecting…</div>
+                  <span class="install-status_badge" data-env-browser-badge>Checking</span>
+                  <div class="install-status_meta" data-env-browser-meta></div>
+                </div>
+                <div class="install-status_card is-pending" data-env-card="os">
+                  <div class="install-status_label">Operating system</div>
+                  <div class="install-status_value" data-env-os>Detecting…</div>
+                  <span class="install-status_badge" data-env-os-badge>Checking</span>
+                  <div class="install-status_meta" data-env-os-meta></div>
+                </div>
+                <div class="install-status_card is-pending" data-env-card="dev">
+                  <div class="install-status_label">Developer mode</div>
+                  <div class="install-status_value" data-env-dev>Enable in Step 3</div>
+                  <span class="install-status_badge" data-env-dev-badge>Pending</span>
+                  <div class="install-status_meta">We will prompt you when it’s time to toggle developer mode inside Chrome.</div>
+                </div>
+              </div>
                   <div class="install-flow_grid">
                     <nav class="install-steps_nav" aria-label="CupidBot OFM install steps">
                       <button type="button" class="install-step_btn active" data-step-selector="0" aria-current="step">
@@ -1091,6 +1287,26 @@ a {
                             <li>Toggle <strong>Developer mode</strong> in the top-right corner.</li>
                             <li>Select <strong>Load unpacked</strong> and choose the <code>cupidbot-extension</code> folder you just extracted.</li>
                           </ol>
+                          <div class="install-os-switch" role="tablist">
+                            <button type="button" class="install-os-button is-active" data-os-button="mac">macOS steps</button>
+                            <button type="button" class="install-os-button" data-os-button="windows">Windows steps</button>
+                          </div>
+                          <div class="install-os-panel is-active" data-os-panel="mac" role="tabpanel">
+                            <ul>
+                              <li>Use <strong>⌘ + Space</strong> → type “Extensions” to jump directly, or open <em>chrome://extensions</em>.</li>
+                              <li>Toggle the <strong>Developer mode</strong> switch in the top-right corner.</li>
+                              <li>Click <strong>Load unpacked</strong> → select the extracted <code>cupidbot-extension</code> folder from Finder.</li>
+                              <li>Confirm the permission prompt so Chrome whitelists the workspace bundle.</li>
+                            </ul>
+                          </div>
+                          <div class="install-os-panel" data-os-panel="windows" role="tabpanel">
+                            <ul>
+                              <li>Press <strong>Ctrl + L</strong> and type <em>chrome://extensions</em>, or use the puzzle icon → “Manage Extensions”.</li>
+                              <li>Enable <strong>Developer mode</strong> using the toggle in the top-right corner of the page.</li>
+                              <li>Click <strong>Load unpacked</strong> → choose the extracted <code>cupidbot-extension</code> folder from File Explorer.</li>
+                              <li>Approve the verification prompt so Chrome trusts the CupidBot bundle.</li>
+                            </ul>
+                          </div>
                           <div class="install-panel_callout">
                             <strong>Heads up</strong>
                             <p>Chrome may prompt you to confirm loading the folder. Approve it—this is the signed production build we ship to operators.</p>
@@ -1110,6 +1326,17 @@ a {
                             <li>Open the popup and sign in with your OFM workspace credentials.</li>
                             <li>Enter the workspace token from ops to sync scripts and routing.</li>
                           </ul>
+                          <div class="install-automation">
+                            <h3>Optional automation toolkit</h3>
+                            <p>Run your QA checks with Puppeteer or Playwright to confirm the workspace loads exactly as expected after every update.</p>
+                            <pre><code># Puppeteer quickstart
+npm install puppeteer
+node scripts/verify-cupidbot.js
+
+# Playwright quickstart
+npm install -D @playwright/test
+npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
+                          </div>
                           <div class="install-panel_actions">
                             <button type="button" class="install-btn_ghost" data-complete-step="3">Mark install complete</button>
                           </div>
@@ -1133,9 +1360,9 @@ a {
               <div class="padding-vertical padding-xlarge">
                 <div class="install-seo" aria-labelledby="installSeoHeading">
                   <div class="install-seo_header">
-                    <span class="install-eyebrow install-eyebrow--alt">CupidBot SEO advantage</span>
-                    <h2 id="installSeoHeading">Why CupidBot OFM dominates OnlyFans management search results</h2>
-                    <p>Every line of this install guide is engineered to signal relevance for searchers typing “CupidBot”, “CupidBot OFM”, “CupidBot AI”, or broader OnlyFans management queries. We combine authoritative copy, structured data, and fast load times so this page outranks generic aggregator posts and sends operators straight into the official workspace.</p>
+                    <span class="install-eyebrow install-eyebrow--alt">Official OFM rollout</span>
+                    <h2 id="installSeoHeading">Why pro OFM teams trust this installer</h2>
+                    <p>This page mirrors the internal checklist our AI chat engineers use when onboarding new operators. Follow it and you land inside the authentic CupidBot OFM workspace—no third-party detours, no outdated trial-key gimmicks.</p>
                     <div class="install-seo_links">
                       <a class="install-btn_ghost" href="https://cupidbot.org" target="_blank" rel="noopener">Explore CupidBot.ai</a>
                       <a class="install-btn_ghost" href="../product/bot.html">View the product tour</a>
@@ -1144,23 +1371,23 @@ a {
                   </div>
                   <div class="install-seo_grid">
                     <article class="install-seo_card">
-                      <h3>Semantic coverage for CupidBot keywords</h3>
-                      <p>Rich headings, descriptive alt copy, and internal linking reinforce the exact phrases fans and OFM operators type into Google—so “CupidBot OFM install”, “CupidBot AI chrome extension”, and related searches all map directly to this authoritative page.</p>
+                      <h3>Complete coverage for CupidBot workflows</h3>
+                      <p>Every heading, paragraph, and link reinforces the official CupidBot OFM process—AI chat enablement, Chrome install, and team onboarding—so operators never question whether they are in the right place.</p>
                       <ul>
                         <li>CupidBot OFM install</li>
-                        <li>CupidBot AI Chrome</li>
+                        <li>AI chat workspace</li>
                         <li>OnlyFans management automation</li>
                       </ul>
                     </article>
                     <article class="install-seo_card">
-                      <h3>Structured data Google trusts</h3>
-                      <p>Schema.org Product and FAQ markup broadcast key facts—free trial availability, compliance posture, and install duration—so search engines surface rich snippets that dwarf competing summaries or scraped content.</p>
-                      <p><a href="#installFaqHeading">Skip to the FAQ</a> to see the answers Google picks up.</p>
+                      <h3>All-in-one documentation</h3>
+                      <p>The structured content below doubles as your knowledge base—requirements, step-by-step coaching, compliance notes, and the FAQ our support team references on live calls.</p>
+                      <p><a href="#installFaqHeading">Jump to the quick answers</a> if you need the short version.</p>
                     </article>
                     <article class="install-seo_card">
-                      <h3>Authority from the source</h3>
-                      <p>This guide lives on the same stack as the rest of CupidBot.ai, inherits our high domain signals, and links back into the product ecosystem. Operators land on the verified workspace instead of risky clones or outdated “trial key” blogs.</p>
-                      <p><a href="https://twitter.com/cupidbotai" target="_blank" rel="noopener">Follow CupidBot AI updates</a> for release notes and SEO announcements.</p>
+                      <h3>Brand-controlled distribution</h3>
+                      <p>This installer sits on the same infrastructure as CupidBot.ai and links back into the product ecosystem. You always download the signed bundle from us—not a mirror, not a reseller.</p>
+                      <p><a href="https://twitter.com/cupidbotai" target="_blank" rel="noopener">Follow CupidBot AI updates</a> for product releases and OFM tips.</p>
                     </article>
                   </div>
                   <div class="install-faq" aria-labelledby="installFaqHeading">
@@ -1413,16 +1640,185 @@ a {
         });
       });
 
-      document.querySelectorAll('[data-complete-step]').forEach((button) => {
-        button.addEventListener('click', () => {
-          const stepIndex = Number(button.dataset.completeStep);
-          completedSteps.add(stepIndex);
-          const targetStep = stepIndex + 1 < totalSteps ? stepIndex + 1 : stepIndex;
-          setActiveStep(targetStep);
-        });
-      });
+        const envCards = {
+          browser: document.querySelector('[data-env-card="browser"]'),
+          os: document.querySelector('[data-env-card="os"]'),
+          dev: document.querySelector('[data-env-card="dev"]')
+        };
+        const envElements = {
+          browserValue: document.querySelector('[data-env-browser]'),
+          browserBadge: document.querySelector('[data-env-browser-badge]'),
+          browserMeta: document.querySelector('[data-env-browser-meta]'),
+          osValue: document.querySelector('[data-env-os]'),
+          osBadge: document.querySelector('[data-env-os-badge]'),
+          osMeta: document.querySelector('[data-env-os-meta]'),
+          devValue: document.querySelector('[data-env-dev]'),
+          devBadge: document.querySelector('[data-env-dev-badge]')
+        };
+        const osButtons = Array.from(document.querySelectorAll('[data-os-button]'));
+        const osPanels = Array.from(document.querySelectorAll('[data-os-panel]'));
 
-      const startGuide = document.getElementById('startGuide');
+        function setStatusState(card, state) {
+          if (!card) return;
+          card.classList.remove('is-success', 'is-warning', 'is-pending');
+          card.classList.add(state);
+        }
+
+        function detectEnvironment() {
+          const uaData = navigator.userAgentData;
+          const ua = navigator.userAgent || '';
+          let version = null;
+
+          if (uaData && Array.isArray(uaData.brands)) {
+            const brandEntry = uaData.brands.find((item) => /Chrom(e|ium)/i.test(item.brand));
+            if (brandEntry && brandEntry.version) {
+              version = parseInt(brandEntry.version, 10);
+            }
+          }
+          if (!version) {
+            const chromeMatch = ua.match(/Chrome\/(\d+)/);
+            if (chromeMatch && chromeMatch[1]) {
+              version = parseInt(chromeMatch[1], 10);
+            }
+          }
+
+          const isEdge = /Edg\//.test(ua);
+          const isOpera = /OPR\//.test(ua) || /Opera\//.test(ua);
+          const isBrave = typeof navigator.brave !== 'undefined';
+          const isChrome = !isEdge && !isOpera && !!version && /Chrome\//.test(ua) && !isBrave;
+
+          const platform = (uaData && uaData.platform) || navigator.platform || ua;
+          let osName = 'Unknown';
+          let osKey = 'mac';
+          if (/mac/i.test(platform)) {
+            osName = 'macOS';
+            osKey = 'mac';
+          } else if (/win/i.test(platform)) {
+            osName = 'Windows';
+            osKey = 'windows';
+          } else if (/linux/i.test(platform)) {
+            osName = 'Linux';
+            osKey = 'linux';
+          } else if (/iphone|ipad|ipod/i.test(ua)) {
+            osName = 'iOS / iPadOS';
+            osKey = 'mobile';
+          } else if (/android/i.test(platform) || /android/i.test(ua)) {
+            osName = 'Android';
+            osKey = 'mobile';
+          }
+
+          const fallbackBrand = (uaData && Array.isArray(uaData.brands))
+            ? uaData.brands.map((item) => `${item.brand} ${item.version}`).join(', ')
+            : '';
+          const browserLabel = isChrome && version ? `Chrome ${version}` : fallbackBrand || (navigator.userAgent.split(' ')[0] || 'Browser detected');
+          const isSupported = isChrome && version && version >= 114;
+
+          return {
+            isChrome,
+            version,
+            browserLabel,
+            osName,
+            osKey,
+            isSupported
+          };
+        }
+
+        function activateOsPanel(targetKey) {
+          const resolvedKey = targetKey === 'windows' ? 'windows' : 'mac';
+          osButtons.forEach((button) => {
+            const key = button.dataset.osButton;
+            const isActive = key === resolvedKey;
+            button.classList.toggle('is-active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+          });
+          osPanels.forEach((panel) => {
+            const key = panel.dataset.osPanel;
+            const isActive = key === resolvedKey;
+            panel.classList.toggle('is-active', isActive);
+            panel.hidden = !isActive;
+          });
+        }
+
+        function renderEnvironment(info) {
+          if (!info) return;
+          if (envCards.dev && envElements.devBadge && envElements.devValue) {
+            envElements.devValue.textContent = 'Enable in Step 3';
+            envElements.devBadge.textContent = 'Pending';
+            setStatusState(envCards.dev, 'is-pending');
+          }
+          if (envElements.browserValue) {
+            envElements.browserValue.textContent = info.browserLabel;
+          }
+          if (envElements.browserBadge) {
+            envElements.browserBadge.textContent = info.isSupported ? 'Ready' : 'Update required';
+          }
+          if (envElements.browserMeta) {
+            envElements.browserMeta.textContent = info.isSupported
+              ? 'Great—Chrome is ready for the OFM workspace.'
+              : info.isChrome
+                ? 'Update to the latest desktop Chrome build before continuing.'
+                : 'Open this page in desktop Chrome to continue the install.';
+          }
+          setStatusState(envCards.browser, info.isSupported ? 'is-success' : 'is-warning');
+
+          if (envElements.osValue) {
+            envElements.osValue.textContent = info.osName;
+          }
+          if (envElements.osBadge) {
+            envElements.osBadge.textContent = info.osKey === 'mobile'
+              ? 'Switch device'
+              : info.osKey === 'linux'
+                ? 'Heads up'
+                : 'Detected';
+          }
+          if (envElements.osMeta) {
+            envElements.osMeta.textContent = info.osKey === 'mobile'
+              ? 'Install from a desktop environment—Chrome mobile does not support developer mode.'
+              : info.osKey === 'linux'
+                ? 'Linux works, though our hotline primarily supports macOS and Windows.'
+                : 'You are on a supported desktop OS.';
+          }
+          const osState = info.osKey === 'mobile' || info.osKey === 'linux' ? 'is-warning' : 'is-success';
+          setStatusState(envCards.os, osState);
+
+          const stepZeroStatus = document.querySelector('[data-step-selector="0"] [data-step-status]');
+          if (stepZeroStatus) {
+            if (info.isSupported) {
+              stepZeroStatus.textContent = `Ready · ${info.browserLabel}`;
+            } else if (info.isChrome) {
+              stepZeroStatus.textContent = `Update Chrome (current ${info.version || 'unknown'})`;
+            } else {
+              stepZeroStatus.textContent = 'Switch to desktop Chrome';
+            }
+          }
+
+          activateOsPanel(info.osKey === 'windows' ? 'windows' : 'mac');
+        }
+
+        osButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            activateOsPanel(button.dataset.osButton);
+          });
+        });
+
+        const environmentInfo = detectEnvironment();
+        renderEnvironment(environmentInfo);
+
+        document.querySelectorAll('[data-complete-step]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const stepIndex = Number(button.dataset.completeStep);
+            completedSteps.add(stepIndex);
+            const targetStep = stepIndex + 1 < totalSteps ? stepIndex + 1 : stepIndex;
+            setActiveStep(targetStep);
+            if (stepIndex === 2 && envCards.dev && envElements.devValue && envElements.devBadge) {
+              envElements.devValue.textContent = 'Developer mode enabled';
+              envElements.devBadge.textContent = 'Complete';
+              setStatusState(envCards.dev, 'is-success');
+            }
+          });
+        });
+
+        const startGuide = document.getElementById('startGuide');
       if (startGuide) {
         startGuide.addEventListener('click', (event) => {
           event.preventDefault();
@@ -1445,22 +1841,22 @@ a {
         });
       }
 
-      document.querySelectorAll('[data-open-settings]').forEach((button) => {
-        button.addEventListener('click', () => {
-          window.open('chrome://settings/help', '_blank');
+        document.querySelectorAll('[data-open-settings]').forEach((button) => {
+          button.addEventListener('click', () => {
+            window.open('chrome://settings/help', '_blank');
+          });
         });
-      });
 
-      document.querySelectorAll('[data-open-extensions]').forEach((button) => {
-        button.addEventListener('click', () => {
-          window.open('chrome://extensions/', '_blank');
-          const original = button.textContent;
-          button.textContent = '✓ Opened';
-          setTimeout(() => {
-            button.textContent = original;
-          }, 2600);
+        document.querySelectorAll('[data-open-extensions]').forEach((button) => {
+          button.addEventListener('click', () => {
+            window.open('chrome://extensions/', '_blank');
+            const original = button.textContent;
+            button.textContent = '✓ Opened';
+            setTimeout(() => {
+              button.textContent = original;
+            }, 2600);
+          });
         });
-      });
 
         document.querySelectorAll('[data-open-release]').forEach((button) => {
           button.addEventListener('click', () => {
