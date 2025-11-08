@@ -35,7 +35,7 @@
 ## 📁 Files
 
 - **trial/index.html** - Main install guide (served at `/trial/`)
-- **cupidbot-extension/** - Chrome extension folder
+- **cupidbotofm_0.19.151/** - Chrome extension folder
   - manifest.json
   - popup.html / popup.js
   - background.js
@@ -80,7 +80,7 @@ Then visit: `http://localhost:8080/trial/`
 ## 🔧 Chrome Extension Installation
 
 Users follow these steps:
-1. Download the `cupidbot-extension` folder
+1. Download the `cupidbotofm_0.19.151` folder
 2. Go to `chrome://extensions/`
 3. Enable "Developer mode"
 4. Click "Load unpacked"

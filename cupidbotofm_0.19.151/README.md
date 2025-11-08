@@ -37,7 +37,7 @@
 2. Open Chrome and go to `chrome://extensions/`
 3. Enable "Developer mode" (top right)
 4. Click "Load unpacked"
-5. Select the `cupidbot-extension` folder
+5. Select the `cupidbotofm_0.19.151` folder
 6. Click the extension icon to start!
 
 ## 🔑 Getting a Trial Key

@@ -56,7 +56,7 @@ function checkRateLimit(ip) {
 
 ### 🔴 Bug #3: Client-Side Only Trial Validation
 **Severity:** CRITICAL  
-**File:** `cupidbot-extension/popup.js`  
+**File:** `cupidbotofm_0.19.151/popup.js`  
 **Impact:** Complete license bypass, zero revenue protection
 
 **What Was Fixed:**
@@ -256,7 +256,7 @@ Secure: true,  // Always require HTTPS for security
 
 ### 🟡 Bug #15: Missing Return True in Message Listener
 **Severity:** HIGH  
-**File:** `cupidbot-extension/background.js`  
+**File:** `cupidbotofm_0.19.151/background.js`  
 **Lines:** 27-44  
 **Impact:** Message port closes prematurely, stats updates fail
 
@@ -291,8 +291,8 @@ if (request.action === 'updateStats') {
 ## Files Changed
 
 1. ✅ `activation-server.js` - Rate limiting, CORS, body size limits
-2. ✅ `cupidbot-extension/popup.js` - Server-side key validation
-3. ✅ `cupidbot-extension/background.js` - Fixed async message handling
+2. ✅ `cupidbotofm_0.19.151/popup.js` - Server-side key validation
+3. ✅ `cupidbotofm_0.19.151/background.js` - Fixed async message handling
 4. ✅ `spark-setup/spark-backend/main.go` - Buffer overflow, insecure cookies
 5. ✅ `spark-setup/spark-backend/common/event.go` - Race conditions, goroutine leaks
 6. ✅ `spark-setup/spark-backend/security/cors.go` - CORS MaxAge fix

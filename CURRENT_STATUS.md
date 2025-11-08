@@ -94,7 +94,7 @@ All debugging tools installed, backend stabilized, authentication working, activ
 ---
 
 ### 4. CupidBot Extension - ✅ COMPLETE
-**Location:** `/cupidbot-extension/`  
+**Location:** `/cupidbotofm_0.19.151/`  
 **Status:** Functional (standalone)
 
 **Features:**

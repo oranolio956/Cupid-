@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CupidBot AI - Premium Chat Automation",
-  "version": "1.0.0",
+  "version": "0.19.151",
   "description": "Ultra-premium AI chat automation for OnlyFans management. Convert subscribers with intelligent conversations.",
   "permissions": [
     "storage",

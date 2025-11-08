@@ -151,7 +151,7 @@ func wsOnDisconnect(session *melody.Session) {
 ---
 
 ### 🟡 Bug #18: Missing Error Handling in Storage - HIGH
-**File:** `cupidbot-extension/popup.js`  
+**File:** `cupidbotofm_0.19.151/popup.js`  
 **Lines:** 56-58
 
 **Problem:**
@@ -282,7 +282,7 @@ if healthChecker != nil {
 2. ✅ `spark-setup/spark-backend/security/ddos_protection.go` - DDoS protection fix
 3. ✅ `spark-setup/spark-backend/main.go` - Race condition + shutdown fixes
 4. ✅ `spark-setup/spark-backend/health/checker.go` - Shutdown fix
-5. ✅ `cupidbot-extension/popup.js` - Error handling
+5. ✅ `cupidbotofm_0.19.151/popup.js` - Error handling
 
 **Total:** 5 files modified
 

@@ -3,7 +3,7 @@
 **Date**: 2024
 **Analyzed Components**: 
 - activation-server.js (Node.js)
-- cupidbot-extension (Chrome Extension)
+- cupidbotofm_0.19.151 (Chrome Extension)
 - spark-backend (Go WebSocket Server)
 
 ---
@@ -84,7 +84,7 @@ if (!checkRateLimit(clientIP)) {
 ---
 
 ### 3. Client-Side Only Key Validation (popup.js)
-**File**: `cupidbot-extension/popup.js:145-160`  
+**File**: `cupidbotofm_0.19.151/popup.js:145-160`  
 **Impact**: Anyone can bypass trial system with fake keys
 
 ```javascript
@@ -328,7 +328,7 @@ if (allowedOrigins.includes(origin)) {
 ---
 
 ### 12. Race Condition in State Loading (popup.js)
-**File**: `cupidbot-extension/popup.js:38-48`  
+**File**: `cupidbotofm_0.19.151/popup.js:38-48`  
 **Impact**: Undefined behavior, wrong screen shown
 
 The code actually handles this correctly with `await`, but `initializeApp()` should validate state is loaded.
@@ -352,7 +352,7 @@ Always use secure cookies, even in dev environment.
 ---
 
 ### 15. Message Listener Async Issue (background.js)
-**File**: `cupidbot-extension/background.js:14-28`  
+**File**: `cupidbotofm_0.19.151/background.js:14-28`  
 **Impact**: Message loss, race condition
 
 Missing `return true` for async response in updateStats handler.
@@ -378,7 +378,7 @@ Add MAX_BODY_SIZE check and reject large payloads.
 ---
 
 ### 18. Missing Error Handling in Storage (popup.js)
-**File**: `cupidbot-extension/popup.js:50-58`  
+**File**: `cupidbotofm_0.19.151/popup.js:50-58`  
 **Impact**: Silent failures, state not persisted
 
 Check `chrome.runtime.lastError` in callbacks.
@@ -404,7 +404,7 @@ Call `healthChecker.Stop()` before server shutdown.
 ## 🟢 LOW SEVERITY BUGS (Priority 4)
 
 ### 21. Notification Error Handling Missing (background.js)
-**File**: `cupidbot-extension/background.js:29-44`  
+**File**: `cupidbotofm_0.19.151/background.js:29-44`  
 **Impact**: Silent notification failures
 
 Check `chrome.runtime.lastError` after creating notification.

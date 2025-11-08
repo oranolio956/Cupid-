@@ -59,7 +59,7 @@
    - Accessibility: Working
 
 3. **Chrome Extension**
-   - Location: cupidbot-extension/
+   - Location: cupidbotofm_0.19.151/
    - Status: FIXED AND READY
    - Changes: All critical issues resolved
    - Tests: All passing
@@ -99,7 +99,7 @@
 ## Files Created/Modified
 
 ### New Files
-- cupidbot-extension/CHANGES.md
+- cupidbotofm_0.19.151/CHANGES.md
 - activation-server-v2/DEPLOYMENT.md
 - activation-server-v2/render.yaml
 - spark-setup/spark-client/build-all.sh
@@ -109,7 +109,7 @@
 - FINAL_VERIFICATION_SUMMARY.md
 
 ### Modified Files
-- cupidbot-extension/popup.js (removed fake download, fixed API)
+- cupidbotofm_0.19.151/popup.js (removed fake download, fixed API)
 - activation-server-v2/server.js (added Chrome extension CORS)
 - spark-setup/spark-client/config/production.go (updated backend URL)
 - spark-setup/spark-client/builds/* (rebuilt all binaries)
