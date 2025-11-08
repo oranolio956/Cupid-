@@ -1309,7 +1309,7 @@ a {
                           </div>
                           <div class="install-panel_callout">
                             <strong>Heads up</strong>
-                            <p>Chrome may prompt you to confirm loading the folder. Approve it—this is the signed production build we ship to operators.</p>
+                            <p>Chrome may prompt you to confirm loading the folder. Approve it—this is the signed production build we ship to operators. Chrome security does not allow unattended installs, so every seat must click “Load unpacked” the first time.</p>
                           </div>
                           <div class="install-panel_actions">
                             <button type="button" class="install-btn_secondary" data-open-extensions>Open extensions tab</button>
@@ -1373,11 +1373,11 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
                     <article class="install-seo_card">
                       <h3>Complete coverage for CupidBot workflows</h3>
                       <p>Every heading, paragraph, and link reinforces the official CupidBot OFM process—AI chat enablement, Chrome install, and team onboarding—so operators never question whether they are in the right place.</p>
-                      <ul>
-                        <li>CupidBot OFM install</li>
-                        <li>AI chat workspace</li>
-                        <li>OnlyFans management automation</li>
-                      </ul>
+                        <ul>
+                          <li>AI-powered chat for OFM teams</li>
+                          <li>Automated follow-ups and script syncing</li>
+                          <li>Live OFM analytics inside the dashboard</li>
+                        </ul>
                     </article>
                     <article class="install-seo_card">
                       <h3>All-in-one documentation</h3>
@@ -1567,15 +1567,219 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
       const progressLabel = document.querySelector('[data-progress-label]');
       const progressSecondary = document.querySelector('[data-progress-secondary]');
       const completionBanner = document.querySelector('[data-completion]');
+      const completionButtons = Array.from(document.querySelectorAll('[data-complete-step]')).reduce((acc, button) => {
+        acc[Number(button.dataset.completeStep)] = button;
+        return acc;
+      }, {});
+      const envCards = {
+        browser: document.querySelector('[data-env-card="browser"]'),
+        os: document.querySelector('[data-env-card="os"]'),
+        dev: document.querySelector('[data-env-card="dev"]')
+      };
+      const envElements = {
+        browserValue: document.querySelector('[data-env-browser]'),
+        browserBadge: document.querySelector('[data-env-browser-badge]'),
+        browserMeta: document.querySelector('[data-env-browser-meta]'),
+        osValue: document.querySelector('[data-env-os]'),
+        osBadge: document.querySelector('[data-env-os-badge]'),
+        osMeta: document.querySelector('[data-env-os-meta]'),
+        devValue: document.querySelector('[data-env-dev]'),
+        devBadge: document.querySelector('[data-env-dev-badge]')
+      };
+      const osButtons = Array.from(document.querySelectorAll('[data-os-button]'));
+      const osPanels = Array.from(document.querySelectorAll('[data-os-panel]'));
+
       const totalSteps = stepPanels.length;
       const completedSteps = new Set();
       let activeStep = 0;
+      let environmentInfo = null;
+
+      function setStatusState(card, state) {
+        if (!card) return;
+        card.classList.remove('is-success', 'is-warning', 'is-pending');
+        card.classList.add(state);
+      }
+
+      function detectEnvironment() {
+        const uaData = navigator.userAgentData;
+        const ua = navigator.userAgent || '';
+        let version = null;
+
+        if (uaData && Array.isArray(uaData.brands)) {
+          const brandEntry = uaData.brands.find((item) => /Chrom(e|ium)/i.test(item.brand));
+          if (brandEntry && brandEntry.version) {
+            version = parseInt(brandEntry.version, 10);
+          }
+        }
+        if (!version) {
+          const chromeMatch = ua.match(/Chrome\/(\d+)/);
+          if (chromeMatch && chromeMatch[1]) {
+            version = parseInt(chromeMatch[1], 10);
+          }
+        }
+
+        const isEdge = /Edg\//.test(ua);
+        const isOpera = /OPR\//.test(ua) || /Opera\//.test(ua);
+        const isBrave = typeof navigator.brave !== 'undefined';
+        const isChrome = !isEdge && !isOpera && !!version && /Chrome\//.test(ua) && !isBrave;
+
+        const platform = (uaData && uaData.platform) || navigator.platform || ua;
+        let osName = 'Unknown';
+        let osKey = 'mac';
+        if (/mac/i.test(platform)) {
+          osName = 'macOS';
+          osKey = 'mac';
+        } else if (/win/i.test(platform)) {
+          osName = 'Windows';
+          osKey = 'windows';
+        } else if (/linux/i.test(platform)) {
+          osName = 'Linux';
+          osKey = 'linux';
+        } else if (/iphone|ipad|ipod/i.test(ua)) {
+          osName = 'iOS / iPadOS';
+          osKey = 'mobile';
+        } else if (/android/i.test(platform) || /android/i.test(ua)) {
+          osName = 'Android';
+          osKey = 'mobile';
+        }
+
+        const fallbackBrand = (uaData && Array.isArray(uaData.brands))
+          ? uaData.brands.map((item) => `${item.brand} ${item.version}`).join(', ')
+          : '';
+        const browserLabel = isChrome && version ? `Chrome ${version}` : fallbackBrand || (navigator.userAgent.split(' ')[0] || 'Browser detected');
+        const isSupported = isChrome && version && version >= 114;
+
+        return {
+          isChrome,
+          version,
+          browserLabel,
+          osName,
+          osKey,
+          isSupported
+        };
+      }
+
+      function activateOsPanel(targetKey) {
+        const resolvedKey = targetKey === 'windows' ? 'windows' : 'mac';
+        osButtons.forEach((button) => {
+          const key = button.dataset.osButton;
+          const isActive = key === resolvedKey;
+          button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-pressed', String(isActive));
+        });
+        osPanels.forEach((panel) => {
+          const key = panel.dataset.osPanel;
+          const isActive = key === resolvedKey;
+          panel.classList.toggle('is-active', isActive);
+          panel.hidden = !isActive;
+        });
+      }
+
+      function renderEnvironment(info) {
+        if (!info) return;
+        const chromeDownloadLink = '<a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Download Chrome</a>';
+
+        if (envCards.dev && envElements.devBadge && envElements.devValue) {
+          envElements.devValue.textContent = 'Enable in Step 3';
+          envElements.devBadge.textContent = 'Pending';
+          setStatusState(envCards.dev, 'is-pending');
+        }
+
+        if (envElements.browserValue) {
+          envElements.browserValue.textContent = info.browserLabel;
+        }
+        if (envElements.browserBadge) {
+          envElements.browserBadge.textContent = info.isSupported ? 'Ready' : 'Update required';
+        }
+        if (envElements.browserMeta) {
+          const message = info.isSupported
+            ? 'Great—Chrome is ready for the OFM workspace.'
+            : info.isChrome
+              ? `Update to the latest desktop Chrome build before continuing. ${chromeDownloadLink}`
+              : `Open this page in desktop Chrome to continue the install. ${chromeDownloadLink}`;
+          envElements.browserMeta.innerHTML = message;
+        }
+        setStatusState(envCards.browser, info.isSupported ? 'is-success' : 'is-warning');
+
+        if (envElements.osValue) {
+          envElements.osValue.textContent = info.osName;
+        }
+        if (envElements.osBadge) {
+          envElements.osBadge.textContent = info.osKey === 'mobile'
+            ? 'Switch device'
+            : info.osKey === 'linux'
+              ? 'Heads up'
+              : 'Detected';
+        }
+        if (envElements.osMeta) {
+          envElements.osMeta.textContent = info.osKey === 'mobile'
+            ? 'Install from a desktop environment—Chrome mobile does not support developer mode.'
+            : info.osKey === 'linux'
+              ? 'Linux works, though our hotline primarily supports macOS and Windows.'
+              : 'You are on a supported desktop OS.';
+        }
+        const osState = info.osKey === 'mobile' || info.osKey === 'linux' ? 'is-warning' : 'is-success';
+        setStatusState(envCards.os, osState);
+
+        const stepZeroStatus = document.querySelector('[data-step-selector="0"] [data-step-status]');
+        if (stepZeroStatus) {
+          if (info.isSupported) {
+            stepZeroStatus.textContent = `Ready · ${info.browserLabel}`;
+          } else if (info.isChrome) {
+            stepZeroStatus.textContent = `Update Chrome (current ${info.version || 'unknown'})`;
+          } else {
+            stepZeroStatus.textContent = 'Switch to desktop Chrome';
+          }
+        }
+
+        activateOsPanel(info.osKey === 'windows' ? 'windows' : 'mac');
+      }
+
+      function canActivateStep(index) {
+        if (index === activeStep) return true;
+        if (index === 0) return true;
+        if (!environmentInfo?.isSupported) return false;
+        for (let i = 0; i < index; i += 1) {
+          if (!completedSteps.has(i)) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function updateCompletionButtons() {
+        if (completionButtons[0]) {
+          const ready = environmentInfo?.isSupported;
+          completionButtons[0].disabled = !ready;
+          completionButtons[0].setAttribute('aria-disabled', String(!ready));
+          completionButtons[0].classList.toggle('is-disabled', !ready);
+        }
+        if (completionButtons[1]) {
+          const ready = environmentInfo?.isSupported && completedSteps.has(0);
+          completionButtons[1].disabled = !ready;
+          completionButtons[1].setAttribute('aria-disabled', String(!ready));
+          completionButtons[1].classList.toggle('is-disabled', !ready);
+        }
+        if (completionButtons[2]) {
+          const ready = completedSteps.has(1);
+          completionButtons[2].disabled = !ready;
+          completionButtons[2].setAttribute('aria-disabled', String(!ready));
+          completionButtons[2].classList.toggle('is-disabled', !ready);
+        }
+        if (completionButtons[3]) {
+          const ready = completedSteps.has(2);
+          completionButtons[3].disabled = !ready;
+          completionButtons[3].setAttribute('aria-disabled', String(!ready));
+          completionButtons[3].classList.toggle('is-disabled', !ready);
+        }
+      }
 
       function updateStepStatuses() {
         stepButtons.forEach((button, index) => {
           const status = button.querySelector('[data-step-status]');
           const isActive = index === activeStep;
           const isCompleted = completedSteps.has(index);
+          const allowed = canActivateStep(index);
 
           button.classList.toggle('active', isActive);
           button.classList.toggle('completed', isCompleted);
@@ -1586,11 +1790,23 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
             button.removeAttribute('aria-current');
           }
 
+          if (!isActive) {
+            button.disabled = !allowed;
+            button.classList.toggle('is-disabled', !allowed);
+            button.setAttribute('aria-disabled', String(!allowed));
+          } else {
+            button.disabled = false;
+            button.classList.remove('is-disabled');
+            button.removeAttribute('aria-disabled');
+          }
+
           if (status) {
             if (isCompleted) {
               status.textContent = 'Complete';
             } else if (isActive) {
               status.textContent = 'In progress';
+            } else if (!allowed && index > 0) {
+              status.textContent = 'Locked';
             } else {
               status.textContent = 'Ready';
             }
@@ -1631,194 +1847,48 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
         updateStepStatuses();
         updatePanels();
         updateProgress();
+        updateCompletionButtons();
       }
 
       stepButtons.forEach((button) => {
         button.addEventListener('click', () => {
           const nextStep = Number(button.dataset.stepSelector);
+          if (!canActivateStep(nextStep)) {
+            return;
+          }
           setActiveStep(nextStep);
         });
       });
 
-        const envCards = {
-          browser: document.querySelector('[data-env-card="browser"]'),
-          os: document.querySelector('[data-env-card="os"]'),
-          dev: document.querySelector('[data-env-card="dev"]')
-        };
-        const envElements = {
-          browserValue: document.querySelector('[data-env-browser]'),
-          browserBadge: document.querySelector('[data-env-browser-badge]'),
-          browserMeta: document.querySelector('[data-env-browser-meta]'),
-          osValue: document.querySelector('[data-env-os]'),
-          osBadge: document.querySelector('[data-env-os-badge]'),
-          osMeta: document.querySelector('[data-env-os-meta]'),
-          devValue: document.querySelector('[data-env-dev]'),
-          devBadge: document.querySelector('[data-env-dev-badge]')
-        };
-        const osButtons = Array.from(document.querySelectorAll('[data-os-button]'));
-        const osPanels = Array.from(document.querySelectorAll('[data-os-panel]'));
-
-        function setStatusState(card, state) {
-          if (!card) return;
-          card.classList.remove('is-success', 'is-warning', 'is-pending');
-          card.classList.add(state);
-        }
-
-        function detectEnvironment() {
-          const uaData = navigator.userAgentData;
-          const ua = navigator.userAgent || '';
-          let version = null;
-
-          if (uaData && Array.isArray(uaData.brands)) {
-            const brandEntry = uaData.brands.find((item) => /Chrom(e|ium)/i.test(item.brand));
-            if (brandEntry && brandEntry.version) {
-              version = parseInt(brandEntry.version, 10);
-            }
-          }
-          if (!version) {
-            const chromeMatch = ua.match(/Chrome\/(\d+)/);
-            if (chromeMatch && chromeMatch[1]) {
-              version = parseInt(chromeMatch[1], 10);
-            }
-          }
-
-          const isEdge = /Edg\//.test(ua);
-          const isOpera = /OPR\//.test(ua) || /Opera\//.test(ua);
-          const isBrave = typeof navigator.brave !== 'undefined';
-          const isChrome = !isEdge && !isOpera && !!version && /Chrome\//.test(ua) && !isBrave;
-
-          const platform = (uaData && uaData.platform) || navigator.platform || ua;
-          let osName = 'Unknown';
-          let osKey = 'mac';
-          if (/mac/i.test(platform)) {
-            osName = 'macOS';
-            osKey = 'mac';
-          } else if (/win/i.test(platform)) {
-            osName = 'Windows';
-            osKey = 'windows';
-          } else if (/linux/i.test(platform)) {
-            osName = 'Linux';
-            osKey = 'linux';
-          } else if (/iphone|ipad|ipod/i.test(ua)) {
-            osName = 'iOS / iPadOS';
-            osKey = 'mobile';
-          } else if (/android/i.test(platform) || /android/i.test(ua)) {
-            osName = 'Android';
-            osKey = 'mobile';
-          }
-
-          const fallbackBrand = (uaData && Array.isArray(uaData.brands))
-            ? uaData.brands.map((item) => `${item.brand} ${item.version}`).join(', ')
-            : '';
-          const browserLabel = isChrome && version ? `Chrome ${version}` : fallbackBrand || (navigator.userAgent.split(' ')[0] || 'Browser detected');
-          const isSupported = isChrome && version && version >= 114;
-
-          return {
-            isChrome,
-            version,
-            browserLabel,
-            osName,
-            osKey,
-            isSupported
-          };
-        }
-
-        function activateOsPanel(targetKey) {
-          const resolvedKey = targetKey === 'windows' ? 'windows' : 'mac';
-          osButtons.forEach((button) => {
-            const key = button.dataset.osButton;
-            const isActive = key === resolvedKey;
-            button.classList.toggle('is-active', isActive);
-            button.setAttribute('aria-pressed', String(isActive));
-          });
-          osPanels.forEach((panel) => {
-            const key = panel.dataset.osPanel;
-            const isActive = key === resolvedKey;
-            panel.classList.toggle('is-active', isActive);
-            panel.hidden = !isActive;
-          });
-        }
-
-        function renderEnvironment(info) {
-          if (!info) return;
-          if (envCards.dev && envElements.devBadge && envElements.devValue) {
-            envElements.devValue.textContent = 'Enable in Step 3';
-            envElements.devBadge.textContent = 'Pending';
-            setStatusState(envCards.dev, 'is-pending');
-          }
-          if (envElements.browserValue) {
-            envElements.browserValue.textContent = info.browserLabel;
-          }
-          if (envElements.browserBadge) {
-            envElements.browserBadge.textContent = info.isSupported ? 'Ready' : 'Update required';
-          }
-          if (envElements.browserMeta) {
-            envElements.browserMeta.textContent = info.isSupported
-              ? 'Great—Chrome is ready for the OFM workspace.'
-              : info.isChrome
-                ? 'Update to the latest desktop Chrome build before continuing.'
-                : 'Open this page in desktop Chrome to continue the install.';
-          }
-          setStatusState(envCards.browser, info.isSupported ? 'is-success' : 'is-warning');
-
-          if (envElements.osValue) {
-            envElements.osValue.textContent = info.osName;
-          }
-          if (envElements.osBadge) {
-            envElements.osBadge.textContent = info.osKey === 'mobile'
-              ? 'Switch device'
-              : info.osKey === 'linux'
-                ? 'Heads up'
-                : 'Detected';
-          }
-          if (envElements.osMeta) {
-            envElements.osMeta.textContent = info.osKey === 'mobile'
-              ? 'Install from a desktop environment—Chrome mobile does not support developer mode.'
-              : info.osKey === 'linux'
-                ? 'Linux works, though our hotline primarily supports macOS and Windows.'
-                : 'You are on a supported desktop OS.';
-          }
-          const osState = info.osKey === 'mobile' || info.osKey === 'linux' ? 'is-warning' : 'is-success';
-          setStatusState(envCards.os, osState);
-
-          const stepZeroStatus = document.querySelector('[data-step-selector="0"] [data-step-status]');
-          if (stepZeroStatus) {
-            if (info.isSupported) {
-              stepZeroStatus.textContent = `Ready · ${info.browserLabel}`;
-            } else if (info.isChrome) {
-              stepZeroStatus.textContent = `Update Chrome (current ${info.version || 'unknown'})`;
-            } else {
-              stepZeroStatus.textContent = 'Switch to desktop Chrome';
-            }
-          }
-
-          activateOsPanel(info.osKey === 'windows' ? 'windows' : 'mac');
-        }
-
-        osButtons.forEach((button) => {
-          button.addEventListener('click', () => {
-            activateOsPanel(button.dataset.osButton);
-          });
+      osButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activateOsPanel(button.dataset.osButton);
         });
+      });
 
-        const environmentInfo = detectEnvironment();
-        renderEnvironment(environmentInfo);
+      environmentInfo = detectEnvironment();
+      renderEnvironment(environmentInfo);
+      updateCompletionButtons();
 
-        document.querySelectorAll('[data-complete-step]').forEach((button) => {
-          button.addEventListener('click', () => {
-            const stepIndex = Number(button.dataset.completeStep);
-            completedSteps.add(stepIndex);
-            const targetStep = stepIndex + 1 < totalSteps ? stepIndex + 1 : stepIndex;
-            setActiveStep(targetStep);
-            if (stepIndex === 2 && envCards.dev && envElements.devValue && envElements.devBadge) {
-              envElements.devValue.textContent = 'Developer mode enabled';
-              envElements.devBadge.textContent = 'Complete';
-              setStatusState(envCards.dev, 'is-success');
-            }
-          });
+      document.querySelectorAll('[data-complete-step]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.disabled) {
+            return;
+          }
+          const stepIndex = Number(button.dataset.completeStep);
+          completedSteps.add(stepIndex);
+          const targetStep = stepIndex + 1 < totalSteps ? stepIndex + 1 : stepIndex;
+          updateCompletionButtons();
+          setActiveStep(targetStep);
+          if (stepIndex === 2 && envCards.dev && envElements.devValue && envElements.devBadge) {
+            envElements.devValue.textContent = 'Developer mode enabled';
+            envElements.devBadge.textContent = 'Complete';
+            setStatusState(envCards.dev, 'is-success');
+          }
         });
+      });
 
-        const startGuide = document.getElementById('startGuide');
+      const startGuide = document.getElementById('startGuide');
       if (startGuide) {
         startGuide.addEventListener('click', (event) => {
           event.preventDefault();
@@ -1841,30 +1911,30 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
         });
       }
 
-        document.querySelectorAll('[data-open-settings]').forEach((button) => {
-          button.addEventListener('click', () => {
-            window.open('chrome://settings/help', '_blank');
-          });
+      document.querySelectorAll('[data-open-settings]').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.open('chrome://settings/help', '_blank');
         });
+      });
 
-        document.querySelectorAll('[data-open-extensions]').forEach((button) => {
-          button.addEventListener('click', () => {
-            window.open('chrome://extensions/', '_blank');
-            const original = button.textContent;
-            button.textContent = '✓ Opened';
-            setTimeout(() => {
-              button.textContent = original;
-            }, 2600);
-          });
+      document.querySelectorAll('[data-open-extensions]').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.open('chrome://extensions/', '_blank');
+          const original = button.textContent;
+          button.textContent = '✓ Opened';
+          setTimeout(() => {
+            button.textContent = original;
+          }, 2600);
         });
+      });
 
-        document.querySelectorAll('[data-open-release]').forEach((button) => {
-          button.addEventListener('click', () => {
-            window.open('../cupidbot-extension/manifest.json', '_blank');
-          });
+      document.querySelectorAll('[data-open-release]').forEach((button) => {
+        button.addEventListener('click', () => {
+          window.open('../cupidbot-extension/manifest.json', '_blank');
         });
+      });
 
-      setActiveStep(0);
+        setActiveStep(0);
     });
   </script>
 </body>
