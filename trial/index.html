@@ -273,6 +273,7 @@
       font-size: 13px;
       color: var(--install-text-secondary);
       line-height: 1.5;
+      min-height: 40px;
     }
 
     .install-os-switch {
@@ -328,6 +329,80 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+
+    .install-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .install-metric {
+      padding: 16px 18px;
+      border-radius: var(--install-radius-sm);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .install-metric_value {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+      color: var(--install-text-primary);
+    }
+
+    .install-metric_label {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--install-text-secondary);
+      margin-top: 6px;
+    }
+
+    .install-trust {
+      padding: 48px 0;
+    }
+
+    .install-security {
+      margin-top: 20px;
+      padding: 20px 22px;
+      border-radius: var(--install-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .install-security strong {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--install-text-primary);
+    }
+
+    .install-help {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: var(--install-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .install-help summary {
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--install-text-primary);
+    }
+
+    .install-help p {
+      margin-top: 10px;
+      color: var(--install-text-secondary);
+      line-height: 1.6;
+      font-size: 14px;
     }
 
     .install-flow {
@@ -1028,6 +1103,10 @@
       .install-status_grid {
         grid-template-columns: 1fr;
       }
+
+      .install-metrics {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1157,10 +1236,48 @@ a {
                       <div class="margin-top margin-small">
                         <div class="text-meta">No credit card required • Chrome desktop 114+ • 3-minute setup</div>
                       </div>
+                      <div class="install-metrics">
+                        <div class="install-metric">
+                          <div class="install-metric_value">2.3M+</div>
+                          <div class="install-metric_label">AI chats delivered monthly</div>
+                        </div>
+                        <div class="install-metric">
+                          <div class="install-metric_value">98%</div>
+                          <div class="install-metric_label">Operator satisfaction rating</div>
+                        </div>
+                        <div class="install-metric">
+                          <div class="install-metric_value">&lt; 3 min</div>
+                          <div class="install-metric_label">Average team install time</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="home-hero-grid-right">
                     <img class="image" src="../cdn.prod.website-files.com/6440ef10d027f956128da952/6495e5706d54f2a07e225499_cupidbot-scrnshots.png" loading="lazy" alt="CupidBot OFM Chrome extension preview">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="section install-trust">
+          <div class="page-padding">
+            <div class="container-xxlarge">
+              <div class="line"></div>
+              <div class="padding-vertical padding-large">
+                <div class="home-clients-grid">
+                  <div>
+                    <h2 class="text-meta">Trusted by OFM operators featured in</h2>
+                  </div>
+                  <div class="line-vertical hide-mobile-landscape"></div>
+                  <div>
+                    <div class="home-clients-logos">
+                      <img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6440f7f7e3f8a1e5915ef083_vice.webp" loading="lazy" alt="Vice logo" class="image-4">
+                      <img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6440f9db03c90101cd503e94_nypost.png" loading="lazy" alt="NY Post logo" class="image-17">
+                      <img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6440f9e94ee0d7966f3ae340_futurism.png" loading="lazy" alt="Futurism logo">
+                      <img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6447b34ecae193d045770e55_yahoo.png" loading="lazy" alt="Yahoo logo" class="image-2">
+                      <img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6447b4192c34ef4215403cd6_fox.png" loading="lazy" alt="Fox logo" class="image-16">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1187,19 +1304,19 @@ a {
                   <div class="install-status_label">Browser readiness</div>
                   <div class="install-status_value" data-env-browser>Detecting…</div>
                   <span class="install-status_badge" data-env-browser-badge>Checking</span>
-                  <div class="install-status_meta" data-env-browser-meta></div>
+                  <div class="install-status_meta" data-env-browser-meta aria-live="polite"></div>
                 </div>
                 <div class="install-status_card is-pending" data-env-card="os">
                   <div class="install-status_label">Operating system</div>
                   <div class="install-status_value" data-env-os>Detecting…</div>
                   <span class="install-status_badge" data-env-os-badge>Checking</span>
-                  <div class="install-status_meta" data-env-os-meta></div>
+                  <div class="install-status_meta" data-env-os-meta aria-live="polite"></div>
                 </div>
                 <div class="install-status_card is-pending" data-env-card="dev">
                   <div class="install-status_label">Developer mode</div>
                   <div class="install-status_value" data-env-dev>Enable in Step 3</div>
                   <span class="install-status_badge" data-env-dev-badge>Pending</span>
-                  <div class="install-status_meta">We will prompt you when it’s time to toggle developer mode inside Chrome.</div>
+                  <div class="install-status_meta" aria-live="polite">We will prompt you when it’s time to toggle developer mode inside Chrome.</div>
                 </div>
               </div>
                   <div class="install-flow_grid">
@@ -1273,6 +1390,10 @@ a {
                             <li>Unzip the download to reveal the <code>cupidbot-extension</code> folder.</li>
                             <li>Store the folder somewhere it will not move (Desktop or Applications works well).</li>
                           </ul>
+                          <div class="install-security">
+                            <strong>Security &amp; privacy</strong>
+                            <p>CupidBot OFM runs locally inside your Chrome profile. No data leaves your machine unless you choose to sync with the OFM dashboard. Review our <a href="../post/privacy-policy.html">privacy policy</a> and Chrome permissions before proceeding.</p>
+                          </div>
                           <div class="install-panel_actions">
                             <button type="button" class="install-btn_ghost" data-complete-step="1">Package ready</button>
                           </div>
@@ -1288,10 +1409,10 @@ a {
                             <li>Select <strong>Load unpacked</strong> and choose the <code>cupidbot-extension</code> folder you just extracted.</li>
                           </ol>
                           <div class="install-os-switch" role="tablist">
-                            <button type="button" class="install-os-button is-active" data-os-button="mac">macOS steps</button>
-                            <button type="button" class="install-os-button" data-os-button="windows">Windows steps</button>
+                            <button type="button" class="install-os-button is-active" data-os-button="mac" role="tab" aria-selected="true" aria-controls="os-panel-mac">macOS steps</button>
+                            <button type="button" class="install-os-button" data-os-button="windows" role="tab" aria-selected="false" aria-controls="os-panel-windows">Windows steps</button>
                           </div>
-                          <div class="install-os-panel is-active" data-os-panel="mac" role="tabpanel">
+                          <div class="install-os-panel is-active" data-os-panel="mac" id="os-panel-mac" role="tabpanel" aria-hidden="false">
                             <ul>
                               <li>Use <strong>⌘ + Space</strong> → type “Extensions” to jump directly, or open <em>chrome://extensions</em>.</li>
                               <li>Toggle the <strong>Developer mode</strong> switch in the top-right corner.</li>
@@ -1299,7 +1420,7 @@ a {
                               <li>Confirm the permission prompt so Chrome whitelists the workspace bundle.</li>
                             </ul>
                           </div>
-                          <div class="install-os-panel" data-os-panel="windows" role="tabpanel">
+                          <div class="install-os-panel" data-os-panel="windows" id="os-panel-windows" role="tabpanel" aria-hidden="true">
                             <ul>
                               <li>Press <strong>Ctrl + L</strong> and type <em>chrome://extensions</em>, or use the puzzle icon → “Manage Extensions”.</li>
                               <li>Enable <strong>Developer mode</strong> using the toggle in the top-right corner of the page.</li>
@@ -1311,6 +1432,10 @@ a {
                             <strong>Heads up</strong>
                             <p>Chrome may prompt you to confirm loading the folder. Approve it—this is the signed production build we ship to operators. Chrome security does not allow unattended installs, so every seat must click “Load unpacked” the first time.</p>
                           </div>
+                          <details class="install-help">
+                            <summary>Didn’t see the Chrome popup?</summary>
+                            <p>Make sure the <strong>chrome://extensions</strong> tab is foregrounded and developer mode is toggled on. If nothing happens after clicking “Load unpacked”, refresh the tab and try again—or drag the <code>cupidbot-extension</code> folder directly into the extensions page.</p>
+                          </details>
                           <div class="install-panel_actions">
                             <button type="button" class="install-btn_secondary" data-open-extensions>Open extensions tab</button>
                             <button type="button" class="install-btn_ghost" data-complete-step="2">Extension is loaded</button>
@@ -1666,12 +1791,14 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
           const isActive = key === resolvedKey;
           button.classList.toggle('is-active', isActive);
           button.setAttribute('aria-pressed', String(isActive));
+          button.setAttribute('aria-selected', String(isActive));
         });
         osPanels.forEach((panel) => {
           const key = panel.dataset.osPanel;
           const isActive = key === resolvedKey;
           panel.classList.toggle('is-active', isActive);
           panel.hidden = !isActive;
+          panel.setAttribute('aria-hidden', String(!isActive));
         });
       }
 
@@ -1733,6 +1860,7 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
         }
 
         activateOsPanel(info.osKey === 'windows' ? 'windows' : 'mac');
+        updateCompletionButtons();
       }
 
       function canActivateStep(index) {
