@@ -1,4 +1,6 @@
     document.addEventListener('DOMContentLoaded', () => {
+      const STORAGE_KEY = 'cupidbot-ofm-install-progress';
+      
       const stepButtons = Array.from(document.querySelectorAll('[data-step-selector]'));
       const stepPanels = Array.from(document.querySelectorAll('[data-step-panel]'));
       const progressFill = document.querySelector('[data-progress-fill]');
@@ -31,6 +33,50 @@
       const completedSteps = new Set();
       let activeStep = 0;
       let environmentInfo = null;
+
+      // localStorage persistence functions
+      function saveProgress() {
+        try {
+          const progress = {
+            activeStep,
+            completedSteps: Array.from(completedSteps),
+            timestamp: Date.now()
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        } catch (error) {
+          console.warn('Failed to save install progress:', error);
+        }
+      }
+
+      function loadProgress() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (!saved) return false;
+          
+          const progress = JSON.parse(saved);
+          const MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
+          
+          if (Date.now() - progress.timestamp > MAX_AGE) {
+            localStorage.removeItem(STORAGE_KEY);
+            return false;
+          }
+          
+          activeStep = progress.activeStep || 0;
+          progress.completedSteps.forEach(step => completedSteps.add(step));
+          return true;
+        } catch (error) {
+          console.warn('Failed to load install progress:', error);
+          return false;
+        }
+      }
+
+      function clearProgress() {
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch (error) {
+          console.warn('Failed to clear install progress:', error);
+        }
+      }
 
       function setStatusState(card, state) {
         if (!card) return;
@@ -289,6 +335,7 @@
         updatePanels();
         updateProgress();
         updateCompletionButtons();
+        saveProgress();
       }
 
       stepButtons.forEach((button) => {
@@ -307,9 +354,19 @@
         });
       });
 
+      // Load saved progress before initialization
+      const progressRestored = loadProgress();
+      
       environmentInfo = detectEnvironment();
       renderEnvironment(environmentInfo);
       updateCompletionButtons();
+      
+      // Restore UI state if progress was loaded
+      if (progressRestored) {
+        updateStepStatuses();
+        updatePanels();
+        updateProgress();
+      }
 
       document.querySelectorAll('[data-complete-step]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -325,6 +382,11 @@
             envElements.devValue.textContent = 'Developer mode enabled';
             envElements.devBadge.textContent = 'Complete';
             setStatusState(envCards.dev, 'is-success');
+          }
+          
+          // Clear progress when all steps complete
+          if (completedSteps.size === totalSteps) {
+            setTimeout(() => clearProgress(), 2000);
           }
         });
       });
