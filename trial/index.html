@@ -178,7 +178,7 @@ a {
                       <a href="https://discord.gg/JhZESyNhBy" target="_blank" class="badge small link w-inline-block"><img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6443132fc6bbb1e4bdd9fba0_imageedit_4_4748485785.png" loading="lazy" alt="" class="image-9"/></a>
                       <a href="../www.instagram.com/cupidbot.org/index.html" target="_blank" class="badge small link w-inline-block"><img src="../cdn.prod.website-files.com/6440ef10d027f97f198da940/6443123262dc3f74412c5edb_ig-removebg-preview.png" loading="lazy" alt="" class="image-9"/></a>
                     </div>
-                    <div data-w-id="9f610c21-b7d9-9af4-fb08-b3c3860d4005" class="mobile-menu-toggle">
+                    <div data-w-id="9f610c21-b7d9-9af4-fb08-b3c3860d4005" class="mobile-menu-toggle" role="button" aria-label="Toggle mobile menu" tabindex="0">
                       <div class="mobile-menu-toggle-line _01"></div>
                       <div class="mobile-menu-toggle-line _02"></div>
                       <div class="mobile-menu-toggle-line _03"></div>
@@ -278,19 +278,19 @@ a {
                     </div>
                   </div>
               <div class="install-status_grid">
-                <div class="install-status_card is-pending" data-env-card="browser">
+                  <div class="install-status_card is-pending" data-env-card="browser" role="status" aria-live="polite">
                   <div class="install-status_label">Browser readiness</div>
                   <div class="install-status_value" data-env-browser>Detecting…</div>
                   <span class="install-status_badge" data-env-browser-badge>Checking</span>
                   <div class="install-status_meta" data-env-browser-meta aria-live="polite"></div>
                 </div>
-                <div class="install-status_card is-pending" data-env-card="os">
+                  <div class="install-status_card is-pending" data-env-card="os" role="status" aria-live="polite">
                   <div class="install-status_label">Operating system</div>
                   <div class="install-status_value" data-env-os>Detecting…</div>
                   <span class="install-status_badge" data-env-os-badge>Checking</span>
                   <div class="install-status_meta" data-env-os-meta aria-live="polite"></div>
                 </div>
-                <div class="install-status_card is-pending" data-env-card="dev">
+                  <div class="install-status_card is-pending" data-env-card="dev" role="status" aria-live="polite">
                   <div class="install-status_label">Developer mode</div>
                   <div class="install-status_value" data-env-dev>Enable in Step 3</div>
                   <span class="install-status_badge" data-env-dev-badge>Pending</span>
@@ -339,8 +339,8 @@ a {
                             <li>Local admin access so you can manage extensions.</li>
                           </ul>
                           <div class="install-panel_actions">
-                            <button type="button" class="install-btn_secondary" data-open-settings>Open Chrome version check</button>
-                            <button type="button" class="install-btn_ghost" data-complete-step="0">This matches our setup</button>
+                            <button type="button" class="install-btn_secondary" data-open-settings aria-label="Open Chrome settings in new tab to check version">Open Chrome version check</button>
+                            <button type="button" class="install-btn_ghost" data-complete-step="0" aria-label="Mark step 1 as complete and continue">This matches our setup</button>
                           </div>
                           <p class="install-footnote">Chrome opens <em>chrome://settings/help</em> in a new tab to confirm your version.</p>
                         </div>
@@ -356,12 +356,12 @@ a {
                                 <span>Version 1.0.0</span>
                                 <span>Updated Nov 2025</span>
                               </div>
-                              <h3>cupidbot-ofm-extension.zip</h3>
+                              <h3>cupidbot-extension.zip</h3>
                               <p>Contains the unpacked extension, assets, and manifest. Keep the extracted folder on secure shared storage.</p>
                             </div>
                             <div class="install-panel_actions">
-                              <a class="install-btn_primary install-btn_primary--compact" id="downloadPackage" href="../cupidbot-extension.zip" download>Download package</a>
-                              <button type="button" class="install-btn_secondary" data-open-release>Review manifest</button>
+                              <a class="install-btn_primary install-btn_primary--compact" id="downloadPackage" href="../cupidbot-extension.zip" download aria-label="Download CupidBot OFM extension ZIP file">Download package</a>
+                              <button type="button" class="install-btn_secondary" data-open-release aria-label="Open extension manifest.json in new tab">Review manifest</button>
                             </div>
                           </div>
                           <ul class="install-checklist">
@@ -373,7 +373,7 @@ a {
                             <p>CupidBot OFM runs locally inside your Chrome profile. No data leaves your machine unless you choose to sync with the OFM dashboard. Review our <a href="../post/privacy-policy.html">privacy policy</a> and Chrome permissions before proceeding.</p>
                           </div>
                           <div class="install-panel_actions">
-                            <button type="button" class="install-btn_ghost" data-complete-step="1">Package ready</button>
+                            <button type="button" class="install-btn_ghost" data-complete-step="1" aria-label="Mark step 2 as complete - package downloaded">Package ready</button>
                           </div>
                         </div>
                       </article>
@@ -415,8 +415,8 @@ a {
                             <p>Make sure the <strong>chrome://extensions</strong> tab is foregrounded and developer mode is toggled on. If nothing happens after clicking “Load unpacked”, refresh the tab and try again—or drag the <code>cupidbot-extension</code> folder directly into the extensions page.</p>
                           </details>
                           <div class="install-panel_actions">
-                            <button type="button" class="install-btn_secondary" data-open-extensions>Open extensions tab</button>
-                            <button type="button" class="install-btn_ghost" data-complete-step="2">Extension is loaded</button>
+                            <button type="button" class="install-btn_secondary" data-open-extensions aria-label="Open Chrome extensions page in new tab">Open extensions tab</button>
+                            <button type="button" class="install-btn_ghost" data-complete-step="2" aria-label="Mark step 3 as complete - extension loaded">Extension is loaded</button>
                           </div>
                         </div>
                       </article>
@@ -441,7 +441,7 @@ npm install -D @playwright/test
 npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
                           </div>
                           <div class="install-panel_actions">
-                            <button type="button" class="install-btn_ghost" data-complete-step="3">Mark install complete</button>
+                            <button type="button" class="install-btn_ghost" data-complete-step="3" aria-label="Mark entire installation as complete">Mark install complete</button>
                           </div>
                           <div class="install-completion" data-completion>
                             <strong>✓ Install verified</strong>
