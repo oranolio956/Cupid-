@@ -426,11 +426,24 @@
             envElements.devValue.textContent = 'Developer mode enabled';
             envElements.devBadge.textContent = 'Complete';
             setStatusState(envCards.dev, 'is-success');
+            
+            // Show celebration for completing step 3 (hardest step)
+            button.textContent = '🎉 Extension loaded!';
+            button.style.background = 'linear-gradient(135deg, rgba(102, 255, 203, 0.2) 0%, rgba(102, 255, 203, 0.1) 100%)';
+            button.style.borderColor = 'rgba(102, 255, 203, 0.4)';
+            button.style.color = 'var(--install-success)';
           }
           
           // Clear progress when all steps complete
           if (completedSteps.size === totalSteps) {
-            setTimeout(() => clearProgress(), 2000);
+            // Celebration!
+            if (completionBanner) {
+              completionBanner.innerHTML = `
+                <strong style="font-size: 18px;">🎉 ✓ Installation Complete!</strong>
+                <p>CupidBot OFM is now active in your Chrome browser. Pin the extension icon from the puzzle menu (top-right) for quick access.</p>
+              `;
+            }
+            setTimeout(() => clearProgress(), 5000); // Extended for celebration
           }
         });
       });
@@ -446,15 +459,39 @@
 
       const downloadPackage = document.getElementById('downloadPackage');
       if (downloadPackage) {
-        downloadPackage.addEventListener('click', () => {
+        downloadPackage.addEventListener('click', (event) => {
           const original = downloadPackage.textContent;
           downloadPackage.textContent = 'Downloading…';
+          
+          // Enhanced: Provide immediate next-step guidance
           setTimeout(() => {
             downloadPackage.textContent = '✓ Downloaded';
+            
+            // Show enhanced instructions
+            const instructionBox = document.createElement('div');
+            instructionBox.className = 'install-panel_callout';
+            instructionBox.style.marginTop = '16px';
+            instructionBox.style.animation = 'fadeIn 0.3s ease-in';
+            instructionBox.innerHTML = `
+              <strong>📦 Next Steps</strong>
+              <ol style="margin: 12px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>Find the downloaded ZIP file (usually in your <strong>Downloads</strong> folder)</li>
+                <li>Right-click the ZIP → <strong>Extract All</strong> (Windows) or double-click (Mac)</li>
+                <li>Move the extracted <code>cupidbot-extension</code> folder to your Desktop or Documents</li>
+                <li>Click "Package ready" below to continue to Step 3</li>
+              </ol>
+            `;
+            
+            // Insert after download button's parent
+            const parentActions = downloadPackage.closest('.install-panel_actions');
+            if (parentActions && parentActions.nextElementSibling) {
+              parentActions.parentNode.insertBefore(instructionBox, parentActions.nextElementSibling);
+            }
           }, 900);
+          
           setTimeout(() => {
             downloadPackage.textContent = original;
-          }, 3200);
+          }, 8000); // Extended time for user to read instructions
         });
       }
 
@@ -468,10 +505,36 @@
         button.addEventListener('click', () => {
           window.open('chrome://extensions/', '_blank');
           const original = button.textContent;
-          button.textContent = '✓ Opened';
+          button.textContent = '✓ Opened - Check new tab';
+          
+          // Show enhanced visual guide
+          const panel = button.closest('.install-panel');
+          if (panel) {
+            let guideBox = panel.querySelector('.enhanced-guide');
+            if (!guideBox) {
+              guideBox = document.createElement('div');
+              guideBox.className = 'install-panel_callout enhanced-guide';
+              guideBox.style.marginTop = '20px';
+              guideBox.style.animation = 'fadeIn 0.4s ease-in';
+              guideBox.innerHTML = `
+                <strong>🎯 In the new chrome://extensions tab:</strong>
+                <ol style="margin: 12px 0 0; padding-left: 20px; font-size: 15px; line-height: 2; color: var(--install-text-primary);">
+                  <li>Make sure <strong>Developer mode</strong> is ON (top-right toggle)</li>
+                  <li>Click the <strong>"Load unpacked"</strong> button (top-left)</li>
+                  <li>Navigate to and select the <strong>cupidbot-extension</strong> folder</li>
+                  <li>Click <strong>"Select Folder"</strong></li>
+                </ol>
+                <p style="margin-top: 12px; padding: 12px; background: rgba(102, 255, 203, 0.08); border-left: 3px solid var(--install-success); font-size: 13px; border-radius: 6px;">
+                  💡 <strong>Tip:</strong> The extension will appear in your extensions list immediately after selecting the folder. Come back here and click "Extension is loaded" to continue!
+                </p>
+              `;
+              panel.appendChild(guideBox);
+            }
+          }
+          
           setTimeout(() => {
             button.textContent = original;
-          }, 2600);
+          }, 4000);
         });
       });
 
