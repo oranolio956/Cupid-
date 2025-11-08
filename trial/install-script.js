@@ -162,9 +162,11 @@
         osButtons.forEach((button) => {
           const key = button.dataset.osButton;
           const isActive = key === resolvedKey;
+          const panelId = `os-panel-${key}`;
           button.classList.toggle('is-active', isActive);
           button.setAttribute('aria-pressed', String(isActive));
           button.setAttribute('aria-selected', String(isActive));
+          button.setAttribute('aria-controls', panelId);
         });
         osPanels.forEach((panel) => {
           const key = panel.dataset.osPanel;
@@ -472,6 +474,8 @@
             instructionBox.className = 'install-panel_callout';
             instructionBox.style.marginTop = '16px';
             instructionBox.style.animation = 'fadeIn 0.3s ease-in';
+            instructionBox.setAttribute('role', 'status');
+            instructionBox.setAttribute('aria-live', 'polite');
             instructionBox.innerHTML = `
               <strong>📦 Next Steps</strong>
               <ol style="margin: 12px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.8;">
@@ -516,6 +520,8 @@
               guideBox.className = 'install-panel_callout enhanced-guide';
               guideBox.style.marginTop = '20px';
               guideBox.style.animation = 'fadeIn 0.4s ease-in';
+              guideBox.setAttribute('role', 'status');
+              guideBox.setAttribute('aria-live', 'polite');
               guideBox.innerHTML = `
                 <strong>🎯 In the new chrome://extensions tab:</strong>
                 <ol style="margin: 12px 0 0; padding-left: 20px; font-size: 15px; line-height: 2; color: var(--install-text-primary);">

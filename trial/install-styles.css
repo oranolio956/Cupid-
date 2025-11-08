@@ -982,6 +982,51 @@
       }
     }
 
+    /* Metrics footnote */
+    .install-metrics-footnote {
+      margin-top: 16px;
+    }
+
+    /* Download integrity details */
+    .install-integrity-details {
+      margin-top: 12px;
+    }
+
+    .install-integrity-summary {
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--install-text-secondary);
+    }
+
+    .install-integrity-hash {
+      margin-top: 8px;
+      font-size: 13px;
+      font-family: 'Roboto Mono', monospace;
+      color: var(--install-text-secondary);
+      word-break: break-all;
+    }
+
+    /* Skip link for accessibility */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 9999;
+      padding: 12px 20px;
+      background: var(--install-accent);
+      color: var(--install-text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 0 0 8px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .skip-link:focus {
+      left: 0;
+      outline: 3px solid var(--install-success);
+      outline-offset: 2px;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
