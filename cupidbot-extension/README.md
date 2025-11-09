@@ -7,6 +7,7 @@ The extension has been rebuilt to mirror the styling, typography, and tone of [c
 - **1:1 Hero Styling**: The popup replicates the homepage hero with the same headline, copy, gradient accents, and trust badges.
 - **Floating Widget**: A glassmorphism widget is injected into the page at the bottom-right corner, matching site colors and typography.
 - **Single CTA**: Both the popup and widget present a `Connect To Login` button ready for future wiring.
+- **Motion & Polish**: Animated gradient backgrounds, orbiting light orbs, interactive hover states, and tactile CTA press feedback keep the experience feeling handcrafted rather than templated.
 - **Minimal Chrome Footprint**: No storage, analytics, or external dependencies beyond Google Fonts and the hero image already used on the site.
 
 ## 📦 Installation

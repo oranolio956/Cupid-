@@ -27,30 +27,60 @@
                 all: initial;
                 font-family: 'Syne', sans-serif;
                 color: #fff;
+                display: block;
             }
 
             .widget {
+                position: relative;
                 background:
-                    radial-gradient(circle at top left, rgba(179, 83, 211, 0.3) 0%, transparent 60%),
-                    radial-gradient(circle at bottom right, rgba(173, 44, 44, 0.35) 0%, transparent 65%),
-                    rgba(5, 0, 9, 0.93);
+                    radial-gradient(circle at top left, rgba(179, 83, 211, 0.32) 0%, transparent 65%),
+                    radial-gradient(circle at bottom right, rgba(173, 44, 44, 0.32) 0%, transparent 70%),
+                    rgba(5, 0, 9, 0.92);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 24px;
-                padding: 1.5rem;
-                box-shadow: 0 20px 48px rgba(8, 0, 14, 0.65);
+                padding: 1.6rem;
+                box-shadow: 0 24px 58px rgba(8, 0, 14, 0.75);
                 display: flex;
                 flex-direction: column;
-                gap: 1.25rem;
+                gap: 1.35rem;
                 overflow: hidden;
+                isolation: isolate;
+                animation: widgetEnter 0.75s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            }
+
+            .widget::before,
+            .widget::after {
+                content: "";
+                position: absolute;
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                filter: blur(90px);
+                opacity: 0.65;
+                z-index: -1;
+                animation: glowDrift 12s ease-in-out infinite;
+            }
+
+            .widget::before {
+                top: -120px;
+                left: -80px;
+                background: rgba(179, 83, 211, 0.6);
+            }
+
+            .widget::after {
+                bottom: -120px;
+                right: -60px;
+                background: rgba(173, 44, 44, 0.6);
+                animation-delay: -6s;
             }
 
             .brand-row {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                font-size: 0.8rem;
+                font-size: 0.78rem;
                 text-transform: uppercase;
-                letter-spacing: 0.14em;
+                letter-spacing: 0.16em;
             }
 
             .brand-name {
@@ -71,8 +101,8 @@
                 display: flex;
                 align-items: center;
                 gap: 0.35rem;
-                font-size: 0.7rem;
-                color: rgba(255, 255, 255, 0.75);
+                font-size: 0.68rem;
+                color: rgba(255, 255, 255, 0.72);
             }
 
             .indicator-dot {
@@ -80,77 +110,132 @@
                 height: 8px;
                 border-radius: 50%;
                 background: #57f287;
-                animation: pulse 2.5s ease-in-out infinite;
+                animation: pulse 2.8s ease-in-out infinite;
+                box-shadow: 0 0 12px rgba(87, 242, 135, 0.75);
             }
 
             @keyframes pulse {
                 0%, 100% { transform: scale(1); opacity: 1; }
-                50% { transform: scale(0.8); opacity: 0.6; }
+                50% { transform: scale(0.75); opacity: 0.6; }
             }
 
             .hero {
                 display: flex;
                 flex-direction: column;
-                gap: 0.75rem;
+                gap: 0.8rem;
             }
 
             .hero-eyebrow {
                 font-family: 'Roboto Mono', monospace;
-                font-size: 0.7rem;
-                letter-spacing: 0.28em;
+                font-size: 0.68rem;
+                letter-spacing: 0.32em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.6);
+                color: rgba(255, 255, 255, 0.62);
             }
 
             .hero-title {
-                font-size: 1.85rem;
-                line-height: 1.1;
+                font-size: 1.82rem;
+                line-height: 1.08;
                 letter-spacing: -0.01em;
             }
 
             .hero-copy {
-                font-size: 0.85rem;
-                line-height: 1.6;
+                font-size: 0.84rem;
+                line-height: 1.65;
                 color: rgba(255, 255, 255, 0.78);
             }
 
             .cta-button {
-                margin-top: 0.5rem;
-                padding: 0.75rem 1.4rem;
+                position: relative;
+                margin-top: 0.6rem;
+                padding: 0.78rem 1.55rem;
                 border-radius: 999px;
                 border: none;
-                background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+                background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 50%, #b353d3 100%);
+                background-size: 200% 200%;
                 color: #fff;
-                font-size: 0.85rem;
+                font-size: 0.86rem;
                 font-weight: 600;
                 cursor: pointer;
-                box-shadow: 0 18px 32px rgba(179, 83, 211, 0.35);
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                box-shadow: 0 22px 40px rgba(179, 83, 211, 0.45);
+                transition: transform 0.25s ease, box-shadow 0.25s ease;
+                overflow: hidden;
+                animation: gradientShift 12s ease infinite;
+            }
+
+            .cta-button::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 65%);
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
 
             .cta-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 24px 40px rgba(179, 83, 211, 0.45);
+                transform: translateY(-3px) scale(1.01);
+                box-shadow: 0 28px 50px rgba(179, 83, 211, 0.6);
+            }
+
+            .cta-button:hover::after {
+                opacity: 1;
+            }
+
+            .cta-button.is-pressed {
+                transform: translateY(1px) scale(0.97);
+                box-shadow: 0 18px 28px rgba(179, 83, 211, 0.38);
+            }
+
+            .cta-button:focus-visible {
+                outline: 2px solid rgba(179, 83, 211, 0.7);
+                outline-offset: 4px;
             }
 
             .feature-list {
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 0.6rem;
-                font-size: 0.78rem;
-                letter-spacing: 0.06em;
+                gap: 0.7rem;
+                font-size: 0.76rem;
+                letter-spacing: 0.08em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.7);
+                color: rgba(255, 255, 255, 0.72);
             }
 
             .feature {
+                position: relative;
                 display: flex;
                 align-items: center;
-                gap: 0.55rem;
-                padding: 0.6rem 0.75rem;
-                border-radius: 14px;
-                background: rgba(18, 4, 28, 0.8);
-                border: 1px solid rgba(255, 255, 255, 0.05);
+                gap: 0.65rem;
+                padding: 0.65rem 0.85rem;
+                border-radius: 16px;
+                background: rgba(18, 4, 28, 0.82);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                backdrop-filter: blur(10px);
+                transition: transform 0.25s ease, border-color 0.25s ease;
+            }
+
+            .feature::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                border: 1px solid transparent;
+                background: linear-gradient(135deg, rgba(179, 83, 211, 0.25), rgba(173, 44, 44, 0.25)) border-box;
+                -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                opacity: 0;
+                transition: opacity 0.25s ease;
+            }
+
+            .feature:hover {
+                transform: translateY(-3px);
+                border-color: rgba(179, 83, 211, 0.35);
+            }
+
+            .feature:hover::before {
+                opacity: 1;
             }
 
             .feature-icon {
@@ -163,6 +248,7 @@
                 justify-content: center;
                 font-size: 0.75rem;
                 color: #fff;
+                box-shadow: 0 0 12px rgba(179, 83, 211, 0.45);
             }
 
             .trust-row {
@@ -173,18 +259,52 @@
                 font-size: 0.7rem;
                 text-transform: uppercase;
                 letter-spacing: 0.16em;
-                color: rgba(255, 255, 255, 0.55);
+                color: rgba(255, 255, 255, 0.52);
             }
 
             .trust-logos {
                 display: flex;
-                gap: 0.4rem;
+                gap: 0.45rem;
             }
 
             .trust-logos span {
-                padding: 0.25rem 0.5rem;
+                padding: 0.28rem 0.55rem;
                 border-radius: 999px;
-                background: rgba(255, 255, 255, 0.06);
+                background: rgba(255, 255, 255, 0.08);
+                color: rgba(255, 255, 255, 0.72);
+                font-size: 0.68rem;
+                letter-spacing: 0.12em;
+            }
+
+            @keyframes widgetEnter {
+                from {
+                    opacity: 0;
+                    transform: translateY(16px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            @keyframes glowDrift {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                50% { transform: translate(12px, -18px) scale(1.08); }
+            }
+
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    animation: none !important;
+                    transition: none !important;
+                }
             }
 
             @media (max-width: 600px) {
@@ -242,9 +362,21 @@
 
         const connectButton = shadow.getElementById('cupidbot-connect-btn');
         if (connectButton) {
+            const tap = () => {
+                connectButton.classList.add('is-pressed');
+                setTimeout(() => connectButton.classList.remove('is-pressed'), 220);
+            };
+
             connectButton.addEventListener('click', () => {
+                tap();
                 chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'floating-widget' });
                 console.log('Connect To Login clicked from floating widget');
+            });
+
+            connectButton.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    tap();
+                }
             });
         }
     };
