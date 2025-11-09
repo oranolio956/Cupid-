@@ -10,84 +10,832 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div class="popup-root">
-        <div class="background-glow glow-1"></div>
-        <div class="background-glow glow-2"></div>
+    <div class="sc-shell">
+        <div class="sc-glow sc-glow--one"></div>
+        <div class="sc-glow sc-glow--two"></div>
 
-        <header class="popup-header">
-            <div class="brand">
-                <span class="brand-title">CupidBot</span>
-                <span class="brand-badge">Installer</span>
+        <header class="sc-topbar sc-elevate">
+            <div class="sc-topbar__brand">
+                <span class="sc-wordmark">Strata Console</span>
+                <span class="sc-pill sc-pill--ghost">Beta 3.0</span>
             </div>
-            <button id="supportLink" class="support-link" type="button">Support</button>
+            <div class="sc-topbar__status">
+                <div class="sc-status-chip">
+                    <span class="sc-status-chip__label">Mission Clock</span>
+                    <span class="sc-status-chip__value" id="missionClock">14:32 UTC</span>
+                </div>
+                <div class="sc-status-chip">
+                    <span class="sc-status-chip__label">Sync</span>
+                    <span class="sc-status-chip__value sc-text-success">All nodes</span>
+                </div>
+            </div>
+            <div class="sc-topbar__actions">
+                <button class="sc-icon-button" id="commandPaletteBtn" aria-label="Command palette">⌘K</button>
+                <button class="sc-icon-button" id="supportLink" aria-label="Open support center">Support</button>
+                <div class="sc-operator">
+                    <span class="sc-operator__name">Nova Ops</span>
+                    <span class="sc-operator__role">Orchestrator</span>
+                </div>
+            </div>
         </header>
 
-        <main class="installer-card">
-            <section class="card-body">
-                <div class="card-intro">
-                    <p class="eyebrow">Dependency setup</p>
-                    <h1>Install CupidBot dependencies</h1>
-                    <p class="lead">
-                        Download the one-click installer to configure CupidBot’s AI services, messaging pipelines,
-                        and secure credentials on your workstation.
-                    </p>
-                </div>
+        <div class="sc-body">
+            <nav class="sc-nav sc-card">
+                <button class="sc-nav-item is-active" data-target="overview">
+                    <span class="sc-nav-item__icon">◎</span>
+                    <span class="sc-nav-item__label">Overview</span>
+                </button>
+                <button class="sc-nav-item" data-target="automations">
+                    <span class="sc-nav-item__icon">⇄</span>
+                    <span class="sc-nav-item__label">Automations</span>
+                </button>
+                <button class="sc-nav-item" data-target="assets">
+                    <span class="sc-nav-item__icon">✚</span>
+                    <span class="sc-nav-item__label">Assets</span>
+                </button>
+                <button class="sc-nav-item" data-target="channels">
+                    <span class="sc-nav-item__icon">▦</span>
+                    <span class="sc-nav-item__label">Channels</span>
+                </button>
+                <button class="sc-nav-item" data-target="compliance">
+                    <span class="sc-nav-item__icon">☑</span>
+                    <span class="sc-nav-item__label">Compliance</span>
+                </button>
+                <button class="sc-nav-item" data-target="settings">
+                    <span class="sc-nav-item__icon">⚙</span>
+                    <span class="sc-nav-item__label">Settings</span>
+                </button>
+            </nav>
 
-                <div class="cta-group">
-                    <button id="downloadBtn" class="btn-primary" type="button">
-                        <span id="downloadBtnText">Download Installer</span>
-                        <span id="downloadSpinner" class="btn-spinner" aria-hidden="true"></span>
-                    </button>
-                    <button id="openGuideBtn" class="btn-outline" type="button">Open Install Guide</button>
-                </div>
+            <main class="sc-main">
+                <!-- Overview -->
+                <section class="sc-section is-active" id="view-overview">
+                    <div class="sc-grid sc-grid--overview">
+                        <div class="sc-hero sc-card sc-card--glow">
+                            <div class="sc-hero__content">
+                                <span class="sc-eyebrow">Dependency setup</span>
+                                <h1 class="sc-hero__title">Install CupidBot infrastructure</h1>
+                                <p class="sc-hero__lead">
+                                    Orchestrate the full stack for OnlyFans management—SIM pools, proxies, persona assets,
+                                    and warmup routines—through a single guided installer.
+                                </p>
+                                <div class="sc-cta-group">
+                                    <button id="downloadBtn" class="sc-button sc-button--primary" type="button">
+                                        <span id="downloadBtnText">Download Installer</span>
+                                        <span id="downloadSpinner" class="sc-button__spinner" aria-hidden="true"></span>
+                                    </button>
+                                    <button id="openGuideBtn" class="sc-button sc-button--ghost" type="button">
+                                        Install Guide
+                                    </button>
+                                </div>
+                                <div class="sc-status-block sc-card sc-card--translucent status--ready" id="statusPanel">
+                                    <div class="sc-status-block__badge" id="statusBadge">Ready</div>
+                                    <div class="sc-status-block__body">
+                                        <h2 class="sc-status-block__title" id="statusTitle">Ready to install</h2>
+                                        <p class="sc-status-block__message" id="statusMessage">
+                                            Click <em>Download Installer</em> to grab the latest package.
+                                        </p>
+                                        <div class="sc-status-block__actions">
+                                            <button id="showDownloadsBtn" class="sc-link" type="button" hidden>
+                                                Show in downloads
+                                            </button>
+                                            <button id="verifyBtn" class="sc-link" type="button">
+                                                Verify setup
+                                            </button>
+                                            <button id="troubleshootBtn" class="sc-link" type="button">
+                                                Troubleshooting
+                                            </button>
+                                            <button id="releaseNotesBtn" class="sc-link" type="button">
+                                                Release notes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="status-panel status--ready" id="statusPanel">
-                    <div class="status-badge" id="statusBadge">Ready</div>
-                    <div class="status-copy">
-                        <strong id="statusTitle">Ready to install</strong>
-                        <p id="statusMessage">Click <em>Download Installer</em> to grab the latest package.</p>
-                        <div class="status-actions">
-                            <button id="showDownloadsBtn" class="link-button" type="button" hidden>Show in downloads</button>
-                            <button id="verifyBtn" class="link-button" type="button">Verify setup</button>
+                            <div class="sc-hero__checklist">
+                                <div class="sc-step">
+                                    <span class="sc-step__index">①</span>
+                                    <div class="sc-step__body">
+                                        <h3>Download & run</h3>
+                                        <p>Installer saves as <code>cupidbot-installer</code>. Run with elevated permissions.</p>
+                                    </div>
+                                </div>
+                                <div class="sc-step">
+                                    <span class="sc-step__index">②</span>
+                                    <div class="sc-step__body">
+                                        <h3>Provision resources</h3>
+                                        <p>SIM pools, proxies, domains, personas, and warmup paths deploy automatically.</p>
+                                    </div>
+                                </div>
+                                <div class="sc-step">
+                                    <span class="sc-step__index">③</span>
+                                    <div class="sc-step__body">
+                                        <h3>Verify & activate</h3>
+                                        <p>Run verification to confirm fleet health and link Strata automations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <aside class="sc-sidebar sc-card">
+                            <h2 class="sc-sidebar__title">Mission summary</h2>
+                            <div class="sc-sidebar__metric">
+                                <span class="sc-sidebar__label">Active creators</span>
+                                <span class="sc-sidebar__value">126</span>
+                            </div>
+                            <div class="sc-sidebar__metric">
+                                <span class="sc-sidebar__label">Accounts generated today</span>
+                                <span class="sc-sidebar__value">384</span>
+                            </div>
+                            <div class="sc-sidebar__metric">
+                                <span class="sc-sidebar__label">Proxy pool health</span>
+                                <span class="sc-sidebar__value">97%</span>
+                            </div>
+                            <div class="sc-sidebar__divider"></div>
+                            <h3 class="sc-sidebar__subtitle">Upcoming bursts</h3>
+                            <ul class="sc-list">
+                                <li class="sc-list__item">
+                                    <span class="sc-list__label">Tinder Night Run</span>
+                                    <span class="sc-pill sc-pill--outline">02:00 UTC</span>
+                                </li>
+                                <li class="sc-list__item">
+                                    <span class="sc-list__label">Reddit community seeding</span>
+                                    <span class="sc-pill sc-pill--outline">04:15 UTC</span>
+                                </li>
+                                <li class="sc-list__item">
+                                    <span class="sc-list__label">Discord server infiltration</span>
+                                    <span class="sc-pill sc-pill--outline">06:30 UTC</span>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+
+                    <div class="sc-section__row">
+                        <div class="sc-section__titlebar">
+                            <h2>Channel fleet</h2>
+                            <div class="sc-title-actions">
+                                <button class="sc-link" data-target="channels">View detailed matrix</button>
+                            </div>
+                        </div>
+
+                        <div class="sc-grid sc-grid--channels">
+                            <article class="sc-channel sc-card" data-platform="snapchat">
+                                <header class="sc-channel__header">
+                                    <div>
+                                        <span class="sc-pill sc-pill--accent">Snapchat</span>
+                                        <h3>Bitmoji Vanguard</h3>
+                                    </div>
+                                    <span class="sc-pill sc-pill--ghost">Sandbox</span>
+                                </header>
+                                <div class="sc-channel__metrics">
+                                    <div class="sc-channel__metric">
+                                        <span>Active</span>
+                                        <strong>64</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Daily throughput</span>
+                                        <strong>320</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Queue depth</span>
+                                        <strong>14</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Last batch</span>
+                                        <strong>42m</strong>
+                                    </div>
+                                </div>
+                                <div class="sc-channel__actions">
+                                    <button class="sc-button sc-button--mini">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Personas</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                </div>
+                                <div class="sc-channel__preview">
+                                    <div class="sc-avatar-block">
+                                        <span class="sc-avatar sc-avatar--pink"></span>
+                                        <div>
+                                            <strong>Bitmoji Wave 12</strong>
+                                            <p>SMS: Twilio | Theme: Neon Archivist</p>
+                                        </div>
+                                    </div>
+                                    <button class="sc-link">Open control room</button>
+                                </div>
+                            </article>
+
+                            <article class="sc-channel sc-card" data-platform="tinder">
+                                <header class="sc-channel__header">
+                                    <div>
+                                        <span class="sc-pill sc-pill--accent">Tinder</span>
+                                        <h3>North America</h3>
+                                    </div>
+                                    <span class="sc-pill sc-pill--solid">Live</span>
+                                </header>
+                                <div class="sc-channel__metrics">
+                                    <div class="sc-channel__metric">
+                                        <span>Active</span>
+                                        <strong>118</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Daily throughput</span>
+                                        <strong>540</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Queue depth</span>
+                                        <strong>9</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Last batch</span>
+                                        <strong>21m</strong>
+                                    </div>
+                                </div>
+                                <div class="sc-channel__actions">
+                                    <button class="sc-button sc-button--mini">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Photo Pipeline</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                </div>
+                                <div class="sc-channel__preview">
+                                    <div class="sc-avatar-block">
+                                        <span class="sc-avatar sc-avatar--iris"></span>
+                                        <div>
+                                            <strong>Persona Batch #47</strong>
+                                            <p>Photoset: Horizon, Bio template: Voyages</p>
+                                        </div>
+                                    </div>
+                                    <button class="sc-link">Open control room</button>
+                                </div>
+                            </article>
+
+                            <article class="sc-channel sc-card" data-platform="bumble">
+                                <header class="sc-channel__header">
+                                    <div>
+                                        <span class="sc-pill sc-pill--accent">Bumble</span>
+                                        <h3>EMEA Sweep</h3>
+                                    </div>
+                                    <span class="sc-pill sc-pill--ghost">Live</span>
+                                </header>
+                                <div class="sc-channel__metrics">
+                                    <div class="sc-channel__metric">
+                                        <span>Active</span>
+                                        <strong>72</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Daily throughput</span>
+                                        <strong>240</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Queue depth</span>
+                                        <strong>6</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Last batch</span>
+                                        <strong>58m</strong>
+                                    </div>
+                                </div>
+                                <div class="sc-channel__actions">
+                                    <button class="sc-button sc-button--mini">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Prompts</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                </div>
+                                <div class="sc-channel__preview">
+                                    <div class="sc-avatar-block">
+                                        <span class="sc-avatar sc-avatar--amber"></span>
+                                        <div>
+                                            <strong>Series Aurora</strong>
+                                            <p>Voice lines loaded · 12 warmups running</p>
+                                        </div>
+                                    </div>
+                                    <button class="sc-link">Open control room</button>
+                                </div>
+                            </article>
+
+                            <article class="sc-channel sc-card" data-platform="reddit">
+                                <header class="sc-channel__header">
+                                    <div>
+                                        <span class="sc-pill sc-pill--accent">Reddit</span>
+                                        <h3>Community Seeding</h3>
+                                    </div>
+                                    <span class="sc-pill sc-pill--ghost">Sandbox</span>
+                                </header>
+                                <div class="sc-channel__metrics">
+                                    <div class="sc-channel__metric">
+                                        <span>Active</span>
+                                        <strong>156</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Daily throughput</span>
+                                        <strong>620</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Queue depth</span>
+                                        <strong>22</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Last batch</span>
+                                        <strong>12m</strong>
+                                    </div>
+                                </div>
+                                <div class="sc-channel__actions">
+                                    <button class="sc-button sc-button--mini">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Subreddits</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                </div>
+                                <div class="sc-channel__preview">
+                                    <div class="sc-avatar-block">
+                                        <span class="sc-avatar sc-avatar--violet"></span>
+                                        <div>
+                                            <strong>Warmup Route B</strong>
+                                            <p>Join + karma scripts scheduled · email pool C</p>
+                                        </div>
+                                    </div>
+                                    <button class="sc-link">Open control room</button>
+                                </div>
+                            </article>
+
+                            <article class="sc-channel sc-card" data-platform="discord">
+                                <header class="sc-channel__header">
+                                    <div>
+                                        <span class="sc-pill sc-pill--accent">Discord</span>
+                                        <h3>Server Mesh</h3>
+                                    </div>
+                                    <span class="sc-pill sc-pill--solid">Live</span>
+                                </header>
+                                <div class="sc-channel__metrics">
+                                    <div class="sc-channel__metric">
+                                        <span>Active</span>
+                                        <strong>48</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Daily throughput</span>
+                                        <strong>180</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Queue depth</span>
+                                        <strong>5</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Last batch</span>
+                                        <strong>8m</strong>
+                                    </div>
+                                </div>
+                                <div class="sc-channel__actions">
+                                    <button class="sc-button sc-button--mini">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Servers</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Webhook</button>
+                                </div>
+                                <div class="sc-channel__preview">
+                                    <div class="sc-avatar-block">
+                                        <span class="sc-avatar sc-avatar--mint"></span>
+                                        <div>
+                                            <strong>Synced bots</strong>
+                                            <p>Token rotation active · DM queue 12/min</p>
+                                        </div>
+                                    </div>
+                                    <button class="sc-link">Open control room</button>
+                                </div>
+                            </article>
+
+                            <article class="sc-channel sc-card" data-platform="badoo">
+                                <header class="sc-channel__header">
+                                    <div>
+                                        <span class="sc-pill sc-pill--accent">Badoo</span>
+                                        <h3>LatAm Sweep</h3>
+                                    </div>
+                                    <span class="sc-pill sc-pill--ghost">Live</span>
+                                </header>
+                                <div class="sc-channel__metrics">
+                                    <div class="sc-channel__metric">
+                                        <span>Active</span>
+                                        <strong>54</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Daily throughput</span>
+                                        <strong>210</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Queue depth</span>
+                                        <strong>7</strong>
+                                    </div>
+                                    <div class="sc-channel__metric">
+                                        <span>Last batch</span>
+                                        <strong>35m</strong>
+                                    </div>
+                                </div>
+                                <div class="sc-channel__actions">
+                                    <button class="sc-button sc-button--mini">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Prompts</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                </div>
+                                <div class="sc-channel__preview">
+                                    <div class="sc-avatar-block">
+                                        <span class="sc-avatar sc-avatar--sunset"></span>
+                                        <div>
+                                            <strong>Selene Wave 5</strong>
+                                            <p>Geo target: São Paulo · Persona pack Vela</p>
+                                        </div>
+                                    </div>
+                                    <button class="sc-link">Open control room</button>
+                                </div>
+                            </article>
                         </div>
                     </div>
-                </div>
 
-                <ul class="checklist">
-                    <li class="checklist-item">
-                        <span class="checklist-icon">①</span>
-                        <div>
-                            <strong>Run the installer</strong>
-                            <p>Locate <code>cupidbot-installer</code> in your downloads folder and run it with administrator permissions.</p>
+                    <div class="sc-section__row">
+                        <div class="sc-section__titlebar">
+                            <h2>Activity stream</h2>
+                            <button class="sc-link">Export log</button>
                         </div>
-                    </li>
-                    <li class="checklist-item">
-                        <span class="checklist-icon">②</span>
-                        <div>
-                            <strong>Follow the prompts</strong>
-                            <p>The installer configures AI agents, message queues, and secure credentials automatically.</p>
+                        <div class="sc-activity sc-card">
+                            <div class="sc-activity__item">
+                                <span class="sc-activity__time">12:42</span>
+                                <div class="sc-activity__detail">
+                                    <strong>Tinder Burst #118 completed</strong>
+                                    <p>Profiles: 45 · Success: 43 · Retry queue: 2</p>
+                                </div>
+                                <span class="sc-pill sc-pill--success">Success</span>
+                            </div>
+                            <div class="sc-activity__item">
+                                <span class="sc-activity__time">11:08</span>
+                                <div class="sc-activity__detail">
+                                    <strong>Reddit Warmup route B</strong>
+                                    <p>Auto comment seeding paused due to captcha spikes.</p>
+                                </div>
+                                <span class="sc-pill sc-pill--warning">Attention</span>
+                            </div>
+                            <div class="sc-activity__item">
+                                <span class="sc-activity__time">09:51</span>
+                                <div class="sc-activity__detail">
+                                    <strong>Discord DM queue recalibrated</strong>
+                                    <p>Latency optimized from 400ms → 180ms per DM.</p>
+                                </div>
+                                <span class="sc-pill sc-pill--success">Optimized</span>
+                            </div>
                         </div>
-                    </li>
-                    <li class="checklist-item">
-                        <span class="checklist-icon">③</span>
-                        <div>
-                            <strong>Verify installation</strong>
-                            <p>Use the <em>Verify setup</em> button to confirm everything is connected, or open the troubleshooting guide.</p>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-        </main>
+                    </div>
+                </section>
 
-        <footer class="popup-footer">
-            <div class="footer-actions">
-                <button id="troubleshootBtn" class="footer-link" type="button">Troubleshooting</button>
-                <button id="releaseNotesBtn" class="footer-link" type="button">Release notes</button>
-            </div>
-            <div class="footer-copy">
-                Downloading the installer will save the latest CupidBot setup package to your device. Run it to finish installation.
-            </div>
-        </footer>
+                <!-- Automations -->
+                <section class="sc-section" id="view-automations">
+                    <div class="sc-section__titlebar">
+                        <h2>Automation timeline</h2>
+                        <div class="sc-title-actions">
+                            <button class="sc-button sc-button--mini">Create automation</button>
+                        </div>
+                    </div>
+                    <div class="sc-timeline sc-card">
+                        <div class="sc-timeline__row">
+                            <span class="sc-timeline__label">00:00</span>
+                            <span class="sc-timeline__label">06:00</span>
+                            <span class="sc-timeline__label">12:00</span>
+                            <span class="sc-timeline__label">18:00</span>
+                            <span class="sc-timeline__label">24:00</span>
+                        </div>
+                        <div class="sc-timeline__lane">
+                            <div class="sc-timeline__segment sc-timeline__segment--iris" style="left:4%;width:18%;">
+                                <span>Tinder Burst Δ118</span>
+                            </div>
+                            <div class="sc-timeline__segment sc-timeline__segment--mint" style="left:32%;width:14%;">
+                                <span>Snapchat Warmup Ω12</span>
+                            </div>
+                            <div class="sc-timeline__segment sc-timeline__segment--flare" style="left:60%;width:20%;">
+                                <span>Reddit Seeding Γ4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sc-grid sc-grid--automations">
+                        <div class="sc-automation-card sc-card">
+                            <header>
+                                <span class="sc-pill sc-pill--accent">Recurring</span>
+                                <h3>Tinder Night Run</h3>
+                                <p>Launch 60 accounts nightly with persona pack Aurora.</p>
+                            </header>
+                            <ul>
+                                <li><strong>Accounts / run</strong><span>60</span></li>
+                                <li><strong>Success</strong><span>95%</span></li>
+                                <li><strong>Next run</strong><span>02:00 UTC</span></li>
+                            </ul>
+                            <footer>
+                                <button class="sc-button sc-button--ghost sc-button--mini">Adjust cadence</button>
+                                <button class="sc-link">Open recipe</button>
+                            </footer>
+                        </div>
+
+                        <div class="sc-automation-card sc-card">
+                            <header>
+                                <span class="sc-pill sc-pill--accent">Recurring</span>
+                                <h3>Discord DM Mesh</h3>
+                                <p>Deploy 25 staged accounts per hour with proxy rotation.</p>
+                            </header>
+                            <ul>
+                                <li><strong>Accounts / hour</strong><span>25</span></li>
+                                <li><strong>Current latency</strong><span>180ms</span></li>
+                                <li><strong>Health</strong><span class="sc-text-success">Optimal</span></li>
+                            </ul>
+                            <footer>
+                                <button class="sc-button sc-button--ghost sc-button--mini">Pause queue</button>
+                                <button class="sc-link">Open recipe</button>
+                            </footer>
+                        </div>
+
+                        <div class="sc-automation-card sc-card">
+                            <header>
+                                <span class="sc-pill sc-pill--accent">Ad hoc</span>
+                                <h3>Reddit Karma Surge</h3>
+                                <p>One-off batch to elevate new communities before linking.</p>
+                            </header>
+                            <ul>
+                                <li><strong>Accounts</strong><span>180</span></li>
+                                <li><strong>Action</strong><span>Upvote + comment rotation</span></li>
+                                <li><strong>Status</strong><span class="sc-text-warning">Queued</span></li>
+                            </ul>
+                            <footer>
+                                <button class="sc-button sc-button--ghost sc-button--mini">Deploy now</button>
+                                <button class="sc-link">View queue</button>
+                            </footer>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Assets -->
+                <section class="sc-section" id="view-assets">
+                    <div class="sc-section__titlebar">
+                        <h2>Asset library</h2>
+                        <div class="sc-title-actions">
+                            <button class="sc-button sc-button--mini">Upload asset</button>
+                        </div>
+                    </div>
+                    <div class="sc-grid sc-grid--assets">
+                        <div class="sc-card sc-card--gallery">
+                            <header>
+                                <span class="sc-pill sc-pill--accent">Photo pipelines</span>
+                                <h3>Persona image sets</h3>
+                            </header>
+                            <div class="sc-gallery">
+                                <span class="sc-gallery__tile sc-gallery__tile--one"></span>
+                                <span class="sc-gallery__tile sc-gallery__tile--two"></span>
+                                <span class="sc-gallery__tile sc-gallery__tile--three"></span>
+                                <span class="sc-gallery__tile sc-gallery__tile--four"></span>
+                            </div>
+                            <footer>
+                                <p>12 curated packs · Autocrop enabled · Face detection threshold 0.82</p>
+                            </footer>
+                        </div>
+
+                        <div class="sc-card sc-card--table">
+                            <header>
+                                <span class="sc-pill sc-pill--accent">Email pools</span>
+                                <h3>Domain inventory</h3>
+                            </header>
+                            <table class="sc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Domain</th>
+                                        <th>Pool size</th>
+                                        <th>Verified</th>
+                                        <th>Warmup</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>nova-mail.io</td>
+                                        <td>420</td>
+                                        <td>96%</td>
+                                        <td>Active</td>
+                                    </tr>
+                                    <tr>
+                                        <td>lumen-post.com</td>
+                                        <td>310</td>
+                                        <td>94%</td>
+                                        <td>Active</td>
+                                    </tr>
+                                    <tr>
+                                        <td>astralrelay.net</td>
+                                        <td>180</td>
+                                        <td>88%</td>
+                                        <td>Cooling</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="sc-card sc-card--table">
+                            <header>
+                                <span class="sc-pill sc-pill--accent">Phone APIs</span>
+                                <h3>SIM providers</h3>
+                            </header>
+                            <table class="sc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Provider</th>
+                                        <th>Balance</th>
+                                        <th>Success rate</th>
+                                        <th>Auto refill</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>SignalForge</td>
+                                        <td>$1,240</td>
+                                        <td>98%</td>
+                                        <td>On</td>
+                                    </tr>
+                                    <tr>
+                                        <td>OrbitSIM</td>
+                                        <td>$860</td>
+                                        <td>91%</td>
+                                        <td>On</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PulseStack</td>
+                                        <td>$420</td>
+                                        <td>84%</td>
+                                        <td>Manual</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Channels (detail view) -->
+                <section class="sc-section" id="view-channels">
+                    <div class="sc-section__titlebar">
+                        <h2>Channel matrix</h2>
+                        <p class="sc-section__subtitle">Deep control rooms for each acquisition channel.</p>
+                    </div>
+                    <div class="sc-grid sc-grid--detail">
+                        <div class="sc-card sc-card--detail">
+                            <header>
+                                <h3>Snapchat Control</h3>
+                                <span class="sc-pill sc-pill--accent">Automation schema</span>
+                            </header>
+                            <div class="sc-detail__body">
+                                <div class="sc-detail__column">
+                                    <h4>Inputs</h4>
+                                    <ul>
+                                        <li>Username pattern: `snap_[persona][rand4]`</li>
+                                        <li>Bitmoji theme: Neon Archivist</li>
+                                        <li>Email pool: `nova-mail.io`</li>
+                                        <li>Phone API: SignalForge (Tier 1)</li>
+                                    </ul>
+                                </div>
+                                <div class="sc-detail__column">
+                                    <h4>Automations</h4>
+                                    <ul>
+                                        <li>Auto SMS verification – 2 attempts</li>
+                                        <li>Story template injection – alternate day</li>
+                                        <li>Friend seeding: 40 curated accounts</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <footer>
+                                <button class="sc-button sc-button--mini">Open burst wizard</button>
+                                <button class="sc-link">Manage templates</button>
+                            </footer>
+                        </div>
+
+                        <div class="sc-card sc-card--detail">
+                            <header>
+                                <h3>Reddit Control</h3>
+                                <span class="sc-pill sc-pill--accent">Seeding routes</span>
+                            </header>
+                            <div class="sc-detail__body">
+                                <div class="sc-detail__column">
+                                    <h4>Warmup path</h4>
+                                    <ul>
+                                        <li>Join 6 subreddits per wave</li>
+                                        <li>Comment template rotation: `Primrose`, `Coastline`</li>
+                                        <li>Karma goal: 50 within 72h</li>
+                                    </ul>
+                                </div>
+                                <div class="sc-detail__column">
+                                    <h4>Proxy mesh</h4>
+                                    <ul>
+                                        <li>Residential pool `Europa`</li>
+                                        <li>Latency target: &lt; 280ms</li>
+                                        <li>Fingerprint randomization: enabled</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <footer>
+                                <button class="sc-button sc-button--mini">Warmup monitor</button>
+                                <button class="sc-link">Adjust rotation</button>
+                            </footer>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Compliance -->
+                <section class="sc-section" id="view-compliance">
+                    <div class="sc-section__titlebar">
+                        <h2>Compliance & safeguards</h2>
+                        <div class="sc-title-actions">
+                            <button class="sc-button sc-button--mini">Export report</button>
+                        </div>
+                    </div>
+                    <div class="sc-card sc-card--table">
+                        <table class="sc-table sc-table--compliance">
+                            <thead>
+                                <tr>
+                                    <th>Channel</th>
+                                    <th>Policy version</th>
+                                    <th>Last reviewed</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Snapchat</td>
+                                    <td>2024.05</td>
+                                    <td>2025-11-02</td>
+                                    <td><span class="sc-pill sc-pill--success">Aligned</span></td>
+                                    <td><button class="sc-link">Download policy</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Tinder</td>
+                                    <td>2024.08</td>
+                                    <td>2025-10-21</td>
+                                    <td><span class="sc-pill sc-pill--warning">Review due</span></td>
+                                    <td><button class="sc-link">Schedule review</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Reddit</td>
+                                    <td>2024.07</td>
+                                    <td>2025-11-05</td>
+                                    <td><span class="sc-pill sc-pill--success">Aligned</span></td>
+                                    <td><button class="sc-link">Download policy</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Discord</td>
+                                    <td>2024.03</td>
+                                    <td>2025-09-28</td>
+                                    <td><span class="sc-pill sc-pill--danger">Action required</span></td>
+                                    <td><button class="sc-link">Open task</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Settings -->
+                <section class="sc-section" id="view-settings">
+                    <div class="sc-section__titlebar">
+                        <h2>Console settings</h2>
+                        <p class="sc-section__subtitle">Manage environment preferences and integrations.</p>
+                    </div>
+                    <div class="sc-grid sc-grid--settings">
+                        <form class="sc-card sc-card--form">
+                            <h3>General</h3>
+                            <div class="sc-form-field">
+                                <label for="timezone">Mission timezone</label>
+                                <select id="timezone">
+                                    <option>UTC</option>
+                                    <option>UTC-5</option>
+                                    <option>UTC+1</option>
+                                    <option>UTC+8</option>
+                                </select>
+                            </div>
+                            <div class="sc-form-field">
+                                <label for="alertLevel">Alert sensitivity</label>
+                                <select id="alertLevel">
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                            <div class="sc-form-field">
+                                <label for="themeDensity">Interface density</label>
+                                <select id="themeDensity">
+                                    <option>Standard</option>
+                                    <option>Compact</option>
+                                    <option>Spacious</option>
+                                </select>
+                            </div>
+                            <button type="button" class="sc-button sc-button--primary sc-button--mini">Save general</button>
+                        </form>
+
+                        <form class="sc-card sc-card--form">
+                            <h3>Integrations</h3>
+                            <div class="sc-form-field">
+                                <label for="emailProvider">Email provider</label>
+                                <input id="emailProvider" type="text" value="nova-mail.io" />
+                            </div>
+                            <div class="sc-form-field">
+                                <label for="simProvider">SIM API key</label>
+                                <input id="simProvider" type="password" value="••••••••••••" />
+                            </div>
+                            <div class="sc-form-field">
+                                <label for="proxyMesh">Proxy mesh</label>
+                                <input id="proxyMesh" type="text" value="Europa Mesh A" />
+                            </div>
+                            <button type="button" class="sc-button sc-button--ghost sc-button--mini">Regenerate keys</button>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
 
     <script src="popup.js"></script>

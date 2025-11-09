@@ -4,10 +4,12 @@ The extension mirrors the premium finish of [cupidbot.org](https://cupidbot.org)
 
 ## ✨ Experience Overview
 
-- **Installer-first popup** – Leads with a dependency overview, one-click download, status feedback, and verification/testing shortcuts.
-- **Background-managed downloads** – Uses the `chrome.downloads` API from the service worker so both popup and widget can trigger the installer.
-- **Floating helper widget** – Docked bottom-right, offering a quick download button, install guide, and support links without leaving the page.
-- **Diagnostic hooks** – Optional verification endpoint, troubleshooting, and release notes links are exposed in one click.
+- **Strata Console shell** – A glassmorphism-inspired frame with mission clock, operator profile, and vertical navigation that swaps between Overview, Automations, Assets, Channels, Compliance, and Settings.
+- **Installer hero** – The Overview view anchors the experience with dependency copy, pulsating CTAs, checklist steps, and a status block that updates as users download, verify, or troubleshoot.
+- **Mission telemetry & channel grid** – Live-style metrics, upcoming bursts, and six richly styled channel cards (Snapchat, Tinder, Bumble, Reddit, Discord, Badoo) showcase what the platform orchestrates after login.
+- **Automation & Ops dashboards** – Timeline lanes, automation recipe cards, asset library tables, compliance ledger, and settings panes give the console depth while remaining purely front-end for now.
+- **Floating helper widget** – A compact Strata-inspired assistant in the bottom-right corner that mirrors the new typography, gradients, and CTA language for on-page installs.
+- **Background-managed downloads** – The service worker owns download + deep-link logic so both the console and the widget can trigger installer flows safely.
 
 ## 📦 Loading the Extension
 
@@ -20,12 +22,26 @@ The extension mirrors the premium finish of [cupidbot.org](https://cupidbot.org)
 
 The floating widget appears automatically on any HTTPS page once the extension is active.
 
+## 🧭 Navigation Map
+
+| View | Purpose | Highlights |
+| ---- | ------- | ---------- |
+| **Overview** | Primary installer CTA + fleet snapshot | Hero copy, mission summary, channel grid, activity stream |
+| **Automations** | Scheduling + orchestration board | 24-hour timeline lane, recurring vs ad-hoc recipes, quick actions |
+| **Assets** | Persona assets & resource pools | Gallery teaser, domain inventory, SIM provider tables |
+| **Channels** | Deep-dive control rooms | Platform-specific inputs, automations, proxy meshes, follow-up CTAs |
+| **Compliance** | Safeguard status ledger | Policy versions, review dates, call-to-action links |
+| **Settings** | Environment preferences | Timezone, alerts, density, integration credentials |
+
+Navigation is handled in `popup.js` with simple state toggling—no framework required.
+
 ## 🧱 File Map
 
 - `manifest.json` – Manifest V3 configuration (downloads + tabs permissions enabled)
 - `background.js` – Handles installer downloads, deep-link navigation, and CTA logging
-- `popup.html / popup.css / popup.js` – Installer experience, status management, and verification flow
+- `popup.html / popup.css / popup.js` – Strata Console shell covering hero, navigation, channel grid, dashboards, and installer verification
 - `content.js` – Injects the floating helper widget via Shadow DOM with download + help actions
+- `STRATA_DESIGN_NOTES.md` – Implementation blueprint detailing tokens, component taxonomy, and motion guidelines
 - `assets/` – Chrome action icons
 
 ## 🔧 Configure Your URLs
@@ -50,9 +66,18 @@ The popup’s **Verify setup** button performs a fetch to `VERIFY_ENDPOINT`. Ret
 
 Any truthy `healthy`, `"status": "ok"`, or `valid: true` flag is treated as success. Non-200 responses or network failures surface a helpful error and point users toward troubleshooting.
 
+## 🧪 Placeholder Data Spots
+
+- **Channel metrics & labels** – Update the static numbers inside `popup.html` (`.sc-channel__metric`) to match your live fleet.
+- **Automation timeline** – Adjust the inline `style="left:…;width:…"` percentages on `.sc-timeline__segment` to visualize your run cadence.
+- **Assets & compliance tables** – Replace the sample rows within `.sc-table` blocks for domains, SIM providers, and policy reviews.
+- **Activity stream** – Swap the `<div class="sc-activity__item">` entries for real burst telemetry or connect to an API later.
+- **Widget copy** – Edit the template literal in `content.js` if you need different CTA text or installer instructions.
+
 ## 🛠️ Development Notes
 
 - The floating widget uses a Shadow DOM root to avoid CSS collisions with the host page.
+- Design tokens, fonts (`Space Grotesk`, `Manrope`, `JetBrains Mono`), and layout primitives live in `popup.css`.
 - Runtime messaging is wrapped with defensive checks so missing APIs (e.g., Brave, Arc) degrade gracefully.
 - All major actions log to the console (`chrome://extensions` → Inspect views) for quick debugging.
 

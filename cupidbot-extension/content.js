@@ -30,18 +30,18 @@
         host.style.zIndex = '2147483647';
         host.style.maxWidth = '320px';
         host.style.width = '320px';
-        host.style.fontFamily = "'Syne', sans-serif";
+        host.style.fontFamily = "'Manrope', sans-serif";
         host.style.pointerEvents = 'none';
 
         const shadow = host.attachShadow({ mode: 'open' });
 
         const style = document.createElement('style');
         style.textContent = `
-            @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
             :host {
                 all: initial;
-                font-family: 'Syne', sans-serif;
+                font-family: 'Manrope', sans-serif;
                 color: #fff;
                 display: block;
                 pointer-events: none;
@@ -50,16 +50,16 @@
             .widget {
                 position: relative;
                 background:
-                    radial-gradient(circle at top left, rgba(179, 83, 211, 0.3) 0%, transparent 65%),
-                    radial-gradient(circle at bottom right, rgba(173, 44, 44, 0.3) 0%, transparent 70%),
-                    rgba(5, 0, 9, 0.92);
+                    radial-gradient(circle at 14% -10%, rgba(94, 98, 244, 0.32), transparent 60%),
+                    radial-gradient(circle at 92% 120%, rgba(255, 93, 168, 0.28), transparent 68%),
+                    rgba(12, 14, 20, 0.92);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 24px;
-                padding: 1.6rem;
+                padding: 1.55rem;
                 box-shadow: 0 24px 58px rgba(8, 0, 14, 0.75);
                 display: flex;
                 flex-direction: column;
-                gap: 1.25rem;
+                gap: 1.2rem;
                 overflow: hidden;
                 isolation: isolate;
                 animation: widgetEnter 0.75s cubic-bezier(0.23, 1, 0.32, 1) forwards;
@@ -74,7 +74,7 @@
                 height: 160px;
                 border-radius: 50%;
                 filter: blur(80px);
-                opacity: 0.6;
+                opacity: 0.55;
                 z-index: -1;
                 animation: glowDrift 14s ease-in-out infinite;
             }
@@ -82,13 +82,13 @@
             .widget::before {
                 top: -110px;
                 left: -70px;
-                background: rgba(179, 83, 211, 0.58);
+                background: rgba(94, 98, 244, 0.65);
             }
 
             .widget::after {
                 bottom: -110px;
                 right: -60px;
-                background: rgba(173, 44, 44, 0.58);
+                background: rgba(255, 93, 168, 0.6);
                 animation-delay: -7s;
             }
 
@@ -96,20 +96,22 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                font-size: 0.76rem;
+                font-size: 0.74rem;
                 text-transform: uppercase;
-                letter-spacing: 0.16em;
+                letter-spacing: 0.18em;
             }
 
             .brand-name {
                 display: flex;
                 align-items: center;
                 gap: 0.35rem;
-                font-weight: 700;
+                font-weight: 600;
+                font-family: 'Space Grotesk', sans-serif;
+                letter-spacing: 0.18em;
             }
 
             .brand-accent {
-                background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 100%);
+                background: linear-gradient(135deg, #5E62F4 0%, #9C6BFF 45%, #FF5DA8 100%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -119,17 +121,17 @@
                 display: flex;
                 align-items: center;
                 gap: 0.35rem;
-                font-size: 0.66rem;
-                color: rgba(255, 255, 255, 0.72);
+                font-size: 0.64rem;
+                color: rgba(225, 229, 235, 0.76);
             }
 
             .indicator-dot {
                 width: 8px;
                 height: 8px;
                 border-radius: 50%;
-                background: #57f287;
-                animation: pulse 2.8s ease-in-out infinite;
-                box-shadow: 0 0 12px rgba(87, 242, 135, 0.75);
+                background: #37D172;
+                animation: pulse 2.6s ease-in-out infinite;
+                box-shadow: 0 0 12px rgba(55, 209, 114, 0.75);
             }
 
             @keyframes pulse {
@@ -140,27 +142,29 @@
             .hero {
                 display: flex;
                 flex-direction: column;
-                gap: 0.7rem;
+                gap: 0.68rem;
             }
 
             .hero-eyebrow {
-                font-family: 'Roboto Mono', monospace;
-                font-size: 0.66rem;
-                letter-spacing: 0.28em;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.64rem;
+                letter-spacing: 0.3em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.58);
+                color: rgba(199, 205, 214, 0.65);
             }
 
             .hero-title {
-                font-size: 1.72rem;
-                line-height: 1.1;
-                letter-spacing: -0.01em;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 1.68rem;
+                line-height: 1.08;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
             }
 
             .hero-copy {
-                font-size: 0.82rem;
+                font-size: 0.84rem;
                 line-height: 1.55;
-                color: rgba(255, 255, 255, 0.78);
+                color: rgba(225, 229, 235, 0.82);
             }
 
             .button-stack {
@@ -174,71 +178,72 @@
                 padding: 0.72rem 1.4rem;
                 border-radius: 999px;
                 border: none;
-                background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 50%, #b353d3 100%);
+                background: linear-gradient(135deg, #5E62F4 0%, #FF5DA8 100%);
                 background-size: 200% 200%;
                 color: #fff;
-                font-size: 0.82rem;
-                font-weight: 600;
-                letter-spacing: 0.12em;
+                font-size: 0.78rem;
+                font-family: 'JetBrains Mono', monospace;
+                letter-spacing: 0.18em;
                 text-transform: uppercase;
                 cursor: pointer;
-                box-shadow: 0 18px 32px rgba(179, 83, 211, 0.45);
+                box-shadow: 0 18px 32px rgba(94, 98, 244, 0.45);
                 transition: transform 0.25s ease, box-shadow 0.25s ease;
                 animation: gradientShift 12s ease infinite;
             }
 
             .cta-button:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 24px 44px rgba(179, 83, 211, 0.58);
+                box-shadow: 0 24px 44px rgba(94, 98, 244, 0.58);
             }
 
             .cta-button.is-pressed {
                 transform: translateY(1px);
-                box-shadow: 0 16px 24px rgba(179, 83, 211, 0.35);
+                box-shadow: 0 16px 24px rgba(94, 98, 244, 0.35);
             }
 
             .ghost-button {
-                padding: 0.7rem 1.35rem;
+                padding: 0.68rem 1.35rem;
                 border-radius: 999px;
-                border: 1px dashed rgba(255, 255, 255, 0.3);
-                background: rgba(14, 3, 26, 0.55);
-                color: rgba(255, 255, 255, 0.85);
-                font-size: 0.78rem;
-                letter-spacing: 0.14em;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                background: rgba(18, 21, 32, 0.65);
+                color: rgba(225, 229, 235, 0.82);
+                font-size: 0.74rem;
+                font-family: 'JetBrains Mono', monospace;
+                letter-spacing: 0.16em;
                 text-transform: uppercase;
                 cursor: pointer;
                 transition: border-color 0.2s ease, background 0.2s ease;
             }
 
             .ghost-button:hover {
-                border-color: rgba(179, 83, 211, 0.55);
-                background: rgba(24, 6, 40, 0.7);
+                border-color: rgba(153, 143, 255, 0.55);
+                background: rgba(26, 29, 42, 0.72);
             }
 
             .download-status {
                 margin-top: 0.75rem;
-                font-family: 'Roboto Mono', monospace;
-                font-size: 0.72rem;
-                letter-spacing: 0.04em;
-                color: rgba(215, 215, 215, 0.82);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.7rem;
+                letter-spacing: 0.08em;
+                color: rgba(215, 215, 215, 0.8);
             }
 
             .download-status.status-success {
-                color: #57f287;
+                color: #37D172;
             }
 
             .download-status.status-error {
-                color: #ff8a8a;
+                color: #FF5C73;
             }
 
             .download-status.status-progress {
-                color: rgba(187, 151, 255, 0.95);
+                color: rgba(153, 143, 255, 0.9);
             }
 
             .feature-list {
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 0.65rem;
+                gap: 0.6rem;
             }
 
             .feature {
@@ -247,12 +252,13 @@
                 gap: 0.55rem;
                 padding: 0.55rem 0.75rem;
                 border-radius: 14px;
-                background: rgba(18, 4, 28, 0.8);
+                background: rgba(19, 22, 32, 0.78);
                 border: 1px solid rgba(255, 255, 255, 0.06);
-                font-size: 0.72rem;
-                letter-spacing: 0.08em;
+                font-size: 0.7rem;
+                letter-spacing: 0.12em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.7);
+                color: rgba(225, 229, 235, 0.72);
+                font-family: 'JetBrains Mono', monospace;
             }
 
             .feature-icon {
@@ -262,7 +268,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: rgba(179, 83, 211, 0.85);
+                background: linear-gradient(135deg, #5E62F4, #9C6BFF);
                 font-size: 0.72rem;
                 font-weight: 600;
             }
@@ -271,17 +277,17 @@
                 display: flex;
                 gap: 0.5rem;
                 justify-content: space-between;
-                font-family: 'Roboto Mono', monospace;
-                font-size: 0.68rem;
-                letter-spacing: 0.12em;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.66rem;
+                letter-spacing: 0.18em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.55);
+                color: rgba(225, 229, 235, 0.55);
             }
 
             .inline-link {
                 background: none;
                 border: none;
-                color: rgba(190, 168, 255, 0.9);
+                color: rgba(199, 161, 255, 0.88);
                 cursor: pointer;
                 padding: 0;
                 position: relative;

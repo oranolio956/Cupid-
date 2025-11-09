@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const DOWNLOAD_LABEL_READY = 'Download Installer';
     const DOWNLOAD_LABEL_PROGRESS = 'Preparing…';
-
     const VERIFY_ENDPOINT = 'https://example.com/cupidbot/installer/status';
+
+    const missionClockEl = document.getElementById('missionClock');
+    const commandPaletteBtn = document.getElementById('commandPaletteBtn');
+
+    const navItems = Array.from(document.querySelectorAll('.sc-nav-item'));
+    const sections = Array.from(document.querySelectorAll('.sc-section'));
+    const viewLinks = Array.from(document.querySelectorAll('[data-target]')).filter((el) => !el.classList.contains('sc-nav-item'));
 
     const downloadBtn = document.getElementById('downloadBtn');
     const downloadBtnText = document.getElementById('downloadBtnText');
@@ -24,17 +30,42 @@ document.addEventListener('DOMContentLoaded', () => {
     setStatus('ready', 'Ready to install', 'Click <em>Download Installer</em> to grab the latest package.');
     setDownloadLoading(false);
     setShowDownloads(false);
+    updateMissionClock();
+    setInterval(updateMissionClock, 30_000);
+
+    navItems.forEach((item) => {
+        item.addEventListener('click', () => {
+            const target = item.dataset.target;
+            if (target) {
+                activateView(target);
+            }
+        });
+    });
+
+    viewLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const target = link.dataset.target;
+            if (!target) {
+                return;
+            }
+            event.preventDefault();
+            activateView(target);
+        });
+    });
+
+    commandPaletteBtn?.addEventListener('click', () => {
+        console.debug('Strata Console: Command palette requested.');
+        activateView('overview');
+    });
 
     downloadBtn.addEventListener('click', async () => {
         if (isDownloading) {
             return;
         }
-
         setDownloadLoading(true);
         setStatus('progress', 'Preparing download', 'Fetching the CupidBot installer and saving it to your downloads folder…');
 
         const response = await sendRuntimeMessage('startInstallerDownload', { source: 'popup' });
-
         setDownloadLoading(false);
 
         if (response?.success) {
@@ -60,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDownloading) {
             return;
         }
-
         if (!VERIFY_ENDPOINT || VERIFY_ENDPOINT.includes('example.com')) {
             setStatus(
                 'error',
@@ -74,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch(VERIFY_ENDPOINT, { cache: 'no-store' });
-
             if (!response.ok) {
                 throw new Error(`Server responded with ${response.status}`);
             }
@@ -86,9 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.debug('Verification response was not JSON', jsonError);
             }
 
-            const healthy = data?.healthy === true
-                || data?.status === 'ok'
-                || data?.valid === true;
+            const healthy = data?.healthy === true || data?.status === 'ok' || data?.valid === true;
 
             if (healthy) {
                 setStatus(
@@ -116,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showDownloadsBtn.addEventListener('click', async () => {
         const response = await sendRuntimeMessage('showInstallerDownload', { downloadId: lastDownloadId });
-
         if (!response?.success) {
             setStatus(
                 'error',
@@ -129,18 +155,25 @@ document.addEventListener('DOMContentLoaded', () => {
     openGuideBtn.addEventListener('click', () => {
         sendRuntimeMessage('openInstallGuide');
     });
-
     supportLink.addEventListener('click', () => {
         sendRuntimeMessage('openSupport');
     });
-
     troubleshootBtn.addEventListener('click', () => {
         sendRuntimeMessage('openTroubleshooting');
     });
-
     releaseNotesBtn.addEventListener('click', () => {
         sendRuntimeMessage('openReleaseNotes');
     });
+
+    function activateView(target) {
+        const viewId = `view-${target}`;
+        navItems.forEach((item) => {
+            item.classList.toggle('is-active', item.dataset.target === target);
+        });
+        sections.forEach((section) => {
+            section.classList.toggle('is-active', section.id === viewId);
+        });
+    }
 
     function setStatus(mode, title, message) {
         const modes = ['ready', 'progress', 'success', 'error'];
@@ -174,6 +207,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setShowDownloads(visible) {
         showDownloadsBtn.hidden = !visible;
+    }
+
+    function updateMissionClock() {
+        if (!missionClockEl) {
+            return;
+        }
+        const now = new Date();
+        const hours = String(now.getUTCHours()).padStart(2, '0');
+        const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+        missionClockEl.textContent = `${hours}:${minutes} UTC`;
     }
 
     function sendRuntimeMessage(action, payload = {}) {
