@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const DOWNLOAD_LABEL_PROGRESS = 'Preparing…';
     const VERIFY_ENDPOINT = 'https://example.com/cupidbot/installer/status';
 
+    document.querySelectorAll('button:not([type])').forEach((btn) => {
+        btn.setAttribute('type', 'button');
+    });
+
     const missionClockEl = document.getElementById('missionClock');
     const commandPaletteBtn = document.getElementById('commandPaletteBtn');
 
@@ -50,6 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             event.preventDefault();
             activateView(target);
+        });
+    });
+
+    document.querySelectorAll('[data-status-mode]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+            const mode = trigger.dataset.statusMode || 'ready';
+            const title = trigger.dataset.statusTitle || 'Action queued';
+            const message = trigger.dataset.statusMessage || 'This control activates once backend services are connected.';
+            setStatus(mode, title, message);
         });
     });
 

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CupidBot Assistant</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="popup.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CupidBot Assistant</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="popup.css">
+    </head>
 <body>
     <div class="sc-shell">
         <div class="sc-glow sc-glow--one"></div>
@@ -175,7 +175,7 @@
                         <div class="sc-section__titlebar">
                             <h2>Channel fleet</h2>
                             <div class="sc-title-actions">
-                                <button class="sc-link" data-target="channels">View detailed matrix</button>
+                                <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel matrix engaged" data-status-message="Switching to the Channels view for detailed orchestration controls.">View detailed matrix</button>
                             </div>
                         </div>
 
@@ -207,9 +207,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-channel__actions">
-                                    <button class="sc-button sc-button--mini">New Burst</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Personas</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                    <button class="sc-button sc-button--mini" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Use the Channels view to configure bursts, personas, and routing.">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Use the Channels view to configure bursts, personas, and routing.">Personas</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Use the Channels view to configure bursts, personas, and routing.">Proxy Pool</button>
                                 </div>
                                 <div class="sc-channel__preview">
                                     <div class="sc-avatar-block">
@@ -219,7 +219,7 @@
                                             <p>SMS: Twilio | Theme: Neon Archivist</p>
                                         </div>
                                     </div>
-                                    <button class="sc-link">Open control room</button>
+                                    <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel control room" data-status-message="Navigate to Channels to deep-dive Bitmoji Vanguard.">Open control room</button>
                                 </div>
                             </article>
 
@@ -250,9 +250,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-channel__actions">
-                                    <button class="sc-button sc-button--mini">New Burst</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Photo Pipeline</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                    <button class="sc-button sc-button--mini" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to stage Tinder bursts and creative pipelines.">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to stage Tinder bursts and creative pipelines.">Photo Pipeline</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to stage Tinder bursts and creative pipelines.">Proxy Pool</button>
                                 </div>
                                 <div class="sc-channel__preview">
                                     <div class="sc-avatar-block">
@@ -262,7 +262,7 @@
                                             <p>Photoset: Horizon, Bio template: Voyages</p>
                                         </div>
                                     </div>
-                                    <button class="sc-link">Open control room</button>
+                                    <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel control room" data-status-message="Navigate to Channels to orchestrate Tinder North America.">Open control room</button>
                                 </div>
                             </article>
 
@@ -293,9 +293,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-channel__actions">
-                                    <button class="sc-button sc-button--mini">New Burst</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Prompts</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                    <button class="sc-button sc-button--mini" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Bumble warmups and prompts.">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Bumble warmups and prompts.">Prompts</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Bumble warmups and prompts.">Proxy Pool</button>
                                 </div>
                                 <div class="sc-channel__preview">
                                     <div class="sc-avatar-block">
@@ -305,7 +305,7 @@
                                             <p>Voice lines loaded · 12 warmups running</p>
                                         </div>
                                     </div>
-                                    <button class="sc-link">Open control room</button>
+                                    <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel control room" data-status-message="Navigate to Channels to tune Bumble EMEA sweep.">Open control room</button>
                                 </div>
                             </article>
 
@@ -336,9 +336,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-channel__actions">
-                                    <button class="sc-button sc-button--mini">New Burst</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Subreddits</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                    <button class="sc-button sc-button--mini" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Reddit seeding and proxy strategy.">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Reddit seeding and proxy strategy.">Subreddits</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Reddit seeding and proxy strategy.">Proxy Pool</button>
                                 </div>
                                 <div class="sc-channel__preview">
                                     <div class="sc-avatar-block">
@@ -348,7 +348,7 @@
                                             <p>Join + karma scripts scheduled · email pool C</p>
                                         </div>
                                     </div>
-                                    <button class="sc-link">Open control room</button>
+                                    <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel control room" data-status-message="Navigate to Channels to fine-tune the Reddit warmup routes.">Open control room</button>
                                 </div>
                             </article>
 
@@ -379,9 +379,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-channel__actions">
-                                    <button class="sc-button sc-button--mini">New Burst</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Servers</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Webhook</button>
+                                    <button class="sc-button sc-button--mini" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to route Discord bot meshes and webhooks.">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to route Discord bot meshes and webhooks.">Servers</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to route Discord bot meshes and webhooks.">Webhook</button>
                                 </div>
                                 <div class="sc-channel__preview">
                                     <div class="sc-avatar-block">
@@ -391,7 +391,7 @@
                                             <p>Token rotation active · DM queue 12/min</p>
                                         </div>
                                     </div>
-                                    <button class="sc-link">Open control room</button>
+                                    <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel control room" data-status-message="Navigate to Channels to orchestrate the Discord server mesh.">Open control room</button>
                                 </div>
                             </article>
 
@@ -422,9 +422,9 @@
                                     </div>
                                 </div>
                                 <div class="sc-channel__actions">
-                                    <button class="sc-button sc-button--mini">New Burst</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Prompts</button>
-                                    <button class="sc-button sc-button--mini sc-button--ghost">Proxy Pool</button>
+                                    <button class="sc-button sc-button--mini" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Badoo geo-targeting and prompts.">New Burst</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Badoo geo-targeting and prompts.">Prompts</button>
+                                    <button class="sc-button sc-button--mini sc-button--ghost" data-target="channels" data-status-mode="progress" data-status-title="Open channel matrix" data-status-message="Switch to Channels to coordinate Badoo geo-targeting and prompts.">Proxy Pool</button>
                                 </div>
                                 <div class="sc-channel__preview">
                                     <div class="sc-avatar-block">
@@ -434,7 +434,7 @@
                                             <p>Geo target: São Paulo · Persona pack Vela</p>
                                         </div>
                                     </div>
-                                    <button class="sc-link">Open control room</button>
+                                    <button class="sc-link" data-target="channels" data-status-mode="success" data-status-title="Channel control room" data-status-message="Navigate to Channels to orchestrate Badoo LatAm sweep.">Open control room</button>
                                 </div>
                             </article>
                         </div>
@@ -443,7 +443,7 @@
                     <div class="sc-section__row">
                         <div class="sc-section__titlebar">
                             <h2>Activity stream</h2>
-                            <button class="sc-link">Export log</button>
+                            <button class="sc-link" data-status-mode="progress" data-status-title="Activity export" data-status-message="Export is available once the telemetry API is connected.">Export log</button>
                         </div>
                         <div class="sc-activity sc-card">
                             <div class="sc-activity__item">
@@ -479,7 +479,7 @@
                     <div class="sc-section__titlebar">
                         <h2>Automation timeline</h2>
                         <div class="sc-title-actions">
-                            <button class="sc-button sc-button--mini">Create automation</button>
+                            <button class="sc-button sc-button--mini" data-status-mode="progress" data-status-title="Automation wizard queued" data-status-message="Connect the orchestration API to publish new automation recipes.">Create automation</button>
                         </div>
                     </div>
                     <div class="sc-timeline sc-card">
@@ -516,8 +516,8 @@
                                 <li><strong>Next run</strong><span>02:00 UTC</span></li>
                             </ul>
                             <footer>
-                                <button class="sc-button sc-button--ghost sc-button--mini">Adjust cadence</button>
-                                <button class="sc-link">Open recipe</button>
+                                <button class="sc-button sc-button--ghost sc-button--mini" data-status-mode="progress" data-status-title="Cadence editor pending" data-status-message="Cadence controls activate once automation endpoints are linked.">Adjust cadence</button>
+                                <button class="sc-link" data-status-mode="ready" data-status-title="Recipe preview unavailable" data-status-message="Hook the automation recipe service to open detailed timelines.">Open recipe</button>
                             </footer>
                         </div>
 
@@ -533,8 +533,8 @@
                                 <li><strong>Health</strong><span class="sc-text-success">Optimal</span></li>
                             </ul>
                             <footer>
-                                <button class="sc-button sc-button--ghost sc-button--mini">Pause queue</button>
-                                <button class="sc-link">Open recipe</button>
+                                <button class="sc-button sc-button--ghost sc-button--mini" data-status-mode="progress" data-status-title="Queue pause staged" data-status-message="Queue controls sync with your orchestrator once it is connected.">Pause queue</button>
+                                <button class="sc-link" data-status-mode="ready" data-status-title="Recipe preview unavailable" data-status-message="Hook the automation recipe service to open detailed timelines.">Open recipe</button>
                             </footer>
                         </div>
 
@@ -550,8 +550,8 @@
                                 <li><strong>Status</strong><span class="sc-text-warning">Queued</span></li>
                             </ul>
                             <footer>
-                                <button class="sc-button sc-button--ghost sc-button--mini">Deploy now</button>
-                                <button class="sc-link">View queue</button>
+                                <button class="sc-button sc-button--ghost sc-button--mini" data-status-mode="progress" data-status-title="Deployment preview staged" data-status-message="Connect deployment hooks to trigger Reddit karma surges automatically.">Deploy now</button>
+                                <button class="sc-link" data-status-mode="progress" data-status-title="Queue monitor pending" data-status-message="Add telemetry wiring to inspect queued accounts in real time.">View queue</button>
                             </footer>
                         </div>
                     </div>
@@ -562,7 +562,7 @@
                     <div class="sc-section__titlebar">
                         <h2>Asset library</h2>
                         <div class="sc-title-actions">
-                            <button class="sc-button sc-button--mini">Upload asset</button>
+                            <button class="sc-button sc-button--mini" data-status-mode="progress" data-status-title="Asset uploader pending" data-status-message="Connect the asset pipeline service to ingest new persona packs.">Upload asset</button>
                         </div>
                     </div>
                     <div class="sc-grid sc-grid--assets">
@@ -690,8 +690,8 @@
                                 </div>
                             </div>
                             <footer>
-                                <button class="sc-button sc-button--mini">Open burst wizard</button>
-                                <button class="sc-link">Manage templates</button>
+                                <button class="sc-button sc-button--mini" data-status-mode="progress" data-status-title="Burst wizard pending" data-status-message="Wire the Snapchat automation backend to launch the burst wizard.">Open burst wizard</button>
+                                <button class="sc-link" data-status-mode="ready" data-status-title="Template manager inactive" data-status-message="Link template management endpoints to edit Snapchat schemas.">Manage templates</button>
                             </footer>
                         </div>
 
@@ -719,8 +719,8 @@
                                 </div>
                             </div>
                             <footer>
-                                <button class="sc-button sc-button--mini">Warmup monitor</button>
-                                <button class="sc-link">Adjust rotation</button>
+                                <button class="sc-button sc-button--mini" data-status-mode="progress" data-status-title="Warmup monitor pending" data-status-message="Attach the Reddit telemetry service to monitor warmup batches.">Warmup monitor</button>
+                                <button class="sc-link" data-status-mode="ready" data-status-title="Rotation controls inactive" data-status-message="Integrate the control surface to adjust rotation parameters in real time.">Adjust rotation</button>
                             </footer>
                         </div>
                     </div>
@@ -731,7 +731,7 @@
                     <div class="sc-section__titlebar">
                         <h2>Compliance & safeguards</h2>
                         <div class="sc-title-actions">
-                            <button class="sc-button sc-button--mini">Export report</button>
+                            <button class="sc-button sc-button--mini" data-status-mode="progress" data-status-title="Compliance export pending" data-status-message="Connect compliance reporting to generate downloadable summaries.">Export report</button>
                         </div>
                     </div>
                     <div class="sc-card sc-card--table">
@@ -751,28 +751,28 @@
                                     <td>2024.05</td>
                                     <td>2025-11-02</td>
                                     <td><span class="sc-pill sc-pill--success">Aligned</span></td>
-                                    <td><button class="sc-link">Download policy</button></td>
+                                    <td><button class="sc-link" data-status-mode="progress" data-status-title="Policy download pending" data-status-message="Connect documentation hosting to fetch the Snapchat policy PDF.">Download policy</button></td>
                                 </tr>
                                 <tr>
                                     <td>Tinder</td>
                                     <td>2024.08</td>
                                     <td>2025-10-21</td>
                                     <td><span class="sc-pill sc-pill--warning">Review due</span></td>
-                                    <td><button class="sc-link">Schedule review</button></td>
+                                    <td><button class="sc-link" data-status-mode="progress" data-status-title="Review scheduling pending" data-status-message="Attach the compliance scheduler to queue Tinder policy reviews.">Schedule review</button></td>
                                 </tr>
                                 <tr>
                                     <td>Reddit</td>
                                     <td>2024.07</td>
                                     <td>2025-11-05</td>
                                     <td><span class="sc-pill sc-pill--success">Aligned</span></td>
-                                    <td><button class="sc-link">Download policy</button></td>
+                                    <td><button class="sc-link" data-status-mode="progress" data-status-title="Policy download pending" data-status-message="Connect documentation hosting to fetch the Reddit policy PDF.">Download policy</button></td>
                                 </tr>
                                 <tr>
                                     <td>Discord</td>
                                     <td>2024.03</td>
                                     <td>2025-09-28</td>
                                     <td><span class="sc-pill sc-pill--danger">Action required</span></td>
-                                    <td><button class="sc-link">Open task</button></td>
+                                    <td><button class="sc-link" data-status-mode="progress" data-status-title="Task board pending" data-status-message="Integrate the compliance tracker to manage Discord remediation tasks.">Open task</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -813,7 +813,7 @@
                                     <option>Spacious</option>
                                 </select>
                             </div>
-                            <button type="button" class="sc-button sc-button--primary sc-button--mini">Save general</button>
+                            <button type="button" class="sc-button sc-button--primary sc-button--mini" data-status-mode="success" data-status-title="Settings saved (mock)" data-status-message="Preferences persist once the control plane API is connected.">Save general</button>
                         </form>
 
                         <form class="sc-card sc-card--form">
@@ -830,7 +830,7 @@
                                 <label for="proxyMesh">Proxy mesh</label>
                                 <input id="proxyMesh" type="text" value="Europa Mesh A" />
                             </div>
-                            <button type="button" class="sc-button sc-button--ghost sc-button--mini">Regenerate keys</button>
+                            <button type="button" class="sc-button sc-button--ghost sc-button--mini" data-status-mode="progress" data-status-title="Key rotation pending" data-status-message="Integrate the key management service to rotate SIM and proxy credentials.">Regenerate keys</button>
                         </form>
                     </div>
                 </section>
