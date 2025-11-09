@@ -3,135 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CupidBot AI</title>
+    <title>CupidBot Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Loading Screen -->
-        <div id="loadingScreen" class="screen active">
-            <div class="logo-container">
-                <div class="logo-pulse">
-                    <svg width="80" height="80" viewBox="0 0 80 80">
-                        <defs>
-                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#b353d3;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#ad2c2c;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M 40 60 C 40 60 20 45 20 32 C 20 24 24 20 30 20 C 35 20 40 24 40 24 C 40 24 45 20 50 20 C 56 20 60 24 60 32 C 60 45 40 60 40 60 Z" fill="url(#logoGradient)"/>
-                    </svg>
-                </div>
+    <div class="popup-root">
+        <header class="popup-nav">
+            <div class="brand">
+                <span class="brand-accent">CupidBot</span>.org
             </div>
-            <h1 class="loading-title">Welcome to CupidBot</h1>
-            <p class="loading-subtitle">Initializing AI systems...</p>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="loadingProgress"></div>
-                </div>
-                <div class="progress-text" id="loadingText">0%</div>
+            <div class="nav-links">
+                <span>Home</span>
+                <span>Contact</span>
+                <span>OFM</span>
             </div>
-            <div class="loading-messages" id="loadingMessages"></div>
-        </div>
+        </header>
 
-        <!-- Key Entry Screen -->
-        <div id="keyScreen" class="screen">
-            <div class="screen-header">
-                <h2>Activate Your Trial</h2>
-                <p>Enter your 30-day trial key to continue</p>
-            </div>
-            <div class="key-input-container">
-                <input type="text" id="trialKeyInput" class="key-input" placeholder="CUPID-XXXX-XXXX-XXXX-XXXX" maxlength="24">
-                <div class="input-hint">Paste your trial key from cupidbot.org</div>
-            </div>
-            <button id="activateBtn" class="btn-primary">
-                <span class="btn-text">Activate Trial</span>
-                <span class="btn-loader"></span>
-            </button>
-            <div class="error-message" id="keyError"></div>
-        </div>
-
-        <!-- Dependency Download Screen -->
-        <div id="downloadScreen" class="screen">
-            <div class="screen-header">
-                <h2>Setting Up Your AI Assistant</h2>
-                <p>Installing required components...</p>
-            </div>
-            <div class="dependencies-list" id="dependenciesList"></div>
-            <div class="overall-progress">
-                <div class="progress-label">
-                    <span>Overall Progress</span>
-                    <span id="overallPercent">0%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="overallProgress"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Success Screen -->
-        <div id="successScreen" class="screen">
-            <div class="success-animation">
-                <div class="confetti-container" id="confettiContainer"></div>
-                <div class="checkmark-wrapper">
-                    <svg class="checkmark" viewBox="0 0 52 52">
-                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                    </svg>
-                </div>
-                <h2 class="success-title">All Set!</h2>
-                <p class="success-subtitle">CupidBot is ready to charm! 💕</p>
-            </div>
-            <button id="getStartedBtn" class="btn-primary">
-                <span class="btn-text">Get Started</span>
-            </button>
-        </div>
-
-        <!-- Dashboard Screen -->
-        <div id="dashboardScreen" class="screen">
-            <div class="dashboard-header">
-                <div class="user-info">
-                    <div class="avatar">🤖</div>
-                    <div>
-                        <div class="user-name">CupidBot AI</div>
-                        <div class="user-status">Active</div>
+        <div class="hero-card">
+            <div class="hero-copy">
+                <span class="hero-eyebrow">Premium Dating Automation</span>
+                <h1>AI that gets you dates</h1>
+                <p class="hero-body">
+                    CupidBot swipes and chats for you on dating apps so you can skip to the good part.
+                    We filter out the attention seekers and only notify you when you get a date.
+                </p>
+                <button id="connectButton" class="cta-button">Connect To Login</button>
+                <div class="trust-row">
+                    <span>As featured in</span>
+                    <div class="trust-dots">
+                        <span>VICE</span>
+                        <span>NY POST</span>
+                        <span>YAHOO</span>
                     </div>
                 </div>
-                <div class="trial-badge">
-                    <span id="trialDays">30</span> days left
-                </div>
             </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">💬</div>
-                    <div class="stat-value" id="messagesCount">0</div>
-                    <div class="stat-label">Messages</div>
+            <div class="hero-visual">
+                <div class="glass-card">
+                    <img
+                        src="https://cdn.prod.website-files.com/6440ef10d027f97f198da940/6440f4e50740bf677fa49018_bayle__heartbreaker_narrow.png"
+                        alt="CupidBot showcase"
+                        class="hero-image"
+                    >
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <span class="stat-value">✔</span>
+                            <span class="stat-label">Never swipe again</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">✔</span>
+                            <span class="stat-label">Real conversations</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">✔</span>
+                            <span class="stat-label">Calendar integration</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">✨</div>
-                    <div class="stat-value" id="conversionsCount">0</div>
-                    <div class="stat-label">Conversions</div>
-                </div>
-            </div>
-
-            <div class="ai-status">
-                <div class="status-indicator active"></div>
-                <span>AI is active and monitoring</span>
-            </div>
-
-            <div class="action-buttons">
-                <button class="btn-secondary" id="pauseBtn">
-                    <span>⏸ Pause AI</span>
-                </button>
-                <button class="btn-secondary" id="settingsBtn">
-                    <span>⚙️ Settings</span>
-                </button>
             </div>
         </div>
+
+        <footer class="popup-footer">
+            <div class="footer-heading">Stay updated</div>
+            <div class="footer-copy">Be the first to know about new CupidBot features.</div>
+        </footer>
     </div>
 
     <script src="popup.js"></script>

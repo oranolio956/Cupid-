@@ -2,13 +2,9 @@
   "manifest_version": 3,
   "name": "CupidBot AI - Premium Chat Automation",
   "version": "1.0.0",
-  "description": "Ultra-premium AI chat automation for OnlyFans management. Convert subscribers with intelligent conversations.",
-  "permissions": [
-    "storage",
-    "activeTab"
-  ],
+  "description": "CupidBot assistant with on-brand floating experience and streamlined login entry.",
   "host_permissions": [
-    "https://onlyfans.com/*"
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -28,8 +24,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://onlyfans.com/*"],
-      "js": ["content.js"]
+      "matches": [
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ]
 }
