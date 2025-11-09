@@ -1,3 +1,9 @@
+    /* Override Webflow's white background */
+    body {
+      background-color: #050414 !important;
+      color: #f4f5fb !important;
+    }
+
     :root {
       --install-max-width: 1160px;
       --install-radius-lg: 28px;
