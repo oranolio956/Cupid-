@@ -13,75 +13,80 @@
     <div class="popup-root">
         <div class="background-glow glow-1"></div>
         <div class="background-glow glow-2"></div>
-        <header class="popup-nav">
+
+        <header class="popup-header">
             <div class="brand">
-                <span class="brand-accent">CupidBot</span>.org
+                <span class="brand-title">CupidBot</span>
+                <span class="brand-badge">Installer</span>
             </div>
-            <div class="nav-links">
-                <a href="https://cupidbot.org/" target="_blank" rel="noreferrer noopener">Home</a>
-                <a href="https://cupidbot.org/contact.html" target="_blank" rel="noreferrer noopener">Contact</a>
-                <a href="https://t.me/cupidbotg" target="_blank" rel="noreferrer noopener">OFM</a>
-            </div>
+            <button id="supportLink" class="support-link" type="button">Support</button>
         </header>
 
-        <div class="hero-card">
-            <div class="hero-copy">
-                <div class="hero-eyebrow-lockup">
-                    <span class="hero-eyebrow">Premium Dating Automation</span>
-                    <span class="hero-tag">Live beta</span>
+        <main class="installer-card">
+            <section class="card-body">
+                <div class="card-intro">
+                    <p class="eyebrow">Dependency setup</p>
+                    <h1>Install CupidBot dependencies</h1>
+                    <p class="lead">
+                        Download the one-click installer to configure CupidBot’s AI services, messaging pipelines,
+                        and secure credentials on your workstation.
+                    </p>
                 </div>
-                <h1>AI that gets you dates</h1>
-                <p class="hero-body">
-                    CupidBot swipes and chats for you on dating apps so you can skip to the good part.
-                    We filter out the attention seekers and only notify you when you get a date.
-                </p>
-                <div class="hero-pills">
-                    <span class="pill">Glassmorphic UI</span>
-                    <span class="pill">Human-like flows</span>
-                    <span class="pill">Calendar sync ready</span>
+
+                <div class="cta-group">
+                    <button id="downloadBtn" class="btn-primary" type="button">
+                        <span id="downloadBtnText">Download Installer</span>
+                        <span id="downloadSpinner" class="btn-spinner" aria-hidden="true"></span>
+                    </button>
+                    <button id="openGuideBtn" class="btn-outline" type="button">Open Install Guide</button>
                 </div>
-                <button id="connectButton" class="cta-button" type="button" aria-label="Connect CupidBot to Login">Connect To Login</button>
-                <div class="cta-subtext">One click to hand conversations off to CupidBot.</div>
-                <div class="trust-row">
-                    <span>As featured in</span>
-                    <div class="trust-dots">
-                        <span>VICE</span>
-                        <span>NY POST</span>
-                        <span>YAHOO</span>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="visual-orb visual-orb--one"></div>
-                <div class="visual-orb visual-orb--two"></div>
-                <div class="glass-card">
-                    <img
-                        src="https://cdn.prod.website-files.com/6440ef10d027f97f198da940/6440f4e50740bf677fa49018_bayle__heartbreaker_narrow.png"
-                        alt="CupidBot showcase"
-                        class="hero-image"
-                    >
-                    <div class="stat-grid">
-                        <div class="stat-item">
-                            <span class="stat-value">✔</span>
-                            <span class="stat-label">Never swipe again</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">✔</span>
-                            <span class="stat-label">Real conversations</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">✔</span>
-                            <span class="stat-label">Calendar integration</span>
+
+                <div class="status-panel status--ready" id="statusPanel">
+                    <div class="status-badge" id="statusBadge">Ready</div>
+                    <div class="status-copy">
+                        <strong id="statusTitle">Ready to install</strong>
+                        <p id="statusMessage">Click <em>Download Installer</em> to grab the latest package.</p>
+                        <div class="status-actions">
+                            <button id="showDownloadsBtn" class="link-button" type="button" hidden>Show in downloads</button>
+                            <button id="verifyBtn" class="link-button" type="button">Verify setup</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+                <ul class="checklist">
+                    <li class="checklist-item">
+                        <span class="checklist-icon">①</span>
+                        <div>
+                            <strong>Run the installer</strong>
+                            <p>Locate <code>cupidbot-installer</code> in your downloads folder and run it with administrator permissions.</p>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <span class="checklist-icon">②</span>
+                        <div>
+                            <strong>Follow the prompts</strong>
+                            <p>The installer configures AI agents, message queues, and secure credentials automatically.</p>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <span class="checklist-icon">③</span>
+                        <div>
+                            <strong>Verify installation</strong>
+                            <p>Use the <em>Verify setup</em> button to confirm everything is connected, or open the troubleshooting guide.</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
 
         <footer class="popup-footer">
-            <div class="footer-heading">Stay updated</div>
-            <div class="footer-copy">Be the first to know about new CupidBot features.</div>
-            <div class="scroll-hint">Connect now and we&rsquo;ll take it from here.</div>
+            <div class="footer-actions">
+                <button id="troubleshootBtn" class="footer-link" type="button">Troubleshooting</button>
+                <button id="releaseNotesBtn" class="footer-link" type="button">Release notes</button>
+            </div>
+            <div class="footer-copy">
+                Downloading the installer will save the latest CupidBot setup package to your device. Run it to finish installation.
+            </div>
         </footer>
     </div>
 

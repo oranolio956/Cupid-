@@ -50,8 +50,8 @@
             .widget {
                 position: relative;
                 background:
-                    radial-gradient(circle at top left, rgba(179, 83, 211, 0.32) 0%, transparent 65%),
-                    radial-gradient(circle at bottom right, rgba(173, 44, 44, 0.32) 0%, transparent 70%),
+                    radial-gradient(circle at top left, rgba(179, 83, 211, 0.3) 0%, transparent 65%),
+                    radial-gradient(circle at bottom right, rgba(173, 44, 44, 0.3) 0%, transparent 70%),
                     rgba(5, 0, 9, 0.92);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 24px;
@@ -59,7 +59,7 @@
                 box-shadow: 0 24px 58px rgba(8, 0, 14, 0.75);
                 display: flex;
                 flex-direction: column;
-                gap: 1.35rem;
+                gap: 1.25rem;
                 overflow: hidden;
                 isolation: isolate;
                 animation: widgetEnter 0.75s cubic-bezier(0.23, 1, 0.32, 1) forwards;
@@ -70,33 +70,33 @@
             .widget::after {
                 content: "";
                 position: absolute;
-                width: 180px;
-                height: 180px;
+                width: 160px;
+                height: 160px;
                 border-radius: 50%;
-                filter: blur(90px);
-                opacity: 0.65;
+                filter: blur(80px);
+                opacity: 0.6;
                 z-index: -1;
-                animation: glowDrift 12s ease-in-out infinite;
+                animation: glowDrift 14s ease-in-out infinite;
             }
 
             .widget::before {
-                top: -120px;
-                left: -80px;
-                background: rgba(179, 83, 211, 0.6);
+                top: -110px;
+                left: -70px;
+                background: rgba(179, 83, 211, 0.58);
             }
 
             .widget::after {
-                bottom: -120px;
+                bottom: -110px;
                 right: -60px;
-                background: rgba(173, 44, 44, 0.6);
-                animation-delay: -6s;
+                background: rgba(173, 44, 44, 0.58);
+                animation-delay: -7s;
             }
 
             .brand-row {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                font-size: 0.78rem;
+                font-size: 0.76rem;
                 text-transform: uppercase;
                 letter-spacing: 0.16em;
             }
@@ -119,7 +119,7 @@
                 display: flex;
                 align-items: center;
                 gap: 0.35rem;
-                font-size: 0.68rem;
+                font-size: 0.66rem;
                 color: rgba(255, 255, 255, 0.72);
             }
 
@@ -140,158 +140,167 @@
             .hero {
                 display: flex;
                 flex-direction: column;
-                gap: 0.8rem;
+                gap: 0.7rem;
             }
 
             .hero-eyebrow {
                 font-family: 'Roboto Mono', monospace;
-                font-size: 0.68rem;
-                letter-spacing: 0.32em;
+                font-size: 0.66rem;
+                letter-spacing: 0.28em;
                 text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.62);
+                color: rgba(255, 255, 255, 0.58);
             }
 
             .hero-title {
-                font-size: 1.82rem;
-                line-height: 1.08;
+                font-size: 1.72rem;
+                line-height: 1.1;
                 letter-spacing: -0.01em;
             }
 
             .hero-copy {
-                font-size: 0.84rem;
-                line-height: 1.65;
+                font-size: 0.82rem;
+                line-height: 1.55;
                 color: rgba(255, 255, 255, 0.78);
+            }
+
+            .button-stack {
+                display: flex;
+                gap: 0.6rem;
+                flex-wrap: wrap;
             }
 
             .cta-button {
                 position: relative;
-                margin-top: 0.6rem;
-                padding: 0.78rem 1.55rem;
+                padding: 0.72rem 1.4rem;
                 border-radius: 999px;
                 border: none;
                 background: linear-gradient(135deg, #b353d3 0%, #ad2c2c 50%, #b353d3 100%);
                 background-size: 200% 200%;
                 color: #fff;
-                font-size: 0.86rem;
+                font-size: 0.82rem;
                 font-weight: 600;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
                 cursor: pointer;
-                box-shadow: 0 22px 40px rgba(179, 83, 211, 0.45);
+                box-shadow: 0 18px 32px rgba(179, 83, 211, 0.45);
                 transition: transform 0.25s ease, box-shadow 0.25s ease;
-                overflow: hidden;
                 animation: gradientShift 12s ease infinite;
             }
 
-            .cta-button::after {
-                content: "";
-                position: absolute;
-                inset: 0;
-                border-radius: inherit;
-                background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 65%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
             .cta-button:hover {
-                transform: translateY(-3px) scale(1.01);
-                box-shadow: 0 28px 50px rgba(179, 83, 211, 0.6);
-            }
-
-            .cta-button:hover::after {
-                opacity: 1;
+                transform: translateY(-2px);
+                box-shadow: 0 24px 44px rgba(179, 83, 211, 0.58);
             }
 
             .cta-button.is-pressed {
-                transform: translateY(1px) scale(0.97);
-                box-shadow: 0 18px 28px rgba(179, 83, 211, 0.38);
+                transform: translateY(1px);
+                box-shadow: 0 16px 24px rgba(179, 83, 211, 0.35);
             }
 
-            .cta-button:focus-visible {
-                outline: 2px solid rgba(179, 83, 211, 0.7);
-                outline-offset: 4px;
+            .ghost-button {
+                padding: 0.7rem 1.35rem;
+                border-radius: 999px;
+                border: 1px dashed rgba(255, 255, 255, 0.3);
+                background: rgba(14, 3, 26, 0.55);
+                color: rgba(255, 255, 255, 0.85);
+                font-size: 0.78rem;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: border-color 0.2s ease, background 0.2s ease;
+            }
+
+            .ghost-button:hover {
+                border-color: rgba(179, 83, 211, 0.55);
+                background: rgba(24, 6, 40, 0.7);
+            }
+
+            .download-status {
+                margin-top: 0.75rem;
+                font-family: 'Roboto Mono', monospace;
+                font-size: 0.72rem;
+                letter-spacing: 0.04em;
+                color: rgba(215, 215, 215, 0.82);
+            }
+
+            .download-status.status-success {
+                color: #57f287;
+            }
+
+            .download-status.status-error {
+                color: #ff8a8a;
+            }
+
+            .download-status.status-progress {
+                color: rgba(187, 151, 255, 0.95);
             }
 
             .feature-list {
                 display: grid;
                 grid-template-columns: 1fr;
-                gap: 0.7rem;
-                font-size: 0.76rem;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.72);
+                gap: 0.65rem;
             }
 
             .feature {
-                position: relative;
                 display: flex;
                 align-items: center;
-                gap: 0.65rem;
-                padding: 0.65rem 0.85rem;
-                border-radius: 16px;
-                background: rgba(18, 4, 28, 0.82);
+                gap: 0.55rem;
+                padding: 0.55rem 0.75rem;
+                border-radius: 14px;
+                background: rgba(18, 4, 28, 0.8);
                 border: 1px solid rgba(255, 255, 255, 0.06);
-                backdrop-filter: blur(10px);
-                transition: transform 0.25s ease, border-color 0.25s ease;
-            }
-
-            .feature::before {
-                content: "";
-                position: absolute;
-                inset: 0;
-                border-radius: inherit;
-                border: 1px solid transparent;
-                background: linear-gradient(135deg, rgba(179, 83, 211, 0.25), rgba(173, 44, 44, 0.25)) border-box;
-                -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-                -webkit-mask-composite: xor;
-                mask-composite: exclude;
-                opacity: 0;
-                transition: opacity 0.25s ease;
-            }
-
-            .feature:hover {
-                transform: translateY(-3px);
-                border-color: rgba(179, 83, 211, 0.35);
-            }
-
-            .feature:hover::before {
-                opacity: 1;
+                font-size: 0.72rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.7);
             }
 
             .feature-icon {
-                width: 18px;
-                height: 18px;
+                width: 20px;
+                height: 20px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, rgba(179, 83, 211, 0.9) 0%, rgba(173, 44, 44, 0.9) 100%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.75rem;
-                color: #fff;
-                box-shadow: 0 0 12px rgba(179, 83, 211, 0.45);
+                background: rgba(179, 83, 211, 0.85);
+                font-size: 0.72rem;
+                font-weight: 600;
             }
 
-            .trust-row {
+            .quick-links {
                 display: flex;
-                align-items: center;
+                gap: 0.5rem;
                 justify-content: space-between;
-                gap: 0.75rem;
-                font-size: 0.7rem;
-                text-transform: uppercase;
-                letter-spacing: 0.16em;
-                color: rgba(255, 255, 255, 0.52);
-            }
-
-            .trust-logos {
-                display: flex;
-                gap: 0.45rem;
-            }
-
-            .trust-logos span {
-                padding: 0.28rem 0.55rem;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, 0.08);
-                color: rgba(255, 255, 255, 0.72);
+                font-family: 'Roboto Mono', monospace;
                 font-size: 0.68rem;
                 letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.55);
+            }
+
+            .inline-link {
+                background: none;
+                border: none;
+                color: rgba(190, 168, 255, 0.9);
+                cursor: pointer;
+                padding: 0;
+                position: relative;
+            }
+
+            .inline-link::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -2px;
+                width: 100%;
+                height: 1px;
+                background: currentColor;
+                opacity: 0.3;
+                transition: opacity 0.2s ease;
+            }
+
+            .inline-link:hover::after {
+                opacity: 1;
             }
 
             @keyframes widgetEnter {
@@ -307,7 +316,7 @@
 
             @keyframes glowDrift {
                 0%, 100% { transform: translate(0, 0) scale(1); }
-                50% { transform: translate(12px, -18px) scale(1.08); }
+                50% { transform: translate(16px, -16px) scale(1.06); }
             }
 
             @keyframes gradientShift {
@@ -341,39 +350,39 @@
                 <div class="brand-name"><span class="brand-accent">CupidBot</span>.org</div>
                 <div class="indicator">
                     <span class="indicator-dot"></span>
-                    Live
+                    Ready
                 </div>
             </div>
             <div class="hero">
-                <span class="hero-eyebrow">Premium dating automation</span>
-                <div class="hero-title">AI that gets you dates</div>
+                <span class="hero-eyebrow">Dependency setup</span>
+                <div class="hero-title">Install CupidBot</div>
                 <div class="hero-copy">
-                    CupidBot swipes and chats for you so you can skip to
-                    the small talk. We only tap you when the date is locked in.
+                    Download the installer to configure CupidBot services on this device. Run it with administrator
+                    permissions once the download completes.
                 </div>
-                <button id="cupidbot-connect-btn" class="cta-button" type="button" aria-label="Connect CupidBot to Login">Connect To Login</button>
+                <div class="button-stack">
+                    <button id="widgetDownloadBtn" class="cta-button" type="button" aria-label="Download CupidBot installer">Download Installer</button>
+                    <button id="widgetGuideBtn" class="ghost-button" type="button" aria-label="Open CupidBot install guide">Install Guide</button>
+                </div>
+                <div class="download-status status-ready" id="widgetStatus">Ready to download the latest installer package.</div>
             </div>
             <div class="feature-list">
                 <div class="feature">
-                    <span class="feature-icon">✔</span>
-                    Never swipe again
+                    <span class="feature-icon">①</span>
+                    Download the CupidBot installer
                 </div>
                 <div class="feature">
-                    <span class="feature-icon">✔</span>
-                    Real conversations, no scripts
+                    <span class="feature-icon">②</span>
+                    Run with administrator privileges
                 </div>
                 <div class="feature">
-                    <span class="feature-icon">✔</span>
-                    Calendar-ready scheduling
+                    <span class="feature-icon">③</span>
+                    Verify setup from the extension popup
                 </div>
             </div>
-            <div class="trust-row">
-                <span>Featured in</span>
-                <div class="trust-logos">
-                    <span>VICE</span>
-                    <span>NY POST</span>
-                    <span>YAHOO</span>
-                </div>
+            <div class="quick-links">
+                <button id="widgetSupportBtn" class="inline-link" type="button">Support</button>
+                <button id="widgetTroubleshootBtn" class="inline-link" type="button">Troubleshooting</button>
             </div>
         `;
 
@@ -382,40 +391,98 @@
 
         widgetHost = host;
 
-        const connectButton = shadow.getElementById('cupidbot-connect-btn');
-        if (connectButton) {
+        const downloadButton = shadow.getElementById('widgetDownloadBtn');
+        const guideButton = shadow.getElementById('widgetGuideBtn');
+        const supportButton = shadow.getElementById('widgetSupportBtn');
+        const troubleshootButton = shadow.getElementById('widgetTroubleshootBtn');
+        const statusLabel = shadow.getElementById('widgetStatus');
+
+        if (downloadButton) {
             const tap = () => {
-                connectButton.classList.add('is-pressed');
-                setTimeout(() => connectButton.classList.remove('is-pressed'), 220);
+                downloadButton.classList.add('is-pressed');
+                setTimeout(() => downloadButton.classList.remove('is-pressed'), 200);
             };
 
-            connectButton.addEventListener('click', () => {
+            downloadButton.addEventListener('click', async () => {
                 tap();
+                setWidgetStatus('progress', 'Preparing the CupidBot installer download…');
+                const response = await sendRuntimeMessage('startInstallerDownload', { source: 'floating-widget' });
+
+                if (response?.success) {
+                    setWidgetStatus('success', 'Installer saved to your downloads folder. Run it to finish setup.');
+                } else {
+                    const message = response?.message || 'Unable to start download. Use the install guide for manual steps.';
+                    setWidgetStatus('error', message);
+                }
+            });
+        }
+
+        if (guideButton) {
+            guideButton.addEventListener('click', () => {
+                sendRuntimeMessage('openInstallGuide');
+                setWidgetStatus('ready', 'Opening the install guide in a new tab…');
+            });
+        }
+
+        if (supportButton) {
+            supportButton.addEventListener('click', () => {
+                sendRuntimeMessage('openSupport');
+                setWidgetStatus('ready', 'Support opened. We are here to help.');
+            });
+        }
+
+        if (troubleshootButton) {
+            troubleshootButton.addEventListener('click', () => {
+                sendRuntimeMessage('openTroubleshooting');
+                setWidgetStatus('ready', 'Launching troubleshooting steps in a new tab…');
+            });
+        }
+
+        function setWidgetStatus(state, message) {
+            if (!statusLabel) {
+                return;
+            }
+
+            statusLabel.classList.remove('status-ready', 'status-progress', 'status-success', 'status-error');
+
+            const toneClass = {
+                ready: 'status-ready',
+                progress: 'status-progress',
+                success: 'status-success',
+                error: 'status-error'
+            }[state] || 'status-ready';
+
+            statusLabel.classList.add(toneClass);
+            statusLabel.textContent = message;
+        }
+
+        function sendRuntimeMessage(action, payload = {}) {
+            return new Promise((resolve) => {
                 const canMessage = typeof chrome !== 'undefined'
                     && chrome?.runtime
                     && typeof chrome.runtime.sendMessage === 'function';
 
                 if (!canMessage) {
-                    console.warn('CupidBot widget runtime messaging unavailable.');
+                    resolve({
+                        success: false,
+                        message: 'Runtime messaging unavailable in this browser.'
+                    });
                     return;
                 }
 
                 chrome.runtime.sendMessage(
-                    { action: 'connectToLoginClicked', source: 'floating-widget' },
+                    { action, ...payload },
                     (response) => {
                         if (chrome.runtime.lastError) {
-                            console.debug('CupidBot widget message channel error', chrome.runtime.lastError);
+                            resolve({
+                                success: false,
+                                message: chrome.runtime.lastError.message || 'chrome.runtime messaging error'
+                            });
                         } else {
-                            console.debug('CupidBot widget message delivered', response);
+                            resolve(response || { success: true });
                         }
                     }
                 );
-            });
-
-            connectButton.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    tap();
-                }
             });
         }
 

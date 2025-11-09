@@ -3,6 +3,10 @@
   "name": "CupidBot AI - Premium Chat Automation",
   "version": "1.0.0",
   "description": "CupidBot assistant with on-brand floating experience and streamlined login entry.",
+  "permissions": [
+    "downloads",
+    "tabs"
+  ],
   "host_permissions": [
     "https://*/*"
   ],
