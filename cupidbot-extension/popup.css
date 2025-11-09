@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Self-hosted fonts would go here - using system font fallbacks for privacy */
 
 * {
     margin: 0;
@@ -11,9 +11,9 @@
 :root {
     color-scheme: dark;
 
-    --sc-font-display: 'Space Grotesk', sans-serif;
-    --sc-font-body: 'Manrope', sans-serif;
-    --sc-font-mono: 'JetBrains Mono', monospace;
+    --sc-font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    --sc-font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    --sc-font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
 
     --sc-bg-900: #0B0D10;
     --sc-bg-850: #10131A;
