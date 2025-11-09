@@ -391,12 +391,25 @@
 
             connectButton.addEventListener('click', () => {
                 tap();
-                try {
-                    chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'floating-widget' });
-                    console.log('Connect To Login clicked from floating widget');
-                } catch (error) {
-                    console.warn('CupidBot widget could not notify background script.', error);
+                const canMessage = typeof chrome !== 'undefined'
+                    && chrome?.runtime
+                    && typeof chrome.runtime.sendMessage === 'function';
+
+                if (!canMessage) {
+                    console.warn('CupidBot widget runtime messaging unavailable.');
+                    return;
                 }
+
+                chrome.runtime.sendMessage(
+                    { action: 'connectToLoginClicked', source: 'floating-widget' },
+                    (response) => {
+                        if (chrome.runtime.lastError) {
+                            console.debug('CupidBot widget message channel error', chrome.runtime.lastError);
+                        } else {
+                            console.debug('CupidBot widget message delivered', response);
+                        }
+                    }
+                );
             });
 
             connectButton.addEventListener('keydown', (event) => {
@@ -436,6 +449,13 @@
         injectWidget();
         monitorWidget();
     };
+
+    window.addEventListener('beforeunload', () => {
+        if (hostObserver) {
+            hostObserver.disconnect();
+        }
+        widgetHost = null;
+    });
 
     bootstrap();
 })();

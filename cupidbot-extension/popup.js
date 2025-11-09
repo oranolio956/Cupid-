@@ -9,12 +9,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         connectButton.addEventListener('click', () => {
             tap();
-            try {
-                chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'popup' });
-                console.log('Connect To Login clicked from popup');
-            } catch (error) {
-                console.warn('CupidBot popup could not notify background script.', error);
+            const canMessage = typeof chrome !== 'undefined'
+                && chrome?.runtime
+                && typeof chrome.runtime.sendMessage === 'function';
+
+            if (!canMessage) {
+                console.warn('CupidBot popup runtime messaging unavailable.');
+                return;
             }
+
+            chrome.runtime.sendMessage(
+                { action: 'connectToLoginClicked', source: 'popup' },
+                (response) => {
+                    if (chrome.runtime.lastError) {
+                        console.debug('CupidBot popup message channel error', chrome.runtime.lastError);
+                    } else {
+                        console.debug('CupidBot popup message delivered', response);
+                    }
+                }
+            );
         });
 
         connectButton.addEventListener('keydown', (event) => {
