@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         connectButton.addEventListener('click', () => {
             tap();
-            chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'popup' });
-            console.log('Connect To Login clicked from popup');
+            try {
+                chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'popup' });
+                console.log('Connect To Login clicked from popup');
+            } catch (error) {
+                console.warn('CupidBot popup could not notify background script.', error);
+            }
         });
 
         connectButton.addEventListener('keydown', (event) => {

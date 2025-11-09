@@ -1,10 +1,25 @@
 // Floating CupidBot widget content script
 (function () {
-    const HOST_ID = 'cupidbot-floating-widget';
+    if (window.top !== window) {
+        return;
+    }
 
-    const init = () => {
-        if (document.getElementById(HOST_ID)) {
-            return;
+    if (window.__CupidBotWidgetBootstrapped) {
+        return;
+    }
+    window.__CupidBotWidgetBootstrapped = true;
+
+    const HOST_ID = 'cupidbot-floating-widget';
+    let widgetHost = null;
+    let hostObserver = null;
+
+    const injectWidget = () => {
+        if (widgetHost && document.body.contains(widgetHost)) {
+            return widgetHost;
+        }
+
+        if (widgetHost && widgetHost.remove) {
+            widgetHost.remove();
         }
 
         const host = document.createElement('div');
@@ -16,6 +31,7 @@
         host.style.maxWidth = '320px';
         host.style.width = '320px';
         host.style.fontFamily = "'Syne', sans-serif";
+        host.style.pointerEvents = 'none';
 
         const shadow = host.attachShadow({ mode: 'open' });
 
@@ -28,6 +44,7 @@
                 font-family: 'Syne', sans-serif;
                 color: #fff;
                 display: block;
+                pointer-events: none;
             }
 
             .widget {
@@ -46,6 +63,7 @@
                 overflow: hidden;
                 isolation: isolate;
                 animation: widgetEnter 0.75s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+                pointer-events: auto;
             }
 
             .widget::before,
@@ -316,6 +334,8 @@
 
         const wrapper = document.createElement('div');
         wrapper.className = 'widget';
+        wrapper.setAttribute('role', 'complementary');
+        wrapper.setAttribute('aria-label', 'CupidBot assistant panel');
         wrapper.innerHTML = `
             <div class="brand-row">
                 <div class="brand-name"><span class="brand-accent">CupidBot</span>.org</div>
@@ -331,7 +351,7 @@
                     CupidBot swipes and chats for you so you can skip to
                     the small talk. We only tap you when the date is locked in.
                 </div>
-                <button id="cupidbot-connect-btn" class="cta-button">Connect To Login</button>
+                <button id="cupidbot-connect-btn" class="cta-button" type="button" aria-label="Connect CupidBot to Login">Connect To Login</button>
             </div>
             <div class="feature-list">
                 <div class="feature">
@@ -360,6 +380,8 @@
         shadow.append(style, wrapper);
         document.body.appendChild(host);
 
+        widgetHost = host;
+
         const connectButton = shadow.getElementById('cupidbot-connect-btn');
         if (connectButton) {
             const tap = () => {
@@ -369,8 +391,12 @@
 
             connectButton.addEventListener('click', () => {
                 tap();
-                chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'floating-widget' });
-                console.log('Connect To Login clicked from floating widget');
+                try {
+                    chrome.runtime.sendMessage({ action: 'connectToLoginClicked', source: 'floating-widget' });
+                    console.log('Connect To Login clicked from floating widget');
+                } catch (error) {
+                    console.warn('CupidBot widget could not notify background script.', error);
+                }
             });
 
             connectButton.addEventListener('keydown', (event) => {
@@ -379,11 +405,37 @@
                 }
             });
         }
+
+        return host;
     };
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init, { once: true });
-    } else {
-        init();
-    }
+    const monitorWidget = () => {
+        if (!document.body) {
+            return;
+        }
+
+        if (hostObserver) {
+            hostObserver.disconnect();
+        }
+
+        hostObserver = new MutationObserver(() => {
+            if (widgetHost && !document.body.contains(widgetHost)) {
+                injectWidget();
+            }
+        });
+
+        hostObserver.observe(document.body, { childList: true, subtree: true });
+    };
+
+    const bootstrap = () => {
+        if (!document.body) {
+            requestAnimationFrame(bootstrap);
+            return;
+        }
+
+        injectWidget();
+        monitorWidget();
+    };
+
+    bootstrap();
 })();
