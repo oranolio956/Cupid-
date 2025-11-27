@@ -1,17 +1,12 @@
 {
-  "buildCommand": "cd dashboard && npm install && npm run build",
-  "outputDirectory": ".",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/dashboard$",
-      "dest": "/dashboard/dist/index.html"
+      "source": "/dashboard",
+      "destination": "/dashboard/dist/index.html"
     },
     {
-      "src": "/dashboard/(.*)",
-      "dest": "/dashboard/dist/$1"
-    },
-    {
-      "handle": "filesystem"
+      "source": "/dashboard/:path*",
+      "destination": "/dashboard/dist/:path*"
     }
   ],
   "headers": [
