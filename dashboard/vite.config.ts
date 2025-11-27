@@ -9,12 +9,19 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    base: '/',
     define: {
       // Polyfill process.env.API_KEY for the browser environment
-      'process.env.API_KEY': JSON.stringify(env.API_KEY),
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || ''),
     },
     build: {
       outDir: 'dist',
+      emptyOutDir: true,
+      sourcemap: false,
+    },
+    server: {
+      port: 3000,
+      strictPort: false,
     }
   };
 });
