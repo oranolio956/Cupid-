@@ -7,7 +7,7 @@ import {
   User, Plus, MapPin, Camera, Smartphone, Globe, Layers, 
   ArrowLeft, RefreshCw, Wand2, CheckCircle2, AlertCircle, 
   Clock, UploadCloud, X, Zap, Activity, Terminal, Server,
-  Database, Wifi, Image as ImageIcon, MessageSquare
+  Database, Wifi, Image as ImageIcon, MessageSquare, Trash2
 } from 'lucide-react';
 
 interface Props {
@@ -39,7 +39,13 @@ export const TinderDashboard: React.FC<Props> = ({ onBack }) => {
   
   const [generatedNames, setGeneratedNames] = useState<string[]>([]);
   const [isGeneratingNames, setIsGeneratingNames] = useState(false);
+  
+  // Photo Upload State
   const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadedPreviews, setUploadedPreviews] = useState<string[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Rinse/Deployment State
   const [deployQuantity, setDeployQuantity] = useState(5);
@@ -60,14 +66,59 @@ export const TinderDashboard: React.FC<Props> = ({ onBack }) => {
     setIsGeneratingNames(false);
   };
 
-  const handlePhotoUpload = () => {
+  // Drag and Drop Handlers
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const files = Array.from(e.dataTransfer.files).filter((f: any) => f.type.startsWith('image/')) as File[];
+      if (files.length > 0) processFiles(files);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files).filter((f: any) => f.type.startsWith('image/')) as File[];
+      if (files.length > 0) processFiles(files);
+    }
+  };
+
+  const processFiles = (files: File[]) => {
     setUploadingPhotos(true);
-    setErrors(prev => ({ ...prev, photos: "" })); // Clear error
-    // Simulate upload
-    setTimeout(() => {
-      setFormData(prev => ({ ...prev, photoCount: 30 }));
-      setUploadingPhotos(false);
-    }, 2000);
+    setErrors(prev => ({ ...prev, photos: "" }));
+    setUploadProgress(0);
+
+    // Create previews immediately
+    const newPreviews = files.map(f => URL.createObjectURL(f));
+    
+    // Simulate network progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setUploadingPhotos(false);
+          setUploadedPreviews(curr => [...curr, ...newPreviews]);
+          setFormData(curr => ({ ...curr, photoCount: (curr.photoCount || 0) + files.length }));
+          return 100;
+        }
+        return prev + 4; // ~1.25 seconds for visual feedback
+      });
+    }, 50);
+  };
+
+  const removePhoto = (index: number) => {
+     setUploadedPreviews(prev => prev.filter((_, i) => i !== index));
+     setFormData(prev => ({ ...prev, photoCount: Math.max(0, (prev.photoCount || 1) - 1) }));
   };
 
   const validateForm = () => {
@@ -110,6 +161,10 @@ export const TinderDashboard: React.FC<Props> = ({ onBack }) => {
       status: 'active'
     };
     setModels(prev => [...prev, newModel]);
+    
+    // Reset view state
+    setUploadedPreviews([]);
+    setUploadProgress(0);
     setView('list');
   };
 
@@ -256,6 +311,7 @@ export const TinderDashboard: React.FC<Props> = ({ onBack }) => {
         </div>
         <Button onClick={() => { 
           setFormData({ locationMode: 'auto', targetCities: [], funnel: {}, photoCount: 0 });
+          setUploadedPreviews([]);
           setErrors({});
           setView('create'); 
         }} className="w-auto px-6">
@@ -274,6 +330,7 @@ export const TinderDashboard: React.FC<Props> = ({ onBack }) => {
           </p>
           <Button onClick={() => {
              setFormData({ locationMode: 'auto', targetCities: [], funnel: {}, photoCount: 0 });
+             setUploadedPreviews([]);
              setErrors({});
              setView('create');
           }} variant="secondary" className="w-auto px-6">
@@ -528,37 +585,103 @@ export const TinderDashboard: React.FC<Props> = ({ onBack }) => {
                 <UploadCloud size={18} />
                 <h3 className="font-bold text-sm uppercase tracking-wider">Media Assets <span className="text-rose-500">*</span></h3>
               </div>
-              <span className="text-xs text-zinc-500">Min 30 Photos Required</span>
+              <div className="text-right">
+                  <span className={`text-xs font-bold ${formData.photoCount && formData.photoCount >= 30 ? 'text-emerald-500' : 'text-zinc-500'}`}>
+                      {formData.photoCount || 0} / 30 Photos
+                  </span>
+              </div>
            </div>
 
+           {/* Drop Zone */}
            <div 
-             onClick={handlePhotoUpload}
-             className={`border-2 border-dashed bg-zinc-900/30 rounded-xl h-32 flex flex-col items-center justify-center cursor-pointer transition-colors ${
-                 errors.photos 
-                   ? 'border-red-500/50 bg-red-500/5 hover:bg-red-500/10' 
-                   : 'border-zinc-800 hover:border-rose-500/50'
+             onDragOver={handleDragOver}
+             onDragLeave={handleDragLeave}
+             onDrop={handleDrop}
+             onClick={() => fileInputRef.current?.click()}
+             className={`relative border-2 border-dashed rounded-xl h-40 flex flex-col items-center justify-center cursor-pointer transition-all overflow-hidden ${
+                 isDragging 
+                    ? 'border-rose-500 bg-rose-500/10 scale-[1.02]' 
+                    : errors.photos 
+                        ? 'border-red-500/50 bg-red-500/5' 
+                        : 'border-zinc-800 bg-zinc-900/30 hover:border-zinc-700 hover:bg-zinc-900/50'
              }`}
            >
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                className="hidden" 
+                multiple 
+                accept="image/*" 
+                onChange={handleFileSelect}
+              />
+
               {uploadingPhotos ? (
-                  <div className="flex flex-col items-center gap-2 text-rose-500">
-                      <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                      <span className="text-xs font-bold">Encrypting & Uploading...</span>
-                  </div>
-              ) : formData.photoCount ? (
-                  <div className="flex flex-col items-center gap-2 text-emerald-500">
-                      <CheckCircle2 size={24} />
-                      <span className="text-sm font-bold">{formData.photoCount} Photos Secured</span>
+                  <div className="w-full max-w-xs space-y-3 px-8 animate-in fade-in">
+                      <div className="flex justify-between text-xs text-rose-500 font-bold uppercase">
+                          <span>Encrypting Assets...</span>
+                          <span>{Math.round(uploadProgress)}%</span>
+                      </div>
+                      <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                          <div 
+                             className="h-full bg-rose-500 transition-all duration-100 ease-out shadow-[0_0_10px_rgba(244,63,94,0.5)]" 
+                             style={{ width: `${uploadProgress}%` }} 
+                          />
+                      </div>
                   </div>
               ) : (
                   <>
-                    <UploadCloud className={`mb-2 ${errors.photos ? 'text-red-400' : 'text-zinc-600'}`} size={24} />
-                    <span className={`text-sm font-medium ${errors.photos ? 'text-red-400' : 'text-zinc-400'}`}>
-                        {errors.photos ? errors.photos : 'Click to Upload Bulk Archive'}
-                    </span>
-                    <span className="text-[10px] text-zinc-600 mt-1">Supports JPG, HEIC, PNG</span>
+                    <div className={`p-3 rounded-full mb-3 transition-colors ${isDragging ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' : 'bg-zinc-800 text-zinc-400'}`}>
+                        <UploadCloud size={24} />
+                    </div>
+                    <div className="text-center">
+                        <span className={`text-sm font-medium block transition-colors ${isDragging ? 'text-white' : 'text-zinc-300'}`}>
+                            {isDragging ? 'Drop Files Here' : 'Click or Drag to Upload'}
+                        </span>
+                        <span className="text-[10px] text-zinc-500 mt-1 block">
+                            Supports JPG, PNG, HEIC (Max 50MB)
+                        </span>
+                    </div>
                   </>
               )}
            </div>
+            
+           {/* Thumbnails Grid */}
+           {uploadedPreviews.length > 0 && (
+               <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 animate-in fade-in slide-in-from-bottom-2">
+                   {uploadedPreviews.map((src, idx) => (
+                       <div key={idx} className="aspect-square relative group rounded-lg overflow-hidden border border-zinc-800 bg-black">
+                           <img src={src} alt="" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                               <button 
+                                 onClick={(e) => {
+                                     e.stopPropagation();
+                                     removePhoto(idx);
+                                 }}
+                                 className="p-1.5 bg-red-500/20 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-all scale-90 hover:scale-100"
+                               >
+                                   <Trash2 size={16} />
+                               </button>
+                           </div>
+                       </div>
+                   ))}
+                   {/* Quick Add Button */}
+                   <button 
+                     onClick={() => fileInputRef.current?.click()}
+                     className="aspect-square rounded-lg border border-dashed border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900/50 flex flex-col items-center justify-center text-zinc-500 hover:text-white transition-colors gap-1 group"
+                   >
+                       <Plus size={20} className="group-hover:scale-110 transition-transform" />
+                       <span className="text-[9px] font-bold uppercase">Add</span>
+                   </button>
+               </div>
+           )}
+           
+           {/* Error Message */}
+           {errors.photos && (
+               <div className="flex items-center gap-2 text-red-400 text-xs mt-2 animate-in fade-in slide-in-from-left-1">
+                   <AlertCircle size={14} />
+                   <span>{errors.photos}</span>
+               </div>
+           )}
         </section>
 
         <div className="pt-8 flex gap-4">

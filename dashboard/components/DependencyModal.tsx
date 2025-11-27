@@ -118,11 +118,11 @@ export const DependencyModal: React.FC<DependencyModalProps> = ({ app, onClose }
                         <span>Processing...</span>
                      </div>
                    )}
-                  {stage === 'complete' && (
-                    <div className="mt-4 pl-7 text-emerald-400 font-bold">
-                      {'>'} Deployment Successful.
-                    </div>
-                  )}
+                   {stage === 'complete' && (
+                     <div className="mt-4 pl-7 text-emerald-400 font-bold">
+                       > Deployment Successful.
+                     </div>
+                   )}
                  </div>
                </div>
 
