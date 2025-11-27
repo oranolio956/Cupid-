@@ -1,0 +1,5 @@
+{
+  "name": "CupidBot Mobile",
+  "description": "A mobile-styled application interface mimicking Cupidbot.ai with activation and app selection flows.",
+  "requestFramePermissions": []
+}
