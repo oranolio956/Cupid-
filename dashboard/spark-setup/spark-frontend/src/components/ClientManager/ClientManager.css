@@ -1,0 +1,62 @@
+.client-manager-modal .ant-modal-body {
+  padding: 0;
+}
+
+.client-manager-modal .ant-tabs-content-holder {
+  padding: 24px;
+}
+
+.client-manager-modal .ant-card {
+  margin-bottom: 16px;
+}
+
+.client-manager-modal .ant-statistic-title {
+  font-size: 14px;
+  color: #666;
+}
+
+.client-manager-modal .ant-statistic-content {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.client-manager-modal .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+.client-manager-modal .ant-tag {
+  margin: 2px;
+}
+
+.client-manager-modal .ant-space {
+  width: 100%;
+}
+
+.client-manager-modal .ant-input[readonly] {
+  background: #f5f5f5;
+  cursor: text;
+}
+
+.client-manager-modal .ant-form-item-label > label {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .client-manager-modal {
+    width: 95% !important;
+    max-width: 95% !important;
+  }
+  
+  .client-manager-modal .ant-tabs-content-holder {
+    padding: 16px;
+  }
+  
+  .client-manager-modal .ant-card {
+    margin-bottom: 12px;
+  }
+  
+  .client-manager-modal .ant-statistic-content {
+    font-size: 20px;
+  }
+}

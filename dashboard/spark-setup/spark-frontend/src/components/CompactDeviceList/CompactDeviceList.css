@@ -1,0 +1,217 @@
+/* Compact Device List - Optimized for mobile */
+.compact-device-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+
+.compact-device-item {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.compact-device-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.compact-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.device-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.device-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.device-info h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.device-ip {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+
+.latency-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.latency-badge.good {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.latency-badge.warning {
+  background: #fffbe6;
+  color: #faad14;
+  border: 1px solid #ffe58f;
+}
+
+.latency-badge.poor {
+  background: #fff1f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.latency-badge.offline {
+  background: #f5f5f5;
+  color: #999;
+  border: 1px solid #d9d9d9;
+}
+
+/* Stats */
+.compact-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.stat-mini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: #fafafa;
+  border-radius: 10px;
+}
+
+.stat-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Network */
+.compact-network {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px;
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+.network-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Desktop: Use grid layout */
+@media (min-width: 768px) {
+  .compact-device-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  
+  .compact-device-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  .compact-device-item:active {
+    transform: translateY(0);
+  }
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .compact-device-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Large desktop: 3 columns */
+@media (min-width: 1400px) {
+  .compact-device-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .compact-device-item {
+    background: rgba(30, 30, 30, 0.98);
+  }
+  
+  .compact-header {
+    border-bottom-color: #333;
+  }
+  
+  .device-info h4 {
+    color: #fff;
+  }
+  
+  .device-ip {
+    color: #aaa;
+  }
+  
+  .stat-mini {
+    background: #2a2a2a;
+  }
+  
+  .stat-value {
+    color: #fff;
+  }
+  
+  .compact-network {
+    background: linear-gradient(135deg, #667eea25 0%, #764ba225 100%);
+    color: #ccc;
+  }
+}

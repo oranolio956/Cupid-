@@ -1,0 +1,71 @@
+VERCEL FRONTEND DEPLOYMENT - STEP BY STEP
+
+PREREQUISITE: Backend must be deployed and running first!
+Backend URL must be known before proceeding.
+
+STEP 1: UPDATE BACKEND URLS (USE UPDATE_FRONTEND_URLS.md CHECKLIST)
+
+Update all 3 files listed in UPDATE_FRONTEND_URLS.md
+Use your actual Render backend URL
+Verify all 3 files with grep commands
+Commit changes to git
+
+STEP 2: CONFIGURE VERCEL ENVIRONMENT VARIABLES
+
+Go to: https://vercel.com/dashboard
+Select your spark-frontend project
+Go to Settings > Environment Variables
+Add these variables for PRODUCTION environment:
+
+Variable: REACT_APP_API_URL
+Value: [Your actual Render URL with https://]
+
+Variable: REACT_APP_WS_URL
+Value: [Your actual Render URL with wss://]
+
+Variable: NODE_ENV
+Value: production
+
+Click "Save" for each variable
+
+STEP 3: DEPLOY TO VERCEL
+
+Option A - Auto Deploy (if connected to GitHub):
+1. Push your URL changes to GitHub main branch
+2. Vercel will auto-deploy
+3. Monitor deployment in Vercel dashboard
+
+Option B - Manual Deploy:
+1. Go to Vercel dashboard
+2. Click "Deployments" tab
+3. Click "Deploy" button
+4. Select main branch
+5. Monitor build logs
+
+STEP 4: VERIFY DEPLOYMENT
+
+Once deployed, check:
+1. Frontend loads: https://[your-vercel-url].vercel.app
+2. No console errors (open browser DevTools)
+3. Login page appears
+4. Network tab shows connections to YOUR backend URL
+5. No CORS errors in console
+
+STEP 5: TEST INTEGRATION
+
+1. Open frontend URL
+2. Login with credentials from: spark-setup/spark-backend/config.json
+   Default: admin / [password from hash]
+3. Check if dashboard loads
+4. Verify "0 Devices" shows (if no clients connected)
+5. Check browser console - should show WebSocket connection
+
+EXPECTED BUILD TIME: 2-3 minutes
+EXPECTED OUTPUT: Static site deployed to Vercel CDN
+
+COMMON ERRORS TO WATCH FOR:
+
+"Cannot find module" - missing dependencies, run npm install
+"webpack not found" - check package.json devDependencies
+"REACT_APP_API_URL is undefined" - env vars not set in Vercel
+CORS errors - backend not allowing frontend origin

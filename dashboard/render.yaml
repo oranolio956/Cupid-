@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: spark-backend
+    env: docker
+    dockerfilePath: Dockerfile
+    dockerContext: ./spark-setup/spark-backend/
+    plan: starter
+    region: oregon
+    branch: main
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: GO_ENV
+        value: production
+      - key: SPARK_SALT
+        value: WG/Cc6eZUXWuqfi2+NNr2dso
+      - key: SPARK_ADMIN_HASH
+        value: $2a$10$PTBYNGa/qxsw7abNWZxhRu8eV0WjZyJ5NSQFqpjkqIJb6fGDL4YvG
+    healthCheckPath: /api/health
+    autoDeploy: true

