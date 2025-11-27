@@ -38,7 +38,7 @@
   <body class="select-none">
     <div id="root">
       <!-- Loading fallback -->
-      <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #050505; color: #e4e4e7;">
+      <div class="loading-fallback" style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #050505; color: #e4e4e7;">
         <div style="text-align: center;">
           <div style="width: 40px; height: 40px; border: 3px solid #3f3f46; border-top-color: #ef4444; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
           <p style="color: #a1a1aa; font-size: 0.875rem;">Loading dashboard...</p>
@@ -50,6 +50,45 @@
         to { transform: rotate(360deg); }
       }
     </style>
+    <!-- Error handler -->
+    <script>
+      // Global error handler
+      window.addEventListener('error', (e) => {
+        console.error('Global error:', e);
+        const root = document.getElementById('root');
+        if (root && root.querySelector('.loading-fallback')) {
+          root.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #050505; color: #e4e4e7; font-family: Inter, sans-serif;">
+              <div style="text-align: center; padding: 2rem; max-width: 600px;">
+                <h1 style="color: #ef4444; margin-bottom: 1rem;">Error Loading Dashboard</h1>
+                <p style="color: #a1a1aa; margin-bottom: 1rem;">Failed to load application module.</p>
+                <pre style="background: #09090b; padding: 1rem; border-radius: 8px; color: #71717a; font-size: 0.75rem; text-align: left; overflow-x: auto;">${e.message || 'Unknown error'}\n${e.filename || ''}:${e.lineno || ''}</pre>
+                <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1.5rem; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer;">Reload Page</button>
+              </div>
+            </div>
+          `;
+        }
+      }, true);
+
+      // Timeout fallback - if React doesn't load in 10 seconds, show error
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        if (root && root.querySelector('.loading-fallback')) {
+          root.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #050505; color: #e4e4e7; font-family: Inter, sans-serif;">
+              <div style="text-align: center; padding: 2rem; max-width: 600px;">
+                <h1 style="color: #ef4444; margin-bottom: 1rem;">Loading Timeout</h1>
+                <p style="color: #a1a1aa; margin-bottom: 1rem;">The dashboard is taking longer than expected to load.</p>
+                <p style="color: #71717a; font-size: 0.875rem; margin-bottom: 1.5rem;">This might be due to network issues or build problems. Check the browser console for errors.</p>
+                <button onclick="location.reload()" style="padding: 0.5rem 1.5rem; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; margin-right: 0.5rem;">Reload Page</button>
+                <button onclick="window.open('', '_blank')" style="padding: 0.5rem 1.5rem; background: #3f3f46; color: white; border: none; border-radius: 6px; cursor: pointer;">Open Console (F12)</button>
+              </div>
+            </div>
+          `;
+        }
+      }, 10000);
+    </script>
+    <!-- Vite will transform this during build -->
     <script type="module" src="/index.tsx"></script>
     <noscript>
       <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #050505; color: #e4e4e7; font-family: Inter, sans-serif;">
