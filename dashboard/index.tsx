@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 // Ensure root element exists and has proper styling
@@ -14,7 +15,9 @@ if (!rootElement) {
   const root = createRoot(newRoot);
   root.render(
     <React.StrictMode>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </React.StrictMode>
   );
 } else {
@@ -26,7 +29,9 @@ if (!rootElement) {
     const root = createRoot(rootElement);
     root.render(
       <React.StrictMode>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </React.StrictMode>
     );
   } catch (error) {

@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Logo } from './components/Logo';
 import { Button } from './components/Button';
 import { DependencyModal } from './components/DependencyModal';
 import { TinderDashboard } from './components/TinderDashboard';
 import { DatingApp, ViewState } from './types';
 import { TinderIcon, BumbleIcon, HingeIcon, OkCupidIcon, GrindrIcon } from './components/BrandIcons';
+import { DashboardSignup } from './components/DashboardSignup';
+import { CRYPTO_OPTIONS, SUBSCRIPTION_PLANS, WALLET_PROVIDERS } from './constants';
 import { 
   Activity, 
   Settings, 
@@ -89,27 +92,6 @@ const DATING_APPS: DatingApp[] = [
   },
 ];
 
-const CRYPTO_OPTIONS = [
-  { id: 'USDT', name: 'Tether (TRC20)', symbol: 'USDT', color: 'text-emerald-500', bg: 'bg-emerald-500/10', address: 'TEQQ...8J2', network: 'TRON' },
-  { id: 'SOL', name: 'Solana', symbol: 'SOL', color: 'text-purple-500', bg: 'bg-purple-500/10', address: '83K...9L2', network: 'Solana' },
-  { id: 'ETH', name: 'Ethereum', symbol: 'ETH', color: 'text-indigo-400', bg: 'bg-indigo-500/10', address: '0x71...C9', network: 'ERC20' },
-  { id: 'BTC', name: 'Bitcoin', symbol: 'BTC', color: 'text-orange-500', bg: 'bg-orange-500/10', address: 'bc1q...92', network: 'Bitcoin' },
-  { id: 'LTC', name: 'Litecoin', symbol: 'LTC', color: 'text-zinc-300', bg: 'bg-zinc-500/10', address: 'LQt...88', network: 'Litecoin' },
-];
-
-const WALLET_PROVIDERS = [
-  { id: 'metamask', name: 'MetaMask', color: 'bg-orange-500', letter: 'M' },
-  { id: 'coinbase', name: 'Coinbase Wallet', color: 'bg-blue-600', letter: 'C' },
-  { id: 'phantom', name: 'Phantom', color: 'bg-purple-500', letter: 'P' },
-  { id: 'trust', name: 'Trust Wallet', color: 'bg-cyan-500', letter: 'T' },
-  { id: 'walletconnect', name: 'WalletConnect', color: 'bg-indigo-500', letter: 'W' }
-];
-
-const SUBSCRIPTION_PLANS = [
-  { id: 'weekly', name: 'Weekly Access', price: 49, period: '7 Days', savings: null },
-  { id: 'monthly', name: 'Monthly Pro', price: 149, period: '30 Days', savings: 'Save 25%' },
-  { id: 'lifetime', name: 'Lifetime Key', price: 999, period: 'Forever', savings: 'Best Value' },
-];
 
 const App: React.FC = () => {
   const [view, setView] = useState<ViewState>('login');
@@ -125,7 +107,7 @@ const App: React.FC = () => {
   const [loginError, setLoginError] = useState('');
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [purchaseStep, setPurchaseStep] = useState<'plan' | 'crypto' | 'verifying' | 'success'>('plan');
-  const [selectedPlan, setSelectedPlan] = useState(SUBSCRIPTION_PLANS[1]);
+  const [selectedPlan, setSelectedPlan] = useState(SUBSCRIPTION_PLANS[0]);
   const [generatedKey, setGeneratedKey] = useState('');
 
   // Tinder Dashboard Specific State
@@ -140,6 +122,8 @@ const App: React.FC = () => {
   const [proxiesOwned, setProxiesOwned] = useState(0);
   const [numbersOwned, setNumbersOwned] = useState(0);
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // --- Security & Anti-Tamper ---
   useEffect(() => {
@@ -288,6 +272,14 @@ const App: React.FC = () => {
     }
   };
 
+  if (location.pathname === '/dashboard') {
+      return <DashboardSignup onBack={() => navigate('/')} />;
+  }
+
+  if (location.pathname !== '/' && location.pathname !== '') {
+      return <Navigate to="/" replace />;
+  }
+
   // --- Views ---
 
   const renderLogin = () => (
@@ -303,16 +295,59 @@ const App: React.FC = () => {
             <div className="w-full max-w-[420px] mx-auto">
                 
                 {/* Brand Header */}
-                <div className="mb-10 text-center md:text-left">
-                    <div className="flex items-center justify-center md:justify-start mb-6">
+                <div className="mb-10 text-center md:text-left space-y-3">
+                    <div className="flex items-center justify-center md:justify-start mb-3">
                         <Logo size="lg" />
                     </div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
-                        Welcome back
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] font-semibold uppercase tracking-[0.24em]">
+                        <Activity size={14} /> Ops brief
+                    </div>
+                    <h1 className="text-3xl font-bold text-white tracking-tight">
+                        Welcome back. This is an operator console, not a landing page.
                     </h1>
-                    <p className="text-zinc-500 text-sm">
-                        Enter your email and license key to access your dashboard.
+                    <p className="text-zinc-400 text-sm leading-relaxed">
+                        We built Cupid for ourselves first. Human-written prompts, hand-tuned routes, and audits on every automation. If you\'re not part of the crew, please exit. If you are, plug back in.
                     </p>
+                </div>
+
+                <div className="mb-8 bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 space-y-4 shadow-lg shadow-rose-900/10">
+                    <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
+                        <div className="flex items-center gap-2">
+                            <ShieldCheck size={14} className="text-emerald-400" />
+                            Live operators reviewing flows nightly
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Zap size={14} className="text-rose-400" />
+                            Zero templated scripts
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="p-3 rounded-xl bg-black border border-white/10 flex items-start gap-3">
+                            <Globe size={16} className="text-indigo-300" />
+                            <div className="space-y-1">
+                                <p className="text-xs text-zinc-400 uppercase tracking-wide">Network status</p>
+                                <p className="text-sm text-white font-semibold">Proxy + SMS pool warmed</p>
+                            </div>
+                        </div>
+                        <div className="p-3 rounded-xl bg-black border border-white/10 flex items-start gap-3">
+                            <MousePointerClick size={16} className="text-amber-300" />
+                            <div className="space-y-1">
+                                <p className="text-xs text-zinc-400 uppercase tracking-wide">Input hygiene</p>
+                                <p className="text-sm text-white font-semibold">Messages sound human, never AI sludge</p>
+                            </div>
+                        </div>
+                        <div className="p-3 rounded-xl bg-black border border-white/10 flex items-start gap-3">
+                            <Server size={16} className="text-emerald-300" />
+                            <div className="space-y-1">
+                                <p className="text-xs text-zinc-400 uppercase tracking-wide">Last deploy</p>
+                                <p className="text-sm text-white font-semibold">Ops kit refreshed 02:00 UTC</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono">
+                        <span className="flex items-center gap-2"><Clock size={12} /> Next sync: 22:00 UTC</span>
+                        <span className="flex items-center gap-2"><AlertCircle size={12} /> Off-script behavior gets paused automatically</span>
+                    </div>
                 </div>
 
                 <form onSubmit={handleActivation} className="space-y-6">
@@ -371,7 +406,7 @@ const App: React.FC = () => {
                     <div className="pt-2 space-y-4">
                         {loginStatus === 'idle' ? (
                             <Button type="submit" className="h-12 text-sm font-medium shadow-rose-900/20 hover:shadow-rose-900/40 transition-all">
-                                Sign In
+                                Enter the console
                             </Button>
                         ) : (
                             <div className="h-12 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center gap-3 relative overflow-hidden">
@@ -390,12 +425,12 @@ const App: React.FC = () => {
                         )}
                         
                         <div className="text-center">
-                            <button 
-                                type="button" 
-                                onClick={() => { setShowPurchaseModal(true); setPurchaseStep('plan'); }}
+                            <button
+                                type="button"
+                                onClick={() => navigate('/dashboard')}
                                 className="text-xs text-zinc-500 hover:text-white transition-colors"
                             >
-                                Don't have a license? <span className="text-rose-500 hover:underline">Purchase Access</span>
+                                No license yet? <span className="text-rose-500 hover:underline">Claim a lifetime key</span>
                             </button>
                         </div>
                     </div>
