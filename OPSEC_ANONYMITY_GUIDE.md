@@ -363,7 +363,7 @@ cd go-ipfs
 ./install.sh
 
 # Add website
-ipfs add -r /workspace/trial/
+ipfs add -r /workspace/auto/
 # Returns: QmXxx...xxx
 
 # Pin to ensure availability
@@ -446,7 +446,7 @@ fonts/
 
 # 2. Self-host jQuery
 wget https://code.jquery.com/jquery-3.5.1.min.js
-mv jquery-3.5.1.min.js /workspace/trial/js/
+mv jquery-3.5.1.min.js /workspace/auto/js/
 
 # 3. Self-host Webflow scripts
 # Download and minimize dependency

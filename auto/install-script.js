@@ -186,7 +186,7 @@
         const chromeDownloadLink = '<a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Download Chrome</a>';
 
         if (envCards.dev && envElements.devBadge && envElements.devValue) {
-          envElements.devValue.textContent = 'Enable in Step 3';
+          envElements.devValue.textContent = 'Warm-up goes live in Step 3';
           envElements.devBadge.textContent = 'Pending';
           setStatusState(envCards.dev, 'is-pending');
         }
