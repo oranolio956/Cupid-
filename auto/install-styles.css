@@ -26,6 +26,124 @@
       --install-transition: cubic-bezier(0.23, 1, 0.32, 1);
     }
 
+    .access-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .access-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--install-border);
+      border-radius: var(--install-radius-md);
+      padding: 28px;
+      box-shadow: var(--install-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .access-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--install-text-secondary);
+    }
+
+    .access-eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--install-accent) 0%, var(--install-accent-alt) 100%);
+      box-shadow: 0 0 14px rgba(255, 0, 110, 0.5);
+    }
+
+    .access-title {
+      font-size: 24px;
+      line-height: 1.2;
+      margin: 0;
+      color: var(--install-text-primary);
+    }
+
+    .access-body {
+      color: var(--install-text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .access-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .access-label {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--install-text-secondary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .access-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--install-radius-sm);
+      border: 1px solid var(--install-border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--install-text-primary);
+      font-size: 16px;
+      transition: border-color 0.2s var(--install-transition), box-shadow 0.2s var(--install-transition);
+    }
+
+    .access-input:focus {
+      outline: none;
+      border-color: rgba(255, 0, 110, 0.45);
+      box-shadow: 0 0 0 3px rgba(255, 0, 110, 0.18);
+    }
+
+    .access-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .access-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--install-accent) 0%, var(--install-accent-alt) 100%);
+      color: var(--install-text-primary);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 0.2s var(--install-transition), box-shadow 0.2s var(--install-transition);
+      box-shadow: 0 16px 36px rgba(255, 0, 110, 0.32);
+    }
+
+    .access-submit:hover,
+    .access-submit:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 44px rgba(255, 0, 110, 0.42);
+      outline: none;
+    }
+
+    .access-note {
+      font-size: 13px;
+      color: var(--install-text-muted);
+    }
+
     .install-eyebrow {
       display: inline-flex;
       align-items: center;
@@ -923,6 +1041,10 @@
         padding: 30px 26px;
       }
 
+      .access-grid {
+        grid-template-columns: 1fr;
+      }
+
       .install-support_card {
         flex-direction: column;
         align-items: flex-start;
@@ -959,6 +1081,11 @@
       }
 
       .install-panel_actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .access-actions {
         flex-direction: column;
         align-items: stretch;
       }

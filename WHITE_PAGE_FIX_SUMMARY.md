@@ -1,7 +1,7 @@
 # ✅ White Page Fixed - Complete Resolution
 
 **Date:** 2025-11-08  
-**Issue:** `/trial/` page showing completely white  
+**Issue:** `/auto/` page showing completely white
 **Status:** ✅ **RESOLVED**
 
 ---
