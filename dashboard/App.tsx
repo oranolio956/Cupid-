@@ -109,6 +109,7 @@ const App: React.FC = () => {
   const [purchaseStep, setPurchaseStep] = useState<'plan' | 'crypto' | 'verifying' | 'success'>('plan');
   const [selectedPlan, setSelectedPlan] = useState(SUBSCRIPTION_PLANS[0]);
   const [generatedKey, setGeneratedKey] = useState('');
+  const [countdown, setCountdown] = useState(900); // 15 minutes in seconds
 
   // Tinder Dashboard Specific State
   const [showTinderDashboard, setShowTinderDashboard] = useState(false);
@@ -118,7 +119,7 @@ const App: React.FC = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
-  const [selectedCoin, setSelectedCoin] = useState(CRYPTO_OPTIONS[0]);
+  const [selectedCoin, setSelectedCoin] = useState(CRYPTO_OPTIONS[1]); // Default to SOL
   const [proxiesOwned, setProxiesOwned] = useState(0);
   const [numbersOwned, setNumbersOwned] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -151,6 +152,16 @@ const App: React.FC = () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  // --- Countdown Timer ---
+  useEffect(() => {
+    if ((purchaseStep === 'crypto' || purchaseStep === 'verifying') && countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown(prev => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [purchaseStep, countdown]);
 
   // --- Handlers ---
 
@@ -194,6 +205,12 @@ const App: React.FC = () => {
 
   const formatDisplayCode = (code: string) => {
     return code.match(/.{1,4}/g)?.join(' ') || code;
+  };
+
+  const formatCountdown = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   const handleAppSelect = async (app: DatingApp) => {
@@ -267,6 +284,7 @@ const App: React.FC = () => {
   const closePurchaseModal = () => {
     setShowPurchaseModal(false);
     setPurchaseStep('plan');
+    setCountdown(900); // Reset countdown
     if (generatedKey) {
         setActivationCode(generatedKey);
     }
@@ -635,14 +653,17 @@ const App: React.FC = () => {
             {renderLogin()}
             {showPurchaseModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
-                    <div className="w-[95%] max-w-lg max-h-[90vh] overflow-y-auto bg-[#09090b] border border-zinc-800 rounded-2xl shadow-2xl ring-1 ring-white/10 flex flex-col">
+                    <div className="w-[95%] max-w-lg max-h-[90vh] overflow-y-auto bg-gradient-to-br from-zinc-900/95 to-zinc-800/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-zinc-900/50 ring-1 ring-white/10 flex flex-col">
                         
-                        <div className="p-6 border-b border-white/5 bg-zinc-900/50 sticky top-0 z-10 backdrop-blur-md flex justify-between items-center">
-                            <div>
-                                <h3 className="text-lg font-bold text-white">Purchase License</h3>
-                                <p className="text-xs text-zinc-500">Secure, anonymous crypto checkout.</p>
+                        <div className="p-6 border-b border-white/10 bg-gradient-to-r from-zinc-900/80 to-zinc-800/80 backdrop-blur-md sticky top-0 z-10 flex justify-between items-center shadow-lg">
+                            <div className="flex items-center gap-3">
+                                <Logo size="sm" />
                             </div>
-                            <button onClick={closePurchaseModal} className="text-zinc-500 hover:text-white"><X size={20} /></button>
+                            <div className="text-right">
+                                <h3 className="text-lg font-bold text-white">Secure Checkout</h3>
+                                <p className="text-xs text-zinc-400">Enterprise-grade crypto payments</p>
+                            </div>
+                            <button onClick={closePurchaseModal} className="text-zinc-500 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors"><X size={20} /></button>
                         </div>
 
                         <div className="p-6 overflow-y-auto">
@@ -667,7 +688,7 @@ const App: React.FC = () => {
                                             </div>
                                         </div>
                                     ))}
-                                    <Button onClick={() => setPurchaseStep('crypto')} className="mt-4">
+                                    <Button onClick={() => { setPurchaseStep('crypto'); setCountdown(900); }} className="mt-4">
                                         Proceed to Payment (${selectedPlan.price})
                                     </Button>
                                 </div>
@@ -676,38 +697,103 @@ const App: React.FC = () => {
                             {/* Step 2: Payment */}
                             {(purchaseStep === 'crypto' || purchaseStep === 'verifying') && (
                                 <div className="space-y-6">
-                                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar justify-center">
-                                        {CRYPTO_OPTIONS.slice(0,4).map((coin) => (
-                                            <button 
-                                            key={coin.id}
-                                            onClick={() => { setSelectedCoin(coin); setCopied(false); }}
-                                            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-[10px] font-bold whitespace-nowrap transition-all ${
-                                                selectedCoin.id === coin.id 
-                                                ? 'bg-white text-black border-white shadow-lg' 
-                                                : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800'
-                                            }`}
-                                            >
-                                            <div className={`w-1.5 h-1.5 rounded-full ${coin.id === selectedCoin.id ? 'bg-black' : coin.color.replace('text-', 'bg-')}`} />
-                                            {coin.symbol}
-                                            </button>
-                                        ))}
-                                    </div>
-
-                                    <div className="text-center space-y-4">
-                                        <div className="mx-auto w-48 h-48 bg-white p-2 rounded-xl">
-                                            <div className="w-full h-full border-2 border-dashed border-zinc-300 rounded-lg flex items-center justify-center bg-zinc-50">
-                                            <QrCode size={100} className="text-black" />
+                                    {/* Order Summary */}
+                                    <div className="bg-zinc-900/50 border border-white/10 rounded-xl p-4 shadow-lg">
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <p className="text-sm font-medium text-zinc-300">Item</p>
+                                                <p className="text-white font-semibold">CupidBot License</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-sm font-medium text-zinc-300">Total</p>
+                                                <p className="text-xl font-bold text-white">$200.00</p>
                                             </div>
                                         </div>
-                                        
-                                        <div>
-                                            <p className="text-xs text-zinc-500 mb-2 font-mono">Send exactly <strong className="text-white">${selectedPlan.price}.00</strong> worth of {selectedCoin.symbol}</p>
-                                            <div 
-                                                onClick={handleCopyAddress}
-                                                className="bg-black border border-zinc-800 rounded-lg p-3 flex justify-between items-center cursor-pointer hover:border-zinc-700 group"
-                                            >
-                                                <code className="text-xs text-zinc-400 truncate mr-4">{selectedCoin.address}</code>
-                                                {copied ? <CheckCircle2 size={14} className="text-emerald-500" /> : <Copy size={14} className="text-zinc-600 group-hover:text-zinc-400" />}
+                                    </div>
+
+                                    {/* Coin Selection - Horizontal Grid */}
+                                    <div className="space-y-3">
+                                        <p className="text-sm font-medium text-zinc-300 text-center">Select Payment Method</p>
+                                        <div className="grid grid-cols-4 gap-3">
+                                            {CRYPTO_OPTIONS.slice(1,5).map((coin) => (
+                                                <button
+                                                key={coin.id}
+                                                onClick={() => { setSelectedCoin(coin); setCopied(false); }}
+                                                className={`relative p-4 rounded-xl border-2 transition-all duration-200 ${
+                                                    selectedCoin.id === coin.id
+                                                    ? 'bg-rose-500/10 border-rose-500 shadow-lg shadow-rose-500/20 ring-1 ring-rose-500/30'
+                                                    : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/50'
+                                                }`}
+                                                >
+                                                <div className="text-center space-y-2">
+                                                    <div className={`w-8 h-8 rounded-full mx-auto ${coin.bg} flex items-center justify-center`}>
+                                                        <span className={`text-sm font-bold ${coin.color}`}>{coin.symbol.charAt(0)}</span>
+                                                    </div>
+                                                    <span className={`text-xs font-semibold ${selectedCoin.id === coin.id ? 'text-white' : 'text-zinc-400'}`}>{coin.symbol}</span>
+                                                </div>
+                                                {selectedCoin.id === coin.id && (
+                                                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-rose-500/5 to-pink-500/5 pointer-events-none" />
+                                                )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Payment Zone */}
+                                    <div className="space-y-6">
+                                        {/* QR Code */}
+                                        <div className="flex justify-center">
+                                            <div className="w-56 h-56 bg-white p-3 rounded-2xl shadow-2xl border border-zinc-200">
+                                                <div className="w-full h-full bg-white rounded-lg flex items-center justify-center">
+                                                    <QrCode size={180} className="text-black" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Wallet Address */}
+                                        <div className="space-y-3">
+                                            <p className="text-sm text-zinc-400 text-center">Send exactly <strong className="text-white">$200.00</strong> worth of {selectedCoin.symbol}</p>
+                                            <div className="flex items-center gap-3 p-4 bg-zinc-900/50 border border-white/10 rounded-xl">
+                                                <code className="flex-1 text-sm text-zinc-300 font-mono truncate">
+                                                    {selectedCoin.address.length > 20 ? `${selectedCoin.address.slice(0, 10)}...${selectedCoin.address.slice(-8)}` : selectedCoin.address}
+                                                </code>
+                                                <button
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(selectedCoin.address);
+                                                        handleCopyAddress();
+                                                    }}
+                                                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                                                        copied
+                                                        ? 'bg-emerald-600 text-white border border-emerald-500'
+                                                        : 'bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-zinc-700 hover:border-zinc-600'
+                                                    }`}
+                                                >
+                                                    {copied ? 'Copied!' : 'Click to Copy'}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* Countdown Timer */}
+                                        <div className="text-center">
+                                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                                                <Clock size={16} className="text-amber-500" />
+                                                <span className="text-sm font-mono text-amber-400">{formatCountdown(countdown)} to complete payment</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Status Bar */}
+                                        <div className="flex items-center justify-center gap-3 p-3 bg-zinc-900/50 border border-white/10 rounded-lg">
+                                            <Loader2 size={16} className="animate-spin text-zinc-500" />
+                                            <span className="text-sm text-zinc-400">Waiting for transaction...</span>
+                                        </div>
+
+                                        {/* Network Warning */}
+                                        <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                                            <div className="flex items-start gap-2">
+                                                <AlertCircle size={16} className="text-amber-500 shrink-0 mt-0.5" />
+                                                <p className="text-sm text-amber-300">
+                                                    <strong>Network Warning:</strong> Send only {selectedCoin.symbol} to this address. Sending other cryptocurrencies may result in permanent loss.
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -748,6 +834,20 @@ const App: React.FC = () => {
                                     </Button>
                                 </div>
                             )}
+
+                            {/* Trust Signals */}
+                            <div className="mt-8 pt-6 border-t border-white/10">
+                                <div className="flex items-center justify-center gap-6 text-xs text-zinc-500">
+                                    <div className="flex items-center gap-2">
+                                        <ShieldCheck size={14} className="text-emerald-500" />
+                                        <span>Secure SSL Connection</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Lock size={14} className="text-blue-500" />
+                                        <span>Blockchain Verified</span>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
