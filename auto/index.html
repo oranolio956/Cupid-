@@ -272,20 +272,63 @@ a {
                     <h2 class="access-title">Purchase a license key</h2>
                     <p class="access-body">Generate unlimited profiles, warm them automatically, and funnel every conversation toward your OnlyFans offers.</p>
                     <form class="access-form">
-                      <label class="access-label" for="access-plan">Plan <span>Includes support</span></label>
-                      <input class="access-input" id="access-plan" name="plan" type="text" value="CupidBot Auto - Beta Unlimited" readonly>
-                      <label class="access-label" for="crypto-select">Cryptocurrency</label>
-                      <select class="access-input" id="crypto-select">
-                        <option value="BTC">BTC</option>
-                        <option value="ETH">ETH</option>
-                        <option value="LTC">LTC</option>
-                        <option value="XRP">XRP</option>
-                        <option value="SOL">SOL</option>
-                      </select>
-                      <div class="crypto-payment">
-                        <div class="crypto-price">Price: $200</div>
-                        <div class="crypto-address" id="wallet-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
-                        <div class="crypto-qr" id="qr-code"></div>
+                      <div class="crypto-header">
+                        <h3>Secure Crypto Payment</h3>
+                      </div>
+                      <div class="payment-summary">
+                        <div class="summary-item">
+                          <span class="summary-label">Product:</span>
+                          <span class="summary-value">CupidBot License</span>
+                        </div>
+                        <div class="summary-item">
+                          <span class="summary-label">Price:</span>
+                          <span class="summary-value">$200 USD</span>
+                        </div>
+                      </div>
+                      <div class="coin-selection">
+                        <label class="coin-select-label">Select Cryptocurrency</label>
+                        <div class="coin-options" id="coin-options">
+                          <button type="button" class="coin-option active" data-coin="BTC">
+                            <svg class="coin-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.61 6.34c-.22-.45-.5-.84-.85-1.16-.35-.32-.76-.48-1.23-.48h-1.5c-.14 0-.26.05-.36.15-.1.1-.15.22-.15.36v.24c0 .14.05.26.15.36.1.1.22.15.36.15h.74c.26 0 .47.09.64.27.17.18.26.42.26.71 0 .29-.09.53-.26.71-.17.18-.38.27-.64.27h-.5c-.14 0-.26.05-.36.15-.1.1-.15.22-.15.36v.24c0 .14.05.26.15.36.1.1.22.15.36.15h1.5c.47 0 .88-.16 1.23-.48.35-.32.63-.71.85-1.16.22-.45.33-.96.33-1.54s-.11-1.09-.33-1.54zM12 13.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <span class="coin-name">BTC</span>
+                            <span class="coin-amount" id="btc-amount">0.003 BTC</span>
+                          </button>
+                          <button type="button" class="coin-option" data-coin="ETH">
+                            <svg class="coin-icon" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2zm0 3.5l6.5 6.5L12 18.5 5.5 12 12 5.5z"/></svg>
+                            <span class="coin-name">ETH</span>
+                            <span class="coin-amount" id="eth-amount">0.06 ETH</span>
+                          </button>
+                          <button type="button" class="coin-option" data-coin="LTC">
+                            <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="white">Ł</text></svg>
+                            <span class="coin-name">LTC</span>
+                            <span class="coin-amount" id="ltc-amount">3.5 LTC</span>
+                          </button>
+                          <button type="button" class="coin-option" data-coin="XRP">
+                            <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="10" fill="white">XRP</text></svg>
+                            <span class="coin-name">XRP</span>
+                            <span class="coin-amount" id="xrp-amount">350 XRP</span>
+                          </button>
+                          <button type="button" class="coin-option" data-coin="SOL">
+                            <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="8" fill="white">SOL</text></svg>
+                            <span class="coin-name">SOL</span>
+                            <span class="coin-amount" id="sol-amount">1.5 SOL</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="payment-details">
+                        <div class="qr-section">
+                          <div class="qr-code-large" id="qr-code-large"></div>
+                        </div>
+                        <div class="address-section">
+                          <div class="address-label">Wallet Address</div>
+                          <div class="address-container">
+                            <div class="crypto-address" id="wallet-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+                            <button type="button" class="copy-button" id="copy-address">Copy</button>
+                          </div>
+                        </div>
+                        <div class="payment-instructions">
+                          <p>Scan the QR code with your wallet or copy the address below to complete the payment.</p>
+                        </div>
                       </div>
                       <div class="access-actions">
                         <button type="button" class="access-submit">Purchase &amp; activate</button>

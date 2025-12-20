@@ -465,21 +465,52 @@
             XRP: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
             SOL: '7xKXtg2CW87ZdacwSsEzF3hYRj4Y4w5Q3H9Vj7Z1a2B'
           };
- 
+
+          let selectedCoin = 'BTC';
+
           function updateCryptoPayment(coin) {
+            selectedCoin = coin;
             const address = cryptoAddresses[coin];
             document.getElementById('wallet-address').textContent = address;
-            const qrCodeContainer = document.getElementById('qr-code');
+            const qrCodeContainer = document.getElementById('qr-code-large');
             qrCodeContainer.innerHTML = '';
-            QRCode.toCanvas(qrCodeContainer, address, { width: 150, height: 150 }, function (error) {
+            QRCode.toCanvas(qrCodeContainer, address, { width: 200, height: 200 }, function (error) {
               if (error) console.error(error);
             });
+
+            // Update active coin button
+            document.querySelectorAll('.coin-option').forEach(btn => {
+              btn.classList.toggle('active', btn.dataset.coin === coin);
+            });
           }
- 
-          document.getElementById('crypto-select').addEventListener('change', function() {
-            updateCryptoPayment(this.value);
+
+          // Coin selection
+          document.getElementById('coin-options').addEventListener('click', function(e) {
+            const coinOption = e.target.closest('.coin-option');
+            if (coinOption) {
+              updateCryptoPayment(coinOption.dataset.coin);
+            }
           });
- 
+
+          // Copy address functionality
+          document.getElementById('copy-address').addEventListener('click', function() {
+            const address = document.getElementById('wallet-address').textContent;
+            navigator.clipboard.writeText(address).then(function() {
+              const button = document.getElementById('copy-address');
+              const originalText = button.textContent;
+              button.textContent = 'Copied!';
+              button.style.background = 'rgba(102, 255, 203, 0.1)';
+              button.style.borderColor = 'rgba(102, 255, 203, 0.3)';
+              setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+                button.style.borderColor = '';
+              }, 2000);
+            }).catch(function(err) {
+              console.error('Failed to copy: ', err);
+            });
+          });
+
           // Initialize with BTC
           updateCryptoPayment('BTC');
       });
