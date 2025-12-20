@@ -272,8 +272,106 @@ a {
                     <h2 class="access-title">Purchase a license key</h2>
                     <p class="access-body">Generate unlimited profiles, warm them automatically, and funnel every conversation toward your OnlyFans offers.</p>
                     <form class="access-form">
-                      <div class="crypto-header">
-                        <h3>Secure Crypto Payment</h3>
+                      <!-- Order Summary -->
+                      <div class="order-summary-card">
+                        <div class="order-summary-content">
+                          <div class="order-item">
+                            <span class="order-label">Item</span>
+                            <span class="order-value">CupidBot License</span>
+                          </div>
+                          <div class="order-item">
+                            <span class="order-label">Total</span>
+                            <span class="order-value">$200.00</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Coin Selection - Horizontal Grid -->
+                      <div class="coin-selection-section">
+                        <h4 class="coin-selection-title">Select Payment Method</h4>
+                        <div class="coin-grid" id="coin-options">
+                          <button type="button" class="coin-card active" data-coin="BTC">
+                            <div class="coin-icon-wrapper">
+                              <svg class="coin-icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.61 6.34c-.22-.45-.5-.84-.85-1.16-.35-.32-.76-.48-1.23-.48h-1.5c-.14 0-.26.05-.36.15-.1.1-.15.22-.15.36v.24c0 .14.05.26.15.36.1.1.22.15.36.15h.74c.26 0 .47.09.64.27.17.18.26.42.26.71 0 .29-.09.53-.26.71-.17.18-.38.27-.64.27h-.5c-.14 0-.26.05-.36.15-.1.1-.15.22-.15.36v.24c0 .14.05.26.15.36.1.1.22.15.36.15h1.5c.47 0 .88-.16 1.23-.48.35-.32.63-.71.85-1.16.22-.45.33-.96.33-1.54s-.11-1.09-.33-1.54zM12 13.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            </div>
+                            <span class="coin-name">BTC</span>
+                          </button>
+                          <button type="button" class="coin-card" data-coin="ETH">
+                            <div class="coin-icon-wrapper">
+                              <svg class="coin-icon-svg" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2zm0 3.5l6.5 6.5L12 18.5 5.5 12 12 5.5z"/></svg>
+                            </div>
+                            <span class="coin-name">ETH</span>
+                          </button>
+                          <button type="button" class="coin-card" data-coin="SOL">
+                            <div class="coin-icon-wrapper">
+                              <svg class="coin-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="8" fill="white">SOL</text></svg>
+                            </div>
+                            <span class="coin-name">SOL</span>
+                          </button>
+                          <button type="button" class="coin-card" data-coin="LTC">
+                            <div class="coin-icon-wrapper">
+                              <svg class="coin-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="white">Ł</text></svg>
+                            </div>
+                            <span class="coin-name">LTC</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Payment Zone -->
+                      <div class="payment-zone">
+                        <!-- QR Code -->
+                        <div class="qr-container">
+                          <div class="qr-wrapper">
+                            <div class="qr-code-large" id="qr-code-large"></div>
+                          </div>
+                        </div>
+
+                        <!-- Wallet Address -->
+                        <div class="address-container">
+                          <p class="payment-instruction">Send exactly <strong class="highlight">$200.00</strong> worth of <span id="selected-coin-name">BTC</span></p>
+                          <div class="address-display">
+                            <code class="wallet-address" id="wallet-address">bc1q...x0wlh</code>
+                            <button type="button" class="copy-button-primary" id="copy-address">Click to Copy</button>
+                          </div>
+                        </div>
+
+                        <!-- Countdown Timer -->
+                        <div class="countdown-container">
+                          <div class="countdown-badge">
+                            <svg class="countdown-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <span class="countdown-text" id="countdown-timer">15:00 to complete payment</span>
+                          </div>
+                        </div>
+
+                        <!-- Status Bar -->
+                        <div class="status-container">
+                          <div class="status-indicator">
+                            <div class="status-spinner"></div>
+                            <span class="status-text">Waiting for transaction...</span>
+                          </div>
+                        </div>
+
+                        <!-- Network Warning -->
+                        <div class="warning-container">
+                          <div class="warning-box">
+                            <svg class="warning-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            <div class="warning-content">
+                              <strong>Network Warning:</strong> Send only <span id="warning-coin">BTC</span> to this address. Sending other cryptocurrencies may result in permanent loss.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Trust Signals -->
+                      <div class="trust-signals">
+                        <div class="trust-item">
+                          <svg class="trust-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm3 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+                          <span>Secure SSL Connection</span>
+                        </div>
+                        <div class="trust-item">
+                          <svg class="trust-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                          <span>Blockchain Verified</span>
+                        </div>
                       </div>
                       <div class="payment-summary">
                         <div class="summary-item">
@@ -291,27 +389,18 @@ a {
                           <button type="button" class="coin-option active" data-coin="BTC">
                             <svg class="coin-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.61 6.34c-.22-.45-.5-.84-.85-1.16-.35-.32-.76-.48-1.23-.48h-1.5c-.14 0-.26.05-.36.15-.1.1-.15.22-.15.36v.24c0 .14.05.26.15.36.1.1.22.15.36.15h.74c.26 0 .47.09.64.27.17.18.26.42.26.71 0 .29-.09.53-.26.71-.17.18-.38.27-.64.27h-.5c-.14 0-.26.05-.36.15-.1.1-.15.22-.15.36v.24c0 .14.05.26.15.36.1.1.22.15.36.15h1.5c.47 0 .88-.16 1.23-.48.35-.32.63-.71.85-1.16.22-.45.33-.96.33-1.54s-.11-1.09-.33-1.54zM12 13.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                             <span class="coin-name">BTC</span>
-                            <span class="coin-amount" id="btc-amount">0.003 BTC</span>
                           </button>
                           <button type="button" class="coin-option" data-coin="ETH">
                             <svg class="coin-icon" viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2zm0 3.5l6.5 6.5L12 18.5 5.5 12 12 5.5z"/></svg>
                             <span class="coin-name">ETH</span>
-                            <span class="coin-amount" id="eth-amount">0.06 ETH</span>
-                          </button>
-                          <button type="button" class="coin-option" data-coin="LTC">
-                            <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="white">Ł</text></svg>
-                            <span class="coin-name">LTC</span>
-                            <span class="coin-amount" id="ltc-amount">3.5 LTC</span>
-                          </button>
-                          <button type="button" class="coin-option" data-coin="XRP">
-                            <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="10" fill="white">XRP</text></svg>
-                            <span class="coin-name">XRP</span>
-                            <span class="coin-amount" id="xrp-amount">350 XRP</span>
                           </button>
                           <button type="button" class="coin-option" data-coin="SOL">
                             <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="8" fill="white">SOL</text></svg>
                             <span class="coin-name">SOL</span>
-                            <span class="coin-amount" id="sol-amount">1.5 SOL</span>
+                          </button>
+                          <button type="button" class="coin-option" data-coin="LTC">
+                            <svg class="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="white">Ł</text></svg>
+                            <span class="coin-name">LTC</span>
                           </button>
                         </div>
                       </div>
@@ -320,11 +409,8 @@ a {
                           <div class="qr-code-large" id="qr-code-large"></div>
                         </div>
                         <div class="address-section">
-                          <div class="address-label">Wallet Address</div>
-                          <div class="address-container">
-                            <div class="crypto-address" id="wallet-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
-                            <button type="button" class="copy-button" id="copy-address">Copy</button>
-                          </div>
+                          <div class="crypto-address" id="wallet-address">bc1q...x0wlh</div>
+                          <button type="button" class="copy-button" id="copy-address">Click to Copy</button>
                         </div>
                         <div class="payment-instructions">
                           <p>Scan the QR code with your wallet or copy the address below to complete the payment.</p>

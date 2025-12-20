@@ -1364,6 +1364,394 @@
       outline-offset: 2px;
     }
 
+    /* New Professional Checkout Styles */
+    .order-summary-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--install-border);
+      border-radius: var(--install-radius-md);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-summary-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+    }
+
+    .order-label {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--install-text-secondary);
+      font-weight: 600;
+    }
+
+    .order-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--install-text-primary);
+    }
+
+    .coin-selection-section {
+      margin-bottom: 24px;
+    }
+
+    .coin-selection-title {
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--install-text-secondary);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .coin-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .coin-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 16px;
+      border-radius: var(--install-radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s var(--install-transition);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .coin-card:hover,
+    .coin-card.active {
+      background: rgba(255, 0, 110, 0.08);
+      border-color: rgba(255, 0, 110, 0.3);
+      box-shadow: 0 4px 16px rgba(255, 0, 110, 0.15);
+    }
+
+    .coin-card.active::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 0, 110, 0.05) 0%, rgba(255, 79, 140, 0.05) 100%);
+      pointer-events: none;
+    }
+
+    .coin-icon-wrapper {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .coin-icon-svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--install-text-primary);
+    }
+
+    .coin-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--install-text-primary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .payment-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .qr-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .qr-wrapper {
+      width: 224px;
+      height: 224px;
+      background: white;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .qr-code-large canvas {
+      max-width: 200px !important;
+      max-height: 200px !important;
+    }
+
+    .address-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .payment-instruction {
+      text-align: center;
+      font-size: 15px;
+      color: var(--install-text-secondary);
+      line-height: 1.5;
+    }
+
+    .highlight {
+      color: var(--install-accent);
+      font-weight: 700;
+    }
+
+    .address-display {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--install-border);
+      border-radius: var(--install-radius-md);
+    }
+
+    .wallet-address {
+      flex: 1;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--install-text-primary);
+      word-break: break-all;
+      background: transparent;
+      border: none;
+      outline: none;
+      text-align: left;
+    }
+
+    .copy-button-primary {
+      padding: 12px 20px;
+      border-radius: var(--install-radius-md);
+      border: 1px solid var(--install-border);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--install-text-primary);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s var(--install-transition);
+      white-space: nowrap;
+    }
+
+    .copy-button-primary:hover {
+      background: rgba(255, 0, 110, 0.1);
+      border-color: rgba(255, 0, 110, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .copy-button-primary.copied {
+      background: rgba(102, 255, 203, 0.2);
+      border-color: rgba(102, 255, 203, 0.4);
+      color: var(--install-success);
+    }
+
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .countdown-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: var(--install-radius-md);
+      background: rgba(255, 177, 85, 0.1);
+      border: 1px solid rgba(255, 177, 85, 0.2);
+      color: #ffb155;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .countdown-icon {
+      width: 16px;
+      height: 16px;
+      fill: #ffb155;
+    }
+
+    .status-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      border-radius: var(--install-radius-md);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--install-border);
+    }
+
+    .status-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid var(--install-text-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .status-text {
+      font-size: 14px;
+      color: var(--install-text-secondary);
+      font-weight: 500;
+    }
+
+    .warning-container {
+      margin: 0;
+    }
+
+    .warning-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 20px;
+      border-radius: var(--install-radius-md);
+      background: rgba(255, 177, 85, 0.1);
+      border: 1px solid rgba(255, 177, 85, 0.2);
+    }
+
+    .warning-icon {
+      width: 20px;
+      height: 20px;
+      fill: #ffb155;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .warning-content {
+      font-size: 14px;
+      color: #ffb155;
+      line-height: 1.5;
+    }
+
+    .warning-content strong {
+      color: #ffb155;
+      font-weight: 700;
+    }
+
+    .trust-signals {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 24px 0;
+      border-top: 1px solid var(--install-border);
+      margin-top: 24px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--install-text-secondary);
+      font-weight: 500;
+    }
+
+    .trust-icon {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .trust-item:nth-child(1) .trust-icon {
+      color: var(--install-success);
+    }
+
+    .trust-item:nth-child(2) .trust-icon {
+      color: #3b82f6;
+    }
+
+    /* Responsive adjustments for new elements */
+    @media (max-width: 860px) {
+      .coin-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .coin-card {
+        padding: 16px 12px;
+      }
+
+      .trust-signals {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .qr-wrapper {
+        width: 180px;
+        height: 180px;
+        padding: 8px;
+      }
+
+      .qr-code-large canvas {
+        max-width: 164px !important;
+        max-height: 164px !important;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .coin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .address-display {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      .copy-button-primary {
+        width: 100%;
+        text-align: center;
+      }
+
+      .qr-wrapper {
+        width: 160px;
+        height: 160px;
+        padding: 6px;
+      }
+
+      .qr-code-large canvas {
+        max-width: 148px !important;
+        max-height: 148px !important;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,

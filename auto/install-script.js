@@ -466,53 +466,103 @@
             SOL: '7xKXtg2CW87ZdacwSsEzF3hYRj4Y4w5Q3H9Vj7Z1a2B'
           };
 
-          let selectedCoin = 'BTC';
+          let selectedCoin = 'SOL'; // Default to SOL
+          let countdownInterval = null;
+          let countdownTime = 900; // 15 minutes in seconds
+
+          function formatCountdown(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          }
+
+          function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownTime = 900; // Reset to 15 minutes
+
+            countdownInterval = setInterval(() => {
+              countdownTime--;
+              const countdownElement = document.getElementById('countdown-timer');
+              if (countdownElement) {
+                countdownElement.textContent = formatCountdown(countdownTime) + ' to complete payment';
+              }
+
+              if (countdownTime <= 0) {
+                clearInterval(countdownInterval);
+                const countdownElement = document.getElementById('countdown-timer');
+                if (countdownElement) {
+                  countdownElement.textContent = '00:00 - Payment expired';
+                }
+              }
+            }, 1000);
+          }
 
           function updateCryptoPayment(coin) {
             selectedCoin = coin;
             const address = cryptoAddresses[coin];
-            document.getElementById('wallet-address').textContent = address;
+            const walletAddressElement = document.getElementById('wallet-address');
+            if (walletAddressElement) {
+              // Truncate address for display
+              const truncated = address.length > 20 ? `${address.slice(0, 10)}...${address.slice(-8)}` : address;
+              walletAddressElement.textContent = truncated;
+            }
+
+            // Update selected coin name
+            const coinNameElement = document.getElementById('selected-coin-name');
+            if (coinNameElement) {
+              coinNameElement.textContent = coin;
+            }
+
+            // Update warning coin
+            const warningCoinElement = document.getElementById('warning-coin');
+            if (warningCoinElement) {
+              warningCoinElement.textContent = coin;
+            }
+
             const qrCodeContainer = document.getElementById('qr-code-large');
-            qrCodeContainer.innerHTML = '';
-            QRCode.toCanvas(qrCodeContainer, address, { width: 200, height: 200 }, function (error) {
-              if (error) console.error(error);
-            });
+            if (qrCodeContainer) {
+              qrCodeContainer.innerHTML = '';
+              QRCode.toCanvas(qrCodeContainer, address, { width: 200, height: 200 }, function (error) {
+                if (error) console.error(error);
+              });
+            }
 
             // Update active coin button
-            document.querySelectorAll('.coin-option').forEach(btn => {
+            document.querySelectorAll('.coin-card').forEach(btn => {
               btn.classList.toggle('active', btn.dataset.coin === coin);
             });
+
+            // Start countdown when coin is selected
+            startCountdown();
           }
 
           // Coin selection
           document.getElementById('coin-options').addEventListener('click', function(e) {
-            const coinOption = e.target.closest('.coin-option');
-            if (coinOption) {
-              updateCryptoPayment(coinOption.dataset.coin);
+            const coinCard = e.target.closest('.coin-card');
+            if (coinCard) {
+              updateCryptoPayment(coinCard.dataset.coin);
             }
           });
 
           // Copy address functionality
           document.getElementById('copy-address').addEventListener('click', function() {
-            const address = document.getElementById('wallet-address').textContent;
+            const address = cryptoAddresses[selectedCoin];
             navigator.clipboard.writeText(address).then(function() {
               const button = document.getElementById('copy-address');
               const originalText = button.textContent;
               button.textContent = 'Copied!';
-              button.style.background = 'rgba(102, 255, 203, 0.1)';
-              button.style.borderColor = 'rgba(102, 255, 203, 0.3)';
+              button.classList.add('copied');
               setTimeout(() => {
                 button.textContent = originalText;
-                button.style.background = '';
-                button.style.borderColor = '';
+                button.classList.remove('copied');
               }, 2000);
             }).catch(function(err) {
               console.error('Failed to copy: ', err);
             });
           });
 
-          // Initialize with BTC
-          updateCryptoPayment('BTC');
+          // Initialize with SOL
+          updateCryptoPayment('SOL');
       });
       }
 
