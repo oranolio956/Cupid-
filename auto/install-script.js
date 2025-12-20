@@ -459,16 +459,16 @@
  
           // Crypto payment functionality
           const cryptoAddresses = {
-            BTC: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-            ETH: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-            LTC: 'ltc1q8c6h5rwv2x3u6g4w9p7j8k5m4n2b1v0z9x8c7',
-            XRP: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
-            SOL: '7xKXtg2CW87ZdacwSsEzF3hYRj4Y4w5Q3H9Vj7Z1a2B'
+            SOL: '5fWnYrWxZfui8286spcNe3nxFhzLEQfgbVSrU1v1qPog',
+            ETH: '0x322Fbbf5cC94C80674958b53C677b2e09921270c',
+            BTC: 'bc1qu2kh6dn2sea37qcjmtkdwhfa77vx2fdvlhrrpr',
+            LTC: 'ltc1q3etys8n57hpe0468xrs3qg547v0a5uvq8zmqd0'
           };
 
           let selectedCoin = 'SOL'; // Default to SOL
           let countdownInterval = null;
           let countdownTime = 900; // 15 minutes in seconds
+          let paymentStarted = false;
 
           function formatCountdown(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -479,6 +479,12 @@
           function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             countdownTime = 900; // Reset to 15 minutes
+
+            // Show countdown and status
+            const countdownContainer = document.getElementById('countdown-container');
+            const statusContainer = document.getElementById('status-container');
+            if (countdownContainer) countdownContainer.style.display = 'block';
+            if (statusContainer) statusContainer.style.display = 'block';
 
             countdownInterval = setInterval(() => {
               countdownTime--;
@@ -499,12 +505,17 @@
 
           function updateCryptoPayment(coin) {
             selectedCoin = coin;
+
+            // Update active coin button
+            document.querySelectorAll('.coin-card').forEach(btn => {
+              btn.classList.toggle('active', btn.dataset.coin === coin);
+            });
+
+            // Update address display
             const address = cryptoAddresses[coin];
             const walletAddressElement = document.getElementById('wallet-address');
             if (walletAddressElement) {
-              // Truncate address for display
-              const truncated = address.length > 20 ? `${address.slice(0, 10)}...${address.slice(-8)}` : address;
-              walletAddressElement.textContent = truncated;
+              walletAddressElement.textContent = address;
             }
 
             // Update selected coin name
@@ -518,30 +529,30 @@
             if (warningCoinElement) {
               warningCoinElement.textContent = coin;
             }
-
-            const qrCodeContainer = document.getElementById('qr-code-large');
-            if (qrCodeContainer) {
-              qrCodeContainer.innerHTML = '';
-              QRCode.toCanvas(qrCodeContainer, address, { width: 200, height: 200 }, function (error) {
-                if (error) console.error(error);
-              });
-            }
-
-            // Update active coin button
-            document.querySelectorAll('.coin-card').forEach(btn => {
-              btn.classList.toggle('active', btn.dataset.coin === coin);
-            });
-
-            // Start countdown when coin is selected
-            startCountdown();
           }
 
           // Coin selection
           document.getElementById('coin-options').addEventListener('click', function(e) {
+            e.preventDefault();
             const coinCard = e.target.closest('.coin-card');
-            if (coinCard) {
+            if (coinCard && !paymentStarted) {
               updateCryptoPayment(coinCard.dataset.coin);
             }
+          });
+
+          // Purchase button - starts the payment process
+          document.querySelector('.access-submit').addEventListener('click', function(e) {
+            e.preventDefault();
+            paymentStarted = true;
+
+            // Disable coin selection after payment starts
+            document.querySelectorAll('.coin-card').forEach(btn => {
+              btn.style.pointerEvents = 'none';
+              btn.style.opacity = '0.6';
+            });
+
+            // Start countdown and show payment UI
+            startCountdown();
           });
 
           // Copy address functionality

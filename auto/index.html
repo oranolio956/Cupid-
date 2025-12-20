@@ -319,24 +319,17 @@ a {
 
                       <!-- Payment Zone -->
                       <div class="payment-zone">
-                        <!-- QR Code -->
-                        <div class="qr-container">
-                          <div class="qr-wrapper">
-                            <div class="qr-code-large" id="qr-code-large"></div>
-                          </div>
-                        </div>
-
                         <!-- Wallet Address -->
                         <div class="address-container">
-                          <p class="payment-instruction">Send exactly <strong class="highlight">$200.00</strong> worth of <span id="selected-coin-name">BTC</span></p>
+                          <p class="payment-instruction">Send exactly <strong class="highlight">$200.00</strong> worth of <span id="selected-coin-name">SOL</span> to this address:</p>
                           <div class="address-display">
-                            <code class="wallet-address" id="wallet-address">bc1q...x0wlh</code>
+                            <code class="wallet-address" id="wallet-address">5fWnYrWxZfui8286spcNe3nxFhzLEQfgbVSrU1v1qPog</code>
                             <button type="button" class="copy-button-primary" id="copy-address">Click to Copy</button>
                           </div>
                         </div>
 
                         <!-- Countdown Timer -->
-                        <div class="countdown-container">
+                        <div class="countdown-container" id="countdown-container" style="display: none;">
                           <div class="countdown-badge">
                             <svg class="countdown-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                             <span class="countdown-text" id="countdown-timer">15:00 to complete payment</span>
@@ -344,7 +337,7 @@ a {
                         </div>
 
                         <!-- Status Bar -->
-                        <div class="status-container">
+                        <div class="status-container" id="status-container" style="display: none;">
                           <div class="status-indicator">
                             <div class="status-spinner"></div>
                             <span class="status-text">Waiting for transaction...</span>
@@ -356,7 +349,7 @@ a {
                           <div class="warning-box">
                             <svg class="warning-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                             <div class="warning-content">
-                              <strong>Network Warning:</strong> Send only <span id="warning-coin">BTC</span> to this address. Sending other cryptocurrencies may result in permanent loss.
+                              <strong>Network Warning:</strong> Send only <span id="warning-coin">SOL</span> to this address. Sending other cryptocurrencies may result in permanent loss.
                             </div>
                           </div>
                         </div>
@@ -827,7 +820,6 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
     });
   }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
   <script src="install-script.js" type="text/javascript"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -1480,27 +1480,7 @@
     .payment-zone {
       display: flex;
       flex-direction: column;
-      gap: 24px;
-    }
-
-    .qr-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .qr-wrapper {
-      width: 224px;
-      height: 224px;
-      background: white;
-      padding: 12px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .qr-code-large canvas {
-      max-width: 200px !important;
-      max-height: 200px !important;
+      gap: 20px;
     }
 
     .address-container {
