@@ -450,137 +450,137 @@
         });
       });
 
+      // Crypto payment functionality - global scope
+      const cryptoAddresses = {
+        SOL: '5fWnYrWxZfui8286spcNe3nxFhzLEQfgbVSrU1v1qPog',
+        ETH: '0x322Fbbf5cC94C80674958b53C677b2e09921270c',
+        BTC: 'bc1qu2kh6dn2sea37qcjmtkdwhfa77vx2fdvlhrrpr',
+        LTC: 'ltc1q3etys8n57hpe0468xrs3qg547v0a5uvq8zmqd0'
+      };
+
+      let selectedCoin = 'SOL'; // Default to SOL
+      let countdownInterval = null;
+      let countdownTime = 900; // 15 minutes in seconds
+      let paymentStarted = false;
+
+      function formatCountdown(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+
+      function startCountdown() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownTime = 900; // Reset to 15 minutes
+
+        // Show countdown and status
+        const countdownContainer = document.getElementById('countdown-container');
+        const statusContainer = document.getElementById('status-container');
+        if (countdownContainer) countdownContainer.style.display = 'block';
+        if (statusContainer) statusContainer.style.display = 'block';
+
+        countdownInterval = setInterval(() => {
+          countdownTime--;
+          const countdownElement = document.getElementById('countdown-timer');
+          if (countdownElement) {
+            countdownElement.textContent = formatCountdown(countdownTime) + ' to complete payment';
+          }
+
+          if (countdownTime <= 0) {
+            clearInterval(countdownInterval);
+            const countdownElement = document.getElementById('countdown-timer');
+            if (countdownElement) {
+              countdownElement.textContent = '00:00 - Payment expired';
+            }
+          }
+        }, 1000);
+      }
+
+      function updateCryptoPayment(coin) {
+        console.log('Updating crypto payment for:', coin); // Debug log
+        selectedCoin = coin;
+
+        // Update active coin button
+        document.querySelectorAll('.coin-card').forEach(btn => {
+          const isActive = btn.dataset.coin === coin;
+          btn.classList.toggle('active', isActive);
+          console.log(`Coin ${btn.dataset.coin}: ${isActive ? 'active' : 'inactive'}`); // Debug log
+        });
+
+        // Update address display
+        const address = cryptoAddresses[coin];
+        const walletAddressElement = document.getElementById('wallet-address');
+        if (walletAddressElement) {
+          walletAddressElement.textContent = address;
+        }
+
+        // Update selected coin name
+        const coinNameElement = document.getElementById('selected-coin-name');
+        if (coinNameElement) {
+          coinNameElement.textContent = coin;
+        }
+
+        // Update warning coin
+        const warningCoinElement = document.getElementById('warning-coin');
+        if (warningCoinElement) {
+          warningCoinElement.textContent = coin;
+        }
+      }
+
+      // Initialize with SOL
+      updateCryptoPayment('SOL');
+
       const startGuide = document.getElementById('startGuide');
       if (startGuide) {
         startGuide.addEventListener('click', (event) => {
           event.preventDefault();
           document.getElementById('installGuide')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           setActiveStep(0);
- 
-          // Crypto payment functionality
-          const cryptoAddresses = {
-            SOL: '5fWnYrWxZfui8286spcNe3nxFhzLEQfgbVSrU1v1qPog',
-            ETH: '0x322Fbbf5cC94C80674958b53C677b2e09921270c',
-            BTC: 'bc1qu2kh6dn2sea37qcjmtkdwhfa77vx2fdvlhrrpr',
-            LTC: 'ltc1q3etys8n57hpe0468xrs3qg547v0a5uvq8zmqd0'
-          };
-
-          let selectedCoin = 'SOL'; // Default to SOL
-          let countdownInterval = null;
-          let countdownTime = 900; // 15 minutes in seconds
-          let paymentStarted = false;
-
-          function formatCountdown(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-          }
-
-          function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownTime = 900; // Reset to 15 minutes
-
-            // Show countdown and status
-            const countdownContainer = document.getElementById('countdown-container');
-            const statusContainer = document.getElementById('status-container');
-            if (countdownContainer) countdownContainer.style.display = 'block';
-            if (statusContainer) statusContainer.style.display = 'block';
-
-            countdownInterval = setInterval(() => {
-              countdownTime--;
-              const countdownElement = document.getElementById('countdown-timer');
-              if (countdownElement) {
-                countdownElement.textContent = formatCountdown(countdownTime) + ' to complete payment';
-              }
-
-              if (countdownTime <= 0) {
-                clearInterval(countdownInterval);
-                const countdownElement = document.getElementById('countdown-timer');
-                if (countdownElement) {
-                  countdownElement.textContent = '00:00 - Payment expired';
-                }
-              }
-            }, 1000);
-          }
-
-          function updateCryptoPayment(coin) {
-            console.log('Updating crypto payment for:', coin); // Debug log
-            selectedCoin = coin;
-
-            // Update active coin button
-            document.querySelectorAll('.coin-card').forEach(btn => {
-              const isActive = btn.dataset.coin === coin;
-              btn.classList.toggle('active', isActive);
-              console.log(`Coin ${btn.dataset.coin}: ${isActive ? 'active' : 'inactive'}`); // Debug log
-            });
-
-            // Update address display
-            const address = cryptoAddresses[coin];
-            const walletAddressElement = document.getElementById('wallet-address');
-            if (walletAddressElement) {
-              walletAddressElement.textContent = address;
-            }
-
-            // Update selected coin name
-            const coinNameElement = document.getElementById('selected-coin-name');
-            if (coinNameElement) {
-              coinNameElement.textContent = coin;
-            }
-
-            // Update warning coin
-            const warningCoinElement = document.getElementById('warning-coin');
-            if (warningCoinElement) {
-              warningCoinElement.textContent = coin;
-            }
-          }
-
-          // Coin selection
-          document.getElementById('coin-options').addEventListener('click', function(e) {
-            e.preventDefault();
-            const coinCard = e.target.closest('.coin-card');
-            if (coinCard && !paymentStarted) {
-              const selectedCoin = coinCard.dataset.coin;
-              console.log('Coin selected:', selectedCoin); // Debug log
-              updateCryptoPayment(selectedCoin);
-            }
-          });
-
-          // Purchase button - starts the payment process
-          document.querySelector('.access-submit').addEventListener('click', function(e) {
-            e.preventDefault();
-            paymentStarted = true;
-            console.log('Payment started for coin:', selectedCoin); // Debug log
-
-            // Disable coin selection after payment starts
-            document.querySelectorAll('.coin-card').forEach(btn => {
-              btn.classList.add('disabled');
-            });
-
-            // Start countdown and show payment UI
-            startCountdown();
-          });
-
-          // Copy address functionality
-          document.getElementById('copy-address').addEventListener('click', function() {
-            const address = cryptoAddresses[selectedCoin];
-            navigator.clipboard.writeText(address).then(function() {
-              const button = document.getElementById('copy-address');
-              const originalText = button.textContent;
-              button.textContent = 'Copied!';
-              button.classList.add('copied');
-              setTimeout(() => {
-                button.textContent = originalText;
-                button.classList.remove('copied');
-              }, 2000);
-            }).catch(function(err) {
-              console.error('Failed to copy: ', err);
-            });
-          });
-
-          // Initialize with SOL
-          updateCryptoPayment('SOL');
       });
       }
+
+      // Coin selection - available from page load
+      document.getElementById('coin-options').addEventListener('click', function(e) {
+        e.preventDefault();
+        const coinCard = e.target.closest('.coin-card');
+        if (coinCard && !paymentStarted) {
+          const selectedCoinValue = coinCard.dataset.coin;
+          console.log('Coin selected:', selectedCoinValue); // Debug log
+          updateCryptoPayment(selectedCoinValue);
+        }
+      });
+
+      // Purchase button - starts the payment process
+      document.querySelector('.access-submit').addEventListener('click', function(e) {
+        e.preventDefault();
+        paymentStarted = true;
+        console.log('Payment started for coin:', selectedCoin); // Debug log
+
+        // Disable coin selection after payment starts
+        document.querySelectorAll('.coin-card').forEach(btn => {
+          btn.classList.add('disabled');
+        });
+
+        // Start countdown and show payment UI
+        startCountdown();
+      });
+
+      // Copy address functionality
+      document.getElementById('copy-address').addEventListener('click', function() {
+        const address = cryptoAddresses[selectedCoin];
+        navigator.clipboard.writeText(address).then(function() {
+          const button = document.getElementById('copy-address');
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('Failed to copy: ', err);
+        });
+      });
 
       const downloadPackage = document.getElementById('downloadPackage');
       if (downloadPackage) {
