@@ -1836,54 +1836,54 @@
 
     /* Desktop enhancements for spacious and professional look */
     @media (min-width: 1200px) {
-      /* Increase heading sizes */
+      /* Increase heading sizes significantly */
       .heading-medium {
-        font-size: 3.5rem;
-        line-height: 1.1;
+        font-size: 5rem;
+        line-height: 1.05;
       }
 
       .text-size-xlarge {
-        font-size: 1.75rem;
-        line-height: 1.6;
+        font-size: 2.25rem;
+        line-height: 1.5;
       }
 
-      /* Increase section padding */
+      /* Increase section padding significantly */
       .padding-vertical.padding-xlarge {
-        padding-top: 120px;
-        padding-bottom: 120px;
+        padding-top: 200px;
+        padding-bottom: 200px;
       }
 
       .padding-vertical.padding-large {
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding-top: 140px;
+        padding-bottom: 140px;
       }
 
-      /* Increase card padding and spacing */
+      /* Increase card padding and spacing significantly */
       .access-card {
-        padding: 48px;
-        gap: 20px;
+        padding: 80px;
+        gap: 32px;
       }
 
       .access-title {
-        font-size: 28px;
+        font-size: 36px;
       }
 
       .access-body {
-        font-size: 17px;
+        font-size: 20px;
       }
 
-      /* Larger buttons */
+      /* Larger buttons significantly */
       .install-btn_primary,
       .install-btn_primary:link,
       .install-btn_primary:visited {
-        padding: 20px 44px;
-        font-size: 18px;
-        gap: 16px;
+        padding: 28px 60px;
+        font-size: 20px;
+        gap: 20px;
       }
 
       .install-btn_primary.install-btn_primary--compact {
-        padding: 18px 32px;
-        font-size: 16px;
+        padding: 24px 48px;
+        font-size: 18px;
       }
 
       .install-btn_secondary,
@@ -1892,147 +1892,147 @@
       .install-btn_ghost,
       .install-btn_ghost:link,
       .install-btn_ghost:visited {
-        padding: 18px 30px;
-        font-size: 15px;
+        padding: 24px 40px;
+        font-size: 17px;
       }
 
-      /* Increase panel padding */
+      /* Increase panel padding significantly */
       .install-panel {
-        padding: 52px;
-        gap: 26px;
+        padding: 80px;
+        gap: 36px;
       }
 
       .install-panel_heading {
-        font-size: 32px;
+        font-size: 40px;
       }
 
       .install-panel_body {
-        font-size: 17px;
-        gap: 20px;
+        font-size: 19px;
+        gap: 28px;
       }
 
-      /* Larger grid gaps */
+      /* Larger grid gaps significantly */
       .access-grid {
-        gap: 24px;
+        gap: 40px;
       }
 
       .install-status_grid {
-        gap: 20px;
+        gap: 32px;
       }
 
       .install-metrics {
-        gap: 20px;
+        gap: 32px;
       }
 
       .install-seo_grid {
-        gap: 28px;
+        gap: 40px;
       }
 
       .install-faq_list {
-        gap: 20px;
+        gap: 32px;
       }
 
-      /* Increase input sizes */
+      /* Increase input sizes significantly */
       .access-input {
-        padding: 16px 18px;
-        font-size: 17px;
+        padding: 20px 24px;
+        font-size: 19px;
       }
 
-      /* Larger metrics */
+      /* Larger metrics significantly */
       .install-metric_value {
-        font-size: 22px;
-      }
-
-      .install-metric_label {
-        font-size: 14px;
-        margin-top: 8px;
-      }
-
-      /* Increase flow padding */
-      .install-flow {
-        padding: 60px 60px 68px;
-        gap: 48px;
-      }
-
-      /* Larger step buttons */
-      .install-step_btn {
-        padding: 22px 26px;
-        gap: 20px;
-      }
-
-      .install-step_index {
-        width: 44px;
-        height: 44px;
-        font-size: 18px;
-      }
-
-      .install-step_title {
-        font-size: 16px;
-      }
-
-      .install-step_status {
-        font-size: 14px;
-      }
-
-      /* Increase SEO section padding */
-      .install-seo {
-        padding: 64px 60px;
-        gap: 42px;
-      }
-
-      .install-seo_header h2 {
-        font-size: clamp(36px, 4vw, 52px);
-      }
-
-      .install-seo_header p {
-        font-size: 20px;
-      }
-
-      .install-seo_card {
-        padding: 30px 32px;
-        gap: 16px;
-      }
-
-      .install-seo_card h3 {
-        font-size: 22px;
-      }
-
-      .install-seo_card p {
-        font-size: 16px;
-      }
-
-      /* Larger FAQ items */
-      .install-faq_item {
-        padding: 20px 22px;
-        gap: 12px;
-      }
-
-      .install-faq_item h3 {
-        font-size: 17px;
-      }
-
-      .install-faq_item p {
-        font-size: 16px;
-      }
-
-      /* Increase support card padding */
-      .install-support_card {
-        padding: 42px 48px;
-        gap: 28px;
-      }
-
-      .install-support_card h2 {
         font-size: 28px;
       }
 
-      .install-support_card p {
-        font-size: 17px;
+      .install-metric_label {
+        font-size: 16px;
+        margin-top: 12px;
       }
 
-      /* Larger footer padding */
+      /* Increase flow padding significantly */
+      .install-flow {
+        padding: 100px 100px 120px;
+        gap: 64px;
+      }
+
+      /* Larger step buttons significantly */
+      .install-step_btn {
+        padding: 32px 36px;
+        gap: 28px;
+      }
+
+      .install-step_index {
+        width: 56px;
+        height: 56px;
+        font-size: 22px;
+      }
+
+      .install-step_title {
+        font-size: 18px;
+      }
+
+      .install-step_status {
+        font-size: 16px;
+      }
+
+      /* Increase SEO section padding significantly */
+      .install-seo {
+        padding: 120px 100px;
+        gap: 60px;
+      }
+
+      .install-seo_header h2 {
+        font-size: clamp(48px, 5vw, 64px);
+      }
+
+      .install-seo_header p {
+        font-size: 24px;
+      }
+
+      .install-seo_card {
+        padding: 48px 52px;
+        gap: 24px;
+      }
+
+      .install-seo_card h3 {
+        font-size: 26px;
+      }
+
+      .install-seo_card p {
+        font-size: 18px;
+      }
+
+      /* Larger FAQ items significantly */
+      .install-faq_item {
+        padding: 32px 36px;
+        gap: 16px;
+      }
+
+      .install-faq_item h3 {
+        font-size: 19px;
+      }
+
+      .install-faq_item p {
+        font-size: 18px;
+      }
+
+      /* Increase support card padding significantly */
+      .install-support_card {
+        padding: 64px 80px;
+        gap: 40px;
+      }
+
+      .install-support_card h2 {
+        font-size: 32px;
+      }
+
+      .install-support_card p {
+        font-size: 19px;
+      }
+
+      /* Larger footer padding significantly */
       .padding-vertical.padding-xlarge {
-        padding-top: 100px;
-        padding-bottom: 100px;
+        padding-top: 160px;
+        padding-bottom: 160px;
       }
     }
 

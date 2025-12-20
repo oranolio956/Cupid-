@@ -118,7 +118,7 @@ const App: React.FC = () => {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
-  const [selectedCoin, setSelectedCoin] = useState(CRYPTO_OPTIONS[0]);
+  const [selectedCoin, setSelectedCoin] = useState('SOL');
   const [proxiesOwned, setProxiesOwned] = useState(0);
   const [numbersOwned, setNumbersOwned] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -284,110 +284,110 @@ const App: React.FC = () => {
 
   const renderLogin = () => (
     <div className="h-screen bg-[#050505] flex flex-col relative overflow-hidden font-sans text-zinc-200">
-      {/* Background Decor - Subtle & Professional */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900/40 via-[#050505] to-[#050505] pointer-events-none z-0" />
-      
-      {/* Scrollable Container */}
-      <div className="relative z-10 flex-1 overflow-y-auto">
-        <div className="min-h-full flex flex-col justify-center p-6 md:p-8">
-            
-            {/* Login Container */}
-            <div className="w-full max-w-[420px] mx-auto">
+    {/* Background Decor - Subtle & Professional */}
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900/40 via-[#050505] to-[#050505] pointer-events-none z-0" />
+
+    {/* Scrollable Container */}
+    <div className="relative z-10 flex-1 overflow-y-auto">
+      <div className="min-h-full flex flex-col justify-center p-6 md:p-8 xl:p-16">
+
+          {/* Login Container */}
+          <div className="w-full max-w-[480px] xl:max-w-[640px] mx-auto">
                 
                 {/* Brand Header */}
-                <div className="mb-10 text-center md:text-left space-y-3">
-                    <div className="flex items-center justify-center md:justify-start mb-3">
+                <div className="mb-10 xl:mb-16 text-center md:text-left space-y-3 xl:space-y-5">
+                    <div className="flex items-center justify-center md:justify-start mb-3 xl:mb-5">
                         <Logo size="lg" />
                     </div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] font-semibold uppercase tracking-[0.24em]">
-                        <Activity size={14} /> Ops brief
+                    <div className="inline-flex items-center gap-2 px-3 xl:px-4 py-1 xl:py-2 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] xl:text-sm font-semibold uppercase tracking-[0.24em]">
+                        <Activity size={14} xl:size={16} /> Ops brief
                     </div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight">
+                    <h1 className="text-3xl xl:text-6xl font-bold text-white tracking-tight">
                         Welcome back. This is an operator console, not a landing page.
                     </h1>
-                    <p className="text-zinc-400 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm xl:text-lg leading-relaxed">
                         We built Cupid for ourselves first. Human-written prompts, hand-tuned routes, and audits on every automation. If you\'re not part of the crew, please exit. If you are, plug back in.
                     </p>
                 </div>
 
-                <div className="mb-8 bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 space-y-4 shadow-lg shadow-rose-900/10">
-                    <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
+                <div className="mb-8 xl:mb-12 bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 xl:p-8 space-y-4 xl:space-y-6 shadow-lg shadow-rose-900/10">
+                    <div className="flex items-center justify-between text-xs xl:text-sm text-zinc-500 font-mono">
                         <div className="flex items-center gap-2">
-                            <ShieldCheck size={14} className="text-emerald-400" />
+                            <ShieldCheck size={14} xl:size={16} className="text-emerald-400" />
                             Live operators reviewing flows nightly
                         </div>
                         <div className="flex items-center gap-2">
-                            <Zap size={14} className="text-rose-400" />
+                            <Zap size={14} xl:size={16} className="text-rose-400" />
                             Zero templated scripts
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div className="p-3 rounded-xl bg-black border border-white/10 flex items-start gap-3">
-                            <Globe size={16} className="text-indigo-300" />
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 xl:gap-5">
+                        <div className="p-3 xl:p-5 rounded-xl bg-black border border-white/10 flex items-start gap-3 xl:gap-4">
+                            <Globe size={16} xl:size={20} className="text-indigo-300" />
                             <div className="space-y-1">
-                                <p className="text-xs text-zinc-400 uppercase tracking-wide">Network status</p>
-                                <p className="text-sm text-white font-semibold">Proxy + SMS pool warmed</p>
+                                <p className="text-xs xl:text-sm text-zinc-400 uppercase tracking-wide">Network status</p>
+                                <p className="text-sm xl:text-base text-white font-semibold">Proxy + SMS pool warmed</p>
                             </div>
                         </div>
-                        <div className="p-3 rounded-xl bg-black border border-white/10 flex items-start gap-3">
-                            <MousePointerClick size={16} className="text-amber-300" />
+                        <div className="p-3 xl:p-5 rounded-xl bg-black border border-white/10 flex items-start gap-3 xl:gap-4">
+                            <MousePointerClick size={16} xl:size={20} className="text-amber-300" />
                             <div className="space-y-1">
-                                <p className="text-xs text-zinc-400 uppercase tracking-wide">Input hygiene</p>
-                                <p className="text-sm text-white font-semibold">Messages sound human, never AI sludge</p>
+                                <p className="text-xs xl:text-sm text-zinc-400 uppercase tracking-wide">Input hygiene</p>
+                                <p className="text-sm xl:text-base text-white font-semibold">Messages sound human, never AI sludge</p>
                             </div>
                         </div>
-                        <div className="p-3 rounded-xl bg-black border border-white/10 flex items-start gap-3">
-                            <Server size={16} className="text-emerald-300" />
+                        <div className="p-3 xl:p-5 rounded-xl bg-black border border-white/10 flex items-start gap-3 xl:gap-4">
+                            <Server size={16} xl:size={20} className="text-emerald-300" />
                             <div className="space-y-1">
-                                <p className="text-xs text-zinc-400 uppercase tracking-wide">Last deploy</p>
-                                <p className="text-sm text-white font-semibold">Ops kit refreshed 02:00 UTC</p>
+                                <p className="text-xs xl:text-sm text-zinc-400 uppercase tracking-wide">Last deploy</p>
+                                <p className="text-sm xl:text-base text-white font-semibold">Ops kit refreshed 02:00 UTC</p>
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono">
-                        <span className="flex items-center gap-2"><Clock size={12} /> Next sync: 22:00 UTC</span>
-                        <span className="flex items-center gap-2"><AlertCircle size={12} /> Off-script behavior gets paused automatically</span>
+                    <div className="flex items-center justify-between text-[11px] xl:text-sm text-zinc-500 font-mono">
+                        <span className="flex items-center gap-2"><Clock size={12} xl:size={14} /> Next sync: 22:00 UTC</span>
+                        <span className="flex items-center gap-2"><AlertCircle size={12} xl:size={14} /> Off-script behavior gets paused automatically</span>
                     </div>
                 </div>
 
-                <form onSubmit={handleActivation} className="space-y-6">
-                    <div className="space-y-5">
+                <form onSubmit={handleActivation} className="space-y-6 xl:space-y-8">
+                    <div className="space-y-5 xl:space-y-7">
                         {/* Email Field */}
-                        <div className="group space-y-1.5">
-                            <label className="text-sm font-medium text-zinc-400">Email Address</label>
+                        <div className="group space-y-1.5 xl:space-y-2">
+                            <label className="text-sm xl:text-base font-medium text-zinc-400">Email Address</label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                                <input 
-                                    type="email" 
+                                <User className="absolute left-3 xl:left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} xl:size={20} />
+                                <input
+                                    type="email"
                                     required
                                     autoComplete="email"
                                     disabled={loginStatus !== 'idle'}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/50 transition-all placeholder-zinc-600 disabled:opacity-50 text-sm"
+                                    className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-lg py-3 xl:py-4 pl-10 xl:pl-12 pr-4 text-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/50 transition-all placeholder-zinc-600 disabled:opacity-50 text-sm xl:text-base"
                                     placeholder="name@example.com"
                                 />
                             </div>
                         </div>
 
                         {/* Key Field */}
-                        <div className="group space-y-1.5">
+                        <div className="group space-y-1.5 xl:space-y-2">
                             <div className="flex justify-between items-center">
-                                <label className="text-sm font-medium text-zinc-400">License Key</label>
-                                <button type="button" onClick={() => alert('Please check your email for your license key.')} className="text-xs text-rose-500 hover:text-rose-400 transition-colors font-medium">
+                                <label className="text-sm xl:text-base font-medium text-zinc-400">License Key</label>
+                                <button type="button" onClick={() => alert('Please check your email for your license key.')} className="text-xs xl:text-sm text-rose-500 hover:text-rose-400 transition-colors font-medium">
                                     Lost key?
                                 </button>
                             </div>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                                <input 
-                                    type="text" 
+                                <Lock className="absolute left-3 xl:left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} xl:size={20} />
+                                <input
+                                    type="text"
                                     required
                                     autoComplete="off"
                                     disabled={loginStatus !== 'idle'}
                                     value={formatDisplayCode(activationCode)}
                                     onChange={handleCodeChange}
-                                    className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white font-mono text-sm focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/50 transition-all placeholder-zinc-600 disabled:opacity-50"
+                                    className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-lg py-3 xl:py-4 pl-10 xl:pl-12 pr-4 text-white font-mono text-sm xl:text-base focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/50 transition-all placeholder-zinc-600 disabled:opacity-50"
                                     placeholder="0000 0000 0000 0000"
                                 />
                             </div>
@@ -396,39 +396,39 @@ const App: React.FC = () => {
 
                     {/* Error Message */}
                     {loginError && (
-                        <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg animate-in fade-in slide-in-from-top-1">
-                            <AlertCircle size={16} className="text-red-500 shrink-0" />
-                            <p className="text-xs text-red-400 font-medium">{loginError}</p>
+                        <div className="flex items-center gap-2 p-3 xl:p-4 bg-red-500/10 border border-red-500/20 rounded-lg animate-in fade-in slide-in-from-top-1">
+                            <AlertCircle size={16} xl:size={18} className="text-red-500 shrink-0" />
+                            <p className="text-xs xl:text-sm text-red-400 font-medium">{loginError}</p>
                         </div>
                     )}
 
                     {/* Action Area */}
-                    <div className="pt-2 space-y-4">
+                    <div className="pt-2 space-y-4 xl:space-y-6">
                         {loginStatus === 'idle' ? (
-                            <Button type="submit" className="h-12 text-sm font-medium shadow-rose-900/20 hover:shadow-rose-900/40 transition-all">
+                            <Button type="submit" className="h-12 xl:h-16 text-sm xl:text-base font-medium shadow-rose-900/20 hover:shadow-rose-900/40 transition-all">
                                 Enter the console
                             </Button>
                         ) : (
-                            <div className="h-12 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center gap-3 relative overflow-hidden">
+                            <div className="h-12 xl:h-16 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center gap-3 xl:gap-4 relative overflow-hidden">
                                 {loginStatus === 'success' ? (
                                     <div className="flex items-center gap-2 text-emerald-500 animate-in zoom-in">
-                                        <ShieldCheck size={18} />
-                                        <span className="font-medium text-sm">Authorized</span>
+                                        <ShieldCheck size={18} xl:size={20} />
+                                        <span className="font-medium text-sm xl:text-base">Authorized</span>
                                     </div>
                                 ) : (
                                     <>
-                                        <Loader2 size={18} className="animate-spin text-zinc-500" />
-                                        <span className="text-sm font-medium text-zinc-400">{loginStatusText}</span>
+                                        <Loader2 size={18} xl:size={20} className="animate-spin text-zinc-500" />
+                                        <span className="text-sm xl:text-base font-medium text-zinc-400">{loginStatusText}</span>
                                     </>
                                 )}
                             </div>
                         )}
-                        
+
                         <div className="text-center">
                             <button
                                 type="button"
                                 onClick={() => navigate('/dashboard')}
-                                className="text-xs text-zinc-500 hover:text-white transition-colors"
+                                className="text-xs xl:text-sm text-zinc-500 hover:text-white transition-colors"
                             >
                                 No license yet? <span className="text-rose-500 hover:underline">Claim a lifetime key</span>
                             </button>
@@ -437,15 +437,15 @@ const App: React.FC = () => {
                 </form>
 
                 {/* Footer / Trust */}
-                <div className="mt-12 pt-8 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-600">
+                <div className="mt-12 xl:mt-20 pt-8 xl:pt-12 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs xl:text-sm text-zinc-600">
                     <p>&copy; 2024 CupidBot Inc.</p>
-                    <div className="flex gap-4">
-                        <div className="flex items-center gap-1.5">
-                            <Lock size={10} />
+                    <div className="flex gap-4 xl:gap-6">
+                        <div className="flex items-center gap-1.5 xl:gap-2">
+                            <Lock size={10} xl:size={12} />
                             <span>Secure Connection</span>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                            <ShieldCheck size={10} />
+                        <div className="flex items-center gap-1.5 xl:gap-2">
+                            <ShieldCheck size={10} xl:size={12} />
                             <span>Encrypted</span>
                         </div>
                     </div>
@@ -457,60 +457,60 @@ const App: React.FC = () => {
   );
 
   const renderSettings = () => (
-    <div className="p-4 md:p-8 space-y-8 max-w-5xl mx-auto pb-24 md:pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-6 md:p-12 xl:p-20 space-y-12 xl:space-y-16 max-w-6xl xl:max-w-7xl mx-auto pb-24 md:pb-12 xl:pb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Settings Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button onClick={() => setView('dashboard')} className="p-2.5 bg-zinc-900/50 border border-white/5 hover:bg-white/5 rounded-full transition-all group">
-            <ChevronRight className="rotate-180 w-5 h-5 text-zinc-400 group-hover:text-white" />
+        <div className="flex items-center gap-4 xl:gap-6">
+          <button onClick={() => setView('dashboard')} className="p-2.5 xl:p-3 bg-zinc-900/50 border border-white/5 hover:bg-white/5 rounded-full transition-all group">
+            <ChevronRight className="rotate-180 w-5 xl:w-6 h-5 xl:h-6 text-zinc-400 group-hover:text-white" />
           </button>
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">Account & Finance</h2>
-            <p className="text-zinc-500 text-xs mt-0.5">Manage your balance and automation resources.</p>
+            <h2 className="text-2xl xl:text-4xl font-bold text-white tracking-tight">Account & Finance</h2>
+            <p className="text-zinc-500 text-xs xl:text-sm mt-0.5">Manage your balance and automation resources.</p>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 xl:gap-16">
         
         {/* Left Column: Identity */}
-        <div className="space-y-6">
+        <div className="space-y-6 xl:space-y-8">
           <div className="bg-[#09090b] border border-white/5 rounded-2xl p-1 overflow-hidden shadow-lg">
-            <div className="p-5 bg-gradient-to-b from-zinc-900/80 to-transparent space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center shadow-lg">
-                  <User className="w-8 h-8 text-zinc-400" />
+            <div className="p-6 xl:p-8 bg-gradient-to-b from-zinc-900/80 to-transparent space-y-6 xl:space-y-8">
+              <div className="flex items-center gap-4 xl:gap-6">
+                <div className="w-16 xl:w-20 h-16 xl:h-20 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center shadow-lg">
+                  <User className="w-8 xl:w-10 h-8 xl:h-10 text-zinc-400" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-lg">John Doe</h3>
-                  <div className="flex items-center gap-2 text-zinc-500 text-xs font-mono">
+                  <h3 className="font-bold text-white text-lg xl:text-xl">John Doe</h3>
+                  <div className="flex items-center gap-2 text-zinc-500 text-xs xl:text-sm font-mono">
                     <span>ID: 884-299-XK</span>
                     <span className="w-1 h-1 rounded-full bg-zinc-600" />
                     <span>Basic Tier</span>
                   </div>
                 </div>
               </div>
-              
-              <div className="space-y-3 pt-2 border-t border-white/5">
-                <div className="flex items-center justify-between text-sm">
+
+              <div className="space-y-3 xl:space-y-4 pt-2 border-t border-white/5">
+                <div className="flex items-center justify-between text-sm xl:text-base">
                   <span className="text-zinc-400">Account Status</span>
-                  <div className="flex items-center gap-1.5 text-zinc-200 px-2 py-0.5 rounded text-xs font-medium">
+                  <div className="flex items-center gap-1.5 text-zinc-200 px-2 py-0.5 rounded text-xs xl:text-sm font-medium">
                      Active
                   </div>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-sm xl:text-base">
                    <span className="text-zinc-400">Email</span>
-                   <span className="text-zinc-200 text-xs font-medium">johndoe@example.com</span>
+                   <span className="text-zinc-200 text-xs xl:text-sm font-medium">johndoe@example.com</span>
                 </div>
               </div>
             </div>
-            
-            <div className="bg-amber-500/5 border-t border-amber-500/10 p-4">
-              <div className="flex items-start gap-3">
-                 <Clock className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+
+            <div className="bg-amber-500/5 border-t border-amber-500/10 p-4 xl:p-6">
+              <div className="flex items-start gap-3 xl:gap-4">
+                 <Clock className="w-4 xl:w-5 h-4 xl:h-5 text-amber-500 shrink-0 mt-0.5" />
                  <div>
-                   <h4 className="text-xs font-bold text-amber-500 uppercase tracking-wide">Trial: 7 Days Remaining</h4>
-                   <p className="text-[10px] text-zinc-400 leading-relaxed mt-1">
+                   <h4 className="text-xs xl:text-sm font-bold text-amber-500 uppercase tracking-wide">Trial: 7 Days Remaining</h4>
+                   <p className="text-[10px] xl:text-xs text-zinc-400 leading-relaxed mt-1">
                      Please ensure your wallet is funded to maintain service continuity after the trial period.
                    </p>
                  </div>
@@ -523,38 +523,38 @@ const App: React.FC = () => {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Main Balance Card - "The Exchange Look" */}
-          <div className="bg-[#09090b] border border-white/5 rounded-2xl p-8 relative overflow-hidden group">
+          <div className="bg-[#09090b] border border-white/5 rounded-2xl p-10 xl:p-16 relative overflow-hidden group">
             {/* Ambient Background */}
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-indigo-500/5 rounded-full blur-[80px] pointer-events-none transition-opacity group-hover:opacity-100 opacity-50" />
+            <div className="absolute top-0 right-0 w-[300px] xl:w-[400px] h-[300px] xl:h-[400px] bg-indigo-500/5 rounded-full blur-[80px] pointer-events-none transition-opacity group-hover:opacity-100 opacity-50" />
 
             <div className="relative z-10">
                <div className="flex justify-between items-start">
                  <div>
-                    <span className="text-zinc-500 font-medium text-xs uppercase tracking-wider">Total Balance (USD)</span>
-                    <div className="flex items-baseline gap-2 mt-2 mb-6">
-                        <span className="text-5xl font-bold text-white tracking-tight">${balance.toFixed(2)}</span>
+                    <span className="text-zinc-500 font-medium text-xs xl:text-sm uppercase tracking-wider">Total Balance (USD)</span>
+                    <div className="flex items-baseline gap-2 mt-2 mb-6 xl:mb-8">
+                        <span className="text-5xl xl:text-7xl font-bold text-white tracking-tight">${balance.toFixed(2)}</span>
                         {walletConnected && (
-                            <div className="ml-2 px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase rounded border border-emerald-500/20 flex items-center gap-1">
-                                <Link size={10} /> Connected
+                            <div className="ml-2 px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] xl:text-xs font-bold uppercase rounded border border-emerald-500/20 flex items-center gap-1">
+                                <Link size={10} xl:size={12} /> Connected
                             </div>
                         )}
                     </div>
                  </div>
-                 <div className="bg-zinc-900/50 p-2 rounded-lg border border-white/5">
-                    <Wallet className="text-zinc-400" size={24} />
+                 <div className="bg-zinc-900/50 p-2 xl:p-3 rounded-lg border border-white/5">
+                    <Wallet className="text-zinc-400" size={24} xl:size={28} />
                  </div>
                </div>
 
-               <div className="flex flex-wrap gap-3">
+               <div className="flex flex-wrap gap-3 xl:gap-4">
                  {!walletConnected && (
-                    <Button onClick={() => setShowWalletModal(true)} className="w-auto px-6 bg-indigo-600 hover:bg-indigo-500 text-white border-none shadow-lg shadow-indigo-900/20">
-                        <Link size={16} className="mr-2" /> Connect Wallet
+                    <Button onClick={() => setShowWalletModal(true)} className="w-auto px-6 xl:px-8 bg-indigo-600 hover:bg-indigo-500 text-white border-none shadow-lg shadow-indigo-900/20">
+                        <Link size={16} xl:size={18} className="mr-2" /> Connect Wallet
                     </Button>
                  )}
-                 <Button onClick={() => setShowDepositModal(true)} className="w-auto px-6 bg-white text-black hover:bg-zinc-200 border-none">
-                    <ArrowDownLeft size={16} className="mr-2" /> Deposit Funds
+                 <Button onClick={() => setShowDepositModal(true)} className="w-auto px-6 xl:px-8 bg-white text-black hover:bg-zinc-200 border-none">
+                    <ArrowDownLeft size={16} xl:size={18} className="mr-2" /> Deposit Funds
                  </Button>
-                 <Button variant="secondary" className="w-auto px-6 border-zinc-700 hover:border-zinc-500" onClick={() => alert("Withdrawals available after 30 days of account activity.")}>
+                 <Button variant="secondary" className="w-auto px-6 xl:px-8 border-zinc-700 hover:border-zinc-500" onClick={() => alert("Withdrawals available after 30 days of account activity.")}>
                     Withdraw
                  </Button>
                </div>
@@ -562,49 +562,49 @@ const App: React.FC = () => {
           </div>
 
           {/* Resources / Shop */}
-          <div className="space-y-4">
+          <div className="space-y-4 xl:space-y-6">
              <div className="flex items-center justify-between px-1">
-               <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-                 <Zap size={16} className="text-amber-500" />
+               <h3 className="text-sm xl:text-base font-bold text-zinc-200 flex items-center gap-2">
+                 <Zap size={16} xl:size={18} className="text-amber-500" />
                  Resource Allocation
                </h3>
-               <span className="text-xs text-zinc-500 font-mono">Status: Online</span>
+               <span className="text-xs xl:text-sm text-zinc-500 font-mono">Status: Online</span>
              </div>
-             
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6">
                {/* Proxy Card */}
-               <div className="group bg-zinc-900/20 border border-white/5 rounded-xl p-5 hover:bg-zinc-900/40 hover:border-white/10 transition-all cursor-pointer">
-                  <div className="flex justify-between items-start mb-4">
-                     <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
-                       <Globe size={20} />
+               <div className="group bg-zinc-900/20 border border-white/5 rounded-xl p-6 xl:p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all cursor-pointer">
+                  <div className="flex justify-between items-start mb-4 xl:mb-6">
+                     <div className="w-10 xl:w-12 h-10 xl:h-12 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+                       <Globe size={20} xl:size={24} />
                      </div>
-                     <span className="text-xs font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded border border-white/5">QTY: {proxiesOwned}</span>
+                     <span className="text-xs xl:text-sm font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded border border-white/5">QTY: {proxiesOwned}</span>
                   </div>
-                  <h4 className="font-bold text-zinc-200">Residential Proxies</h4>
-                  <p className="text-xs text-zinc-500 mt-1 mb-6">High-anonymity IP rotation nodes.</p>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <span className="font-bold text-white font-mono">$1.00 <span className="text-zinc-600 text-[10px] font-sans">/ unit</span></span>
-                    <button onClick={() => purchaseItem(1.00, 'proxy')} className="text-xs font-bold bg-zinc-100 hover:bg-white text-black px-3 py-1.5 rounded-lg transition-colors border border-transparent">
+                  <h4 className="font-bold text-zinc-200 text-base xl:text-lg">Residential Proxies</h4>
+                  <p className="text-xs xl:text-sm text-zinc-500 mt-1 mb-6 xl:mb-8">High-anonymity IP rotation nodes.</p>
+
+                  <div className="flex items-center justify-between pt-4 xl:pt-6 border-t border-white/5">
+                    <span className="font-bold text-white font-mono text-sm xl:text-base">$1.00 <span className="text-zinc-600 text-[10px] xl:text-xs font-sans">/ unit</span></span>
+                    <button onClick={() => purchaseItem(1.00, 'proxy')} className="text-xs xl:text-sm font-bold bg-zinc-100 hover:bg-white text-black px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg transition-colors border border-transparent">
                       Provision
                     </button>
                   </div>
                </div>
 
                {/* Phone Number Card */}
-               <div className="group bg-zinc-900/20 border border-white/5 rounded-xl p-5 hover:bg-zinc-900/40 hover:border-white/10 transition-all cursor-pointer">
-                  <div className="flex justify-between items-start mb-4">
-                     <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
-                       <Smartphone size={20} />
+               <div className="group bg-zinc-900/20 border border-white/5 rounded-xl p-6 xl:p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all cursor-pointer">
+                  <div className="flex justify-between items-start mb-4 xl:mb-6">
+                     <div className="w-10 xl:w-12 h-10 xl:h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                       <Smartphone size={20} xl:size={24} />
                      </div>
-                     <span className="text-xs font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded border border-white/5">QTY: {numbersOwned}</span>
+                     <span className="text-xs xl:text-sm font-mono text-zinc-500 bg-zinc-900 px-2 py-1 rounded border border-white/5">QTY: {numbersOwned}</span>
                   </div>
-                  <h4 className="font-bold text-zinc-200">SMS Uplinks</h4>
-                  <p className="text-xs text-zinc-500 mt-1 mb-6">Dedicated SIM verification endpoints.</p>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <span className="font-bold text-white font-mono">$0.10 <span className="text-zinc-600 text-[10px] font-sans">/ unit</span></span>
-                    <button onClick={() => purchaseItem(0.10, 'number')} className="text-xs font-bold bg-zinc-100 hover:bg-white text-black px-3 py-1.5 rounded-lg transition-colors border border-transparent">
+                  <h4 className="font-bold text-zinc-200 text-base xl:text-lg">SMS Uplinks</h4>
+                  <p className="text-xs xl:text-sm text-zinc-500 mt-1 mb-6 xl:mb-8">Dedicated SIM verification endpoints.</p>
+
+                  <div className="flex items-center justify-between pt-4 xl:pt-6 border-t border-white/5">
+                    <span className="font-bold text-white font-mono text-sm xl:text-base">$0.10 <span className="text-zinc-600 text-[10px] xl:text-xs font-sans">/ unit</span></span>
+                    <button onClick={() => purchaseItem(0.10, 'number')} className="text-xs xl:text-sm font-bold bg-zinc-100 hover:bg-white text-black px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg transition-colors border border-transparent">
                       Provision
                     </button>
                   </div>
@@ -676,18 +676,18 @@ const App: React.FC = () => {
                             {/* Step 2: Payment */}
                             {(purchaseStep === 'crypto' || purchaseStep === 'verifying') && (
                                 <div className="space-y-6">
-                                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar justify-center">
+                                    <div className="flex gap-2 justify-center">
                                         {CRYPTO_OPTIONS.slice(0,4).map((coin) => (
-                                            <button 
+                                            <button
                                             key={coin.id}
-                                            onClick={() => { setSelectedCoin(coin); setCopied(false); }}
+                                            onClick={() => { setSelectedCoin(coin.id); setCopied(false); }}
                                             className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-[10px] font-bold whitespace-nowrap transition-all ${
-                                                selectedCoin.id === coin.id 
-                                                ? 'bg-white text-black border-white shadow-lg' 
+                                                selectedCoin === coin.id
+                                                ? 'bg-white text-black border-white shadow-lg'
                                                 : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800'
                                             }`}
                                             >
-                                            <div className={`w-1.5 h-1.5 rounded-full ${coin.id === selectedCoin.id ? 'bg-black' : coin.color.replace('text-', 'bg-')}`} />
+                                            <div className={`w-1.5 h-1.5 rounded-full ${coin.id === selectedCoin ? 'bg-black' : coin.color.replace('text-', 'bg-')}`} />
                                             {coin.symbol}
                                             </button>
                                         ))}
@@ -699,14 +699,14 @@ const App: React.FC = () => {
                                             <QrCode size={100} className="text-black" />
                                             </div>
                                         </div>
-                                        
+
                                         <div>
-                                            <p className="text-xs text-zinc-500 mb-2 font-mono">Send exactly <strong className="text-white">${selectedPlan.price}.00</strong> worth of {selectedCoin.symbol}</p>
-                                            <div 
+                                            <p className="text-xs text-zinc-500 mb-2 font-mono">Send exactly <strong className="text-white">${selectedPlan.price}.00</strong> worth of {CRYPTO_OPTIONS.find(c => c.id === selectedCoin)?.symbol}</p>
+                                            <div
                                                 onClick={handleCopyAddress}
                                                 className="bg-black border border-zinc-800 rounded-lg p-3 flex justify-between items-center cursor-pointer hover:border-zinc-700 group"
                                             >
-                                                <code className="text-xs text-zinc-400 truncate mr-4">{selectedCoin.address}</code>
+                                                <code className="text-xs text-zinc-400 truncate mr-4">{CRYPTO_OPTIONS.find(c => c.id === selectedCoin)?.address}</code>
                                                 {copied ? <CheckCircle2 size={14} className="text-emerald-500" /> : <Copy size={14} className="text-zinc-600 group-hover:text-zinc-400" />}
                                             </div>
                                         </div>
@@ -765,50 +765,50 @@ const App: React.FC = () => {
     <div className="flex h-screen bg-[#050505] text-zinc-100 overflow-hidden font-sans">
       
       {/* 1. Sidebar */}
-      <div className="w-[280px] bg-[#09090b] border-r border-white/5 flex flex-col hidden md:flex shrink-0 z-20">
-        <div className="h-16 flex items-center px-6 border-b border-white/5">
+      <div className="w-[320px] xl:w-[400px] bg-[#09090b] border-r border-white/5 flex flex-col hidden md:flex shrink-0 z-20">
+        <div className="h-16 xl:h-20 flex items-center px-6 xl:px-8 border-b border-white/5">
            <Logo size="sm" />
         </div>
 
-        <div className="flex-1 px-4 py-6 space-y-8 overflow-y-auto">
+        <div className="flex-1 px-4 xl:px-6 py-6 xl:py-8 space-y-8 xl:space-y-10 overflow-y-auto">
           {/* Main Nav */}
-          <div className="space-y-1">
-            <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider px-3 mb-3">Platform</div>
-            <NavPacket active={view === 'dashboard'} onClick={() => setView('dashboard')} icon={<LayoutGrid size={18} />} label="Command Center" />
-            <NavPacket icon={<Activity size={18} />} label="Live Analytics" badge="• Live" badgeColor="text-emerald-500" />
-            <NavPacket icon={<BarChart3 size={18} />} label="Performance" />
+          <div className="space-y-1 xl:space-y-2">
+            <div className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-wider px-3 mb-3 xl:mb-4">Platform</div>
+            <NavPacket active={view === 'dashboard'} onClick={() => setView('dashboard')} icon={<LayoutGrid size={18} xl:size={20} />} label="Command Center" />
+            <NavPacket icon={<Activity size={18} xl:size={20} />} label="Live Analytics" badge="• Live" badgeColor="text-emerald-500" />
+            <NavPacket icon={<BarChart3 size={18} xl:size={20} />} label="Performance" />
           </div>
 
           {/* Configuration */}
-          <div className="space-y-1">
-            <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider px-3 mb-3">Configuration</div>
-            <NavPacket icon={<Cpu size={18} />} label="AI Behavior" />
-            <NavPacket icon={<Settings size={18} />} label="Security Protocols" />
-            <NavPacket active={view === 'settings'} onClick={() => setView('settings')} icon={<Wallet size={18} />} label="Finance & Billing" />
+          <div className="space-y-1 xl:space-y-2">
+            <div className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-wider px-3 mb-3 xl:mb-4">Configuration</div>
+            <NavPacket icon={<Cpu size={18} xl:size={20} />} label="AI Behavior" />
+            <NavPacket icon={<Settings size={18} xl:size={20} />} label="Security Protocols" />
+            <NavPacket active={view === 'settings'} onClick={() => setView('settings')} icon={<Wallet size={18} xl:size={20} />} label="Finance & Billing" />
           </div>
 
            {/* Support */}
-           <div className="space-y-1">
-            <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider px-3 mb-3">Support</div>
-            <NavPacket icon={<FileText size={18} />} label="Documentation" />
-            <NavPacket icon={<HelpCircle size={18} />} label="Contact Support" />
-          </div>
+           <div className="space-y-1 xl:space-y-2">
+            <div className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-wider px-3 mb-3 xl:mb-4">Support</div>
+            <NavPacket icon={<FileText size={18} xl:size={20} />} label="Documentation" />
+            <NavPacket icon={<HelpCircle size={18} xl:size={20} />} label="Contact Support" />
+           </div>
         </div>
 
         {/* User Footer */}
-        <div className="p-4 border-t border-white/5 bg-zinc-900/30">
-          <div className="flex items-center gap-3">
+        <div className="p-4 xl:p-6 border-t border-white/5 bg-zinc-900/30">
+          <div className="flex items-center gap-3 xl:gap-4">
             <div className="relative">
-              <div className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-xs border border-white/10 text-zinc-300">
+              <div className="w-9 xl:w-12 h-9 xl:h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-xs xl:text-sm border border-white/10 text-zinc-300">
                 JD
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate text-white">John Doe</div>
-              <div className="text-[10px] text-zinc-500 truncate uppercase tracking-wider">Enterprise Plan</div>
+              <div className="text-sm xl:text-base font-medium truncate text-white">John Doe</div>
+              <div className="text-[10px] xl:text-xs text-zinc-500 truncate uppercase tracking-wider">Enterprise Plan</div>
             </div>
-            <button onClick={() => setView('login')} className="p-2 text-zinc-500 hover:text-white transition-colors hover:bg-white/5 rounded-lg">
-              <LogOut size={16} />
+            <button onClick={() => setView('login')} className="p-2 xl:p-3 text-zinc-500 hover:text-white transition-colors hover:bg-white/5 rounded-lg">
+              <LogOut size={16} xl:size={18} />
             </button>
           </div>
         </div>
@@ -818,84 +818,84 @@ const App: React.FC = () => {
       <div className="flex-1 flex flex-col min-w-0 bg-[#050505] relative">
         
         {/* Desktop Top Bar */}
-        <div className="hidden md:flex h-16 border-b border-white/5 items-center justify-between px-8 bg-[#09090b]/50 backdrop-blur-sm sticky top-0 z-10">
-           <div className="flex items-center gap-2 text-sm text-zinc-500">
+        <div className="hidden md:flex h-16 xl:h-20 border-b border-white/5 items-center justify-between px-8 xl:px-12 bg-[#09090b]/50 backdrop-blur-sm sticky top-0 z-10">
+           <div className="flex items-center gap-2 text-sm xl:text-base text-zinc-500">
              <span>Platform</span>
-             <ChevronRight size={14} />
+             <ChevronRight size={14} xl:size={16} />
              <span className="text-white font-medium">{view === 'settings' ? 'Settings' : 'Dashboard'}</span>
            </div>
-           
-           <div className="flex items-center gap-4">
-              <div className="h-4 w-[1px] bg-zinc-800" />
+
+           <div className="flex items-center gap-4 xl:gap-6">
+              <div className="h-4 xl:h-5 w-[1px] bg-zinc-800" />
               <button className="relative text-zinc-400 hover:text-white transition-colors">
-                <Bell size={18} />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border-2 border-[#09090b] translate-x-1 -translate-y-0.5"></span>
+                <Bell size={18} xl:size={20} />
+                <span className="absolute top-0 right-0 w-2 xl:w-3 h-2 xl:h-3 bg-rose-500 rounded-full border-2 border-[#09090b] translate-x-1 -translate-y-0.5"></span>
               </button>
            </div>
         </div>
 
         {/* Mobile Header */}
-        <div className="md:hidden h-16 border-b border-white/5 flex items-center justify-between px-4 bg-[#09090b] sticky top-0 z-10">
+        <div className="md:hidden h-16 xl:h-20 border-b border-white/5 flex items-center justify-between px-4 xl:px-6 bg-[#09090b] sticky top-0 z-10">
            <Logo size="sm" />
-           <button onClick={() => setView('settings')} className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center border border-white/5">
-             <Settings size={18} />
+           <button onClick={() => setView('settings')} className="w-10 xl:w-12 h-10 xl:h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/5">
+             <Settings size={18} xl:size={20} />
            </button>
         </div>
 
         {/* Scroll Area */}
         <div className="flex-1 overflow-y-auto">
            {view === 'settings' ? renderSettings() : (
-             <div className="p-4 md:p-8 space-y-8 pb-20 md:pb-8 animate-in fade-in duration-500">
-               
+             <div className="p-6 md:p-12 xl:p-20 space-y-12 xl:space-y-16 pb-20 md:pb-8 xl:pb-12 animate-in fade-in duration-500">
+
                {/* Dashboard Header */}
-               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 xl:gap-6">
                 <div>
-                  <h1 className="text-3xl font-bold text-white tracking-tight">Command Center</h1>
-                  <p className="text-sm text-zinc-500 mt-1">Real-time overview of your automation infrastructure.</p>
+                  <h1 className="text-4xl xl:text-6xl font-bold text-white tracking-tight">Command Center</h1>
+                  <p className="text-sm xl:text-base text-zinc-500 mt-1">Real-time overview of your automation infrastructure.</p>
                 </div>
-                <div className="flex gap-2">
-                   <Button variant="secondary" className="w-auto px-4 py-2 h-9 text-xs">
+                <div className="flex gap-2 xl:gap-3">
+                   <Button variant="secondary" className="w-auto px-4 xl:px-6 py-2 xl:py-3 h-9 xl:h-12 text-xs xl:text-sm">
                       Export Report
                    </Button>
-                   <Button className="w-auto px-4 py-2 h-9 text-xs bg-white text-black hover:bg-zinc-200 border-none">
-                      <Plus size={14} className="mr-2" /> New Instance
+                   <Button className="w-auto px-4 xl:px-6 py-2 xl:py-3 h-9 xl:h-12 text-xs xl:text-sm bg-white text-black hover:bg-zinc-200 border-none">
+                      <Plus size={14} xl:size={16} className="mr-2" /> New Instance
                    </Button>
                 </div>
                </div>
 
                {/* Stats Row - LEGIT OVERHAUL */}
-               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
                   {/* Network Latency */}
-                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-5 relative overflow-hidden group">
-                     <div className="flex justify-between items-start mb-4 relative z-10">
+                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-6 xl:p-8 relative overflow-hidden group">
+                     <div className="flex justify-between items-start mb-4 xl:mb-6 relative z-10">
                         <div className="flex flex-col">
-                           <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Network Latency</span>
+                           <span className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-widest">Network Latency</span>
                         </div>
-                        <Signal size={16} className="text-zinc-600" />
+                        <Signal size={16} xl:size={18} className="text-zinc-600" />
                      </div>
                      <div className="flex items-baseline gap-2 relative z-10">
-                        <span className="text-3xl font-mono font-bold text-white tracking-tighter">42</span>
-                        <span className="text-xs font-mono text-zinc-500">ms</span>
+                        <span className="text-3xl xl:text-4xl font-mono font-bold text-white tracking-tighter">42</span>
+                        <span className="text-xs xl:text-sm font-mono text-zinc-500">ms</span>
                      </div>
                      <div className="mt-2 flex items-center gap-2 relative z-10">
                         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                        <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Optimal</span>
+                        <span className="text-[10px] xl:text-xs text-emerald-500 font-bold uppercase tracking-wider">Optimal</span>
                      </div>
                      {/* Deco Line */}
                      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500/0 via-emerald-500/20 to-emerald-500/0 opacity-50" />
                   </div>
 
                   {/* Requests Per Minute */}
-                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-5 relative overflow-hidden group">
-                     <div className="flex justify-between items-start mb-4">
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Live Throughput</span>
-                        <Activity size={16} className="text-rose-500" />
+                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-6 xl:p-8 relative overflow-hidden group">
+                     <div className="flex justify-between items-start mb-4 xl:mb-6">
+                        <span className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-widest">Live Throughput</span>
+                        <Activity size={16} xl:size={18} className="text-rose-500" />
                      </div>
                      <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-mono font-bold text-white tracking-tighter">842</span>
-                        <span className="text-xs font-mono text-zinc-500">RPM</span>
+                        <span className="text-3xl xl:text-4xl font-mono font-bold text-white tracking-tighter">842</span>
+                        <span className="text-xs xl:text-sm font-mono text-zinc-500">RPM</span>
                      </div>
-                     <div className="mt-2 w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden flex gap-0.5">
+                     <div className="mt-2 w-full h-1.5 xl:h-2 bg-zinc-900 rounded-full overflow-hidden flex gap-0.5">
                         <div className="h-full w-[20%] bg-rose-900/40" />
                         <div className="h-full w-[30%] bg-rose-800/60" />
                         <div className="h-full w-[40%] bg-rose-600" />
@@ -903,55 +903,55 @@ const App: React.FC = () => {
                   </div>
 
                   {/* Success Rate */}
-                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-5 relative overflow-hidden group">
-                     <div className="flex justify-between items-start mb-4">
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Success Rate</span>
-                        <MousePointerClick size={16} className="text-indigo-500" />
+                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-6 xl:p-8 relative overflow-hidden group">
+                     <div className="flex justify-between items-start mb-4 xl:mb-6">
+                        <span className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-widest">Success Rate</span>
+                        <MousePointerClick size={16} xl:size={18} className="text-indigo-500" />
                      </div>
                      <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-mono font-bold text-white tracking-tighter">94.2</span>
-                        <span className="text-xs font-mono text-zinc-500">%</span>
+                        <span className="text-3xl xl:text-4xl font-mono font-bold text-white tracking-tighter">94.2</span>
+                        <span className="text-xs xl:text-sm font-mono text-zinc-500">%</span>
                      </div>
                      <div className="mt-2 flex items-center gap-2">
-                        <span className="text-[10px] text-indigo-400 font-mono bg-indigo-500/10 px-1.5 py-0.5 rounded border border-indigo-500/20">24H AVG</span>
-                        <span className="text-[10px] text-zinc-500 font-mono">Top 5%</span>
+                        <span className="text-[10px] xl:text-xs text-indigo-400 font-mono bg-indigo-500/10 px-1.5 py-0.5 rounded border border-indigo-500/20">24H AVG</span>
+                        <span className="text-[10px] xl:text-xs text-zinc-500 font-mono">Top 5%</span>
                      </div>
                   </div>
 
                   {/* Est Yield */}
-                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-5 relative overflow-hidden group">
-                     <div className="flex justify-between items-start mb-4">
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Est. Yield</span>
-                        <DollarSign size={16} className="text-amber-500" />
+                  <div className="bg-[#0c0c0e] border border-zinc-800 rounded-xl p-6 xl:p-8 relative overflow-hidden group">
+                     <div className="flex justify-between items-start mb-4 xl:mb-6">
+                        <span className="text-[10px] xl:text-xs font-bold text-zinc-500 uppercase tracking-widest">Est. Yield</span>
+                        <DollarSign size={16} xl:size={18} className="text-amber-500" />
                      </div>
                      <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-mono font-bold text-white tracking-tighter">$2.4k</span>
-                        <span className="text-xs font-mono text-zinc-500">/mo</span>
+                        <span className="text-3xl xl:text-4xl font-mono font-bold text-white tracking-tighter">$2.4k</span>
+                        <span className="text-xs xl:text-sm font-mono text-zinc-500">/mo</span>
                      </div>
-                     <div className="mt-2 flex items-center gap-1.5 text-emerald-500 text-[10px] font-bold uppercase">
-                        <TrendingUp size={10} />
+                     <div className="mt-2 flex items-center gap-1.5 text-emerald-500 text-[10px] xl:text-xs font-bold uppercase">
+                        <TrendingUp size={10} xl:size={12} />
                         <span>+12.4% vs prev</span>
                      </div>
                   </div>
                </div>
 
                {/* Grid */}
-               <div className="space-y-5">
-                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                    <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-                      <Zap size={16} className="text-yellow-500" />
+               <div className="space-y-5 xl:space-y-7">
+                 <div className="flex items-center justify-between border-b border-white/5 pb-4 xl:pb-6">
+                    <h3 className="text-sm xl:text-base font-bold text-zinc-200 flex items-center gap-2">
+                      <Zap size={16} xl:size={18} className="text-yellow-500" />
                       Active Integrations
                     </h3>
-                    <span className="text-xs text-zinc-500">5 Endpoints Detected</span>
+                    <span className="text-xs xl:text-sm text-zinc-500">5 Endpoints Detected</span>
                  </div>
-                 
-                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+
+                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
                    {DATING_APPS.map((app) => (
-                     <AppCard 
-                       key={app.id} 
-                       app={app} 
-                       loading={loadingAppId === app.id} 
-                       onClick={() => handleAppSelect(app)} 
+                     <AppCard
+                       key={app.id}
+                       app={app}
+                       loading={loadingAppId === app.id}
+                       onClick={() => handleAppSelect(app)}
                      />
                    ))}
                  </div>
@@ -1015,67 +1015,67 @@ const App: React.FC = () => {
 // --- Sub-components for cleaner App.tsx ---
 
 const NavPacket = ({ icon, label, active, badge, badgeColor = 'text-white', onClick }: any) => (
-  <div 
+  <div
     onClick={onClick}
-    className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-200 group ${active ? 'bg-zinc-800/80 text-white' : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'}`}
+    className={`flex items-center justify-between px-3 xl:px-4 py-2.5 xl:py-3.5 rounded-lg cursor-pointer transition-all duration-200 group ${active ? 'bg-zinc-800/80 text-white' : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'}`}
   >
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 xl:gap-4">
       {React.cloneElement(icon, { size: 18, className: active ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300' })}
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-sm xl:text-base font-medium">{label}</span>
     </div>
     {badge && (
-      <span className={`text-[10px] font-bold bg-white/5 px-1.5 py-0.5 rounded border border-white/5 ${badgeColor}`}>{badge}</span>
+      <span className={`text-[10px] xl:text-xs font-bold bg-white/5 px-1.5 xl:px-2 py-0.5 rounded border border-white/5 ${badgeColor}`}>{badge}</span>
     )}
   </div>
 );
 
 const AppCard: React.FC<{ app: DatingApp; loading: boolean; onClick: () => void }> = ({ app, loading, onClick }) => {
-  const isComingSoon = app.status === 'coming_soon';
-  const isPremiumOnly = app.status === 'premium_only';
-  const isLocked = isComingSoon || isPremiumOnly;
-  
-  return (
-    <div 
-      onClick={onClick}
-      className={`relative group bg-[#09090b] border border-white/5 hover:border-white/10 p-5 rounded-xl transition-all duration-300 flex items-start gap-4 overflow-hidden
-        ${isLocked ? 'cursor-not-allowed opacity-80' : 'hover:shadow-xl hover:shadow-rose-900/5 hover:-translate-y-0.5 cursor-pointer'}
-        ${loading ? 'ring-1 ring-emerald-500/50' : ''}
-      `}
-    >
-      {/* Background Hover Effect */}
-      {!isLocked && (
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-      )}
+   const isComingSoon = app.status === 'coming_soon';
+   const isPremiumOnly = app.status === 'premium_only';
+   const isLocked = isComingSoon || isPremiumOnly;
 
-      <div className={`w-12 h-12 rounded-xl ${app.iconColor} flex items-center justify-center text-white shadow-lg shrink-0 transition-transform group-hover:scale-105 ring-1 ring-white/10`}>
-          {loading ? (
-             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-             <>
-               {app.id === 'tinder' && <TinderIcon />}
-               {app.id === 'bumble' && <BumbleIcon />}
-               {app.id === 'hinge' && <HingeIcon />}
-               {app.id === 'okcupid' && <OkCupidIcon />}
-               {app.id === 'grindr' && <GrindrIcon />}
-             </>
-          )}
-      </div>
-      
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-0.5">
-          <h4 className="font-bold text-white tracking-tight">{app.name}</h4>
-          {app.status === 'active' && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.8)]" />}
-        </div>
-        <p className="text-xs text-zinc-500 truncate">{app.description}</p>
-      </div>
+   return (
+     <div
+       onClick={onClick}
+       className={`relative group bg-[#09090b] border border-white/5 hover:border-white/10 p-6 xl:p-8 rounded-xl transition-all duration-300 flex items-start gap-4 xl:gap-6 overflow-hidden
+         ${isLocked ? 'cursor-not-allowed opacity-80' : 'hover:shadow-xl hover:shadow-rose-900/5 hover:-translate-y-0.5 cursor-pointer'}
+         ${loading ? 'ring-1 ring-emerald-500/50' : ''}
+       `}
+     >
+       {/* Background Hover Effect */}
+       {!isLocked && (
+         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+       )}
 
-      {isLocked && (
-        <div className="absolute top-2 right-2 text-zinc-600">
-           <Lock size={12} />
-        </div>
-      )}
-    </div>
-  );
-};
+       <div className={`w-12 xl:w-16 h-12 xl:h-16 rounded-xl ${app.iconColor} flex items-center justify-center text-white shadow-lg shrink-0 transition-transform group-hover:scale-105 ring-1 ring-white/10`}>
+           {loading ? (
+              <div className="w-5 xl:w-6 h-5 xl:h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+           ) : (
+              <>
+                {app.id === 'tinder' && <TinderIcon />}
+                {app.id === 'bumble' && <BumbleIcon />}
+                {app.id === 'hinge' && <HingeIcon />}
+                {app.id === 'okcupid' && <OkCupidIcon />}
+                {app.id === 'grindr' && <GrindrIcon />}
+              </>
+           )}
+       </div>
+
+       <div className="flex-1 min-w-0">
+         <div className="flex items-center justify-between mb-0.5 xl:mb-1">
+           <h4 className="font-bold text-white tracking-tight text-base xl:text-lg">{app.name}</h4>
+           {app.status === 'active' && <span className="w-1.5 xl:w-2 h-1.5 xl:h-2 rounded-full bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.8)]" />}
+         </div>
+         <p className="text-xs xl:text-sm text-zinc-500 truncate">{app.description}</p>
+       </div>
+
+       {isLocked && (
+         <div className="absolute top-2 xl:top-3 right-2 xl:right-3 text-zinc-600">
+            <Lock size={12} xl:size={14} />
+         </div>
+       )}
+     </div>
+   );
+ };
 
 export default App;
