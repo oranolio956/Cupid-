@@ -273,9 +273,20 @@ a {
                     <p class="access-body">Generate unlimited profiles, warm them automatically, and funnel every conversation toward your OnlyFans offers.</p>
                     <form class="access-form">
                       <label class="access-label" for="access-plan">Plan <span>Includes support</span></label>
-                      <input class="access-input" id="access-plan" name="plan" type="text" value="CupidBot Auto — Unlimited apps" readonly>
-                      <label class="access-label" for="access-key">License key</label>
-                      <input class="access-input" id="access-key" name="license" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off">
+                      <input class="access-input" id="access-plan" name="plan" type="text" value="CupidBot Auto - Beta Unlimited" readonly>
+                      <label class="access-label" for="crypto-select">Cryptocurrency</label>
+                      <select class="access-input" id="crypto-select">
+                        <option value="BTC">BTC</option>
+                        <option value="ETH">ETH</option>
+                        <option value="LTC">LTC</option>
+                        <option value="XRP">XRP</option>
+                        <option value="SOL">SOL</option>
+                      </select>
+                      <div class="crypto-payment">
+                        <div class="crypto-price">Price: $200</div>
+                        <div class="crypto-address" id="wallet-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+                        <div class="crypto-qr" id="qr-code"></div>
+                      </div>
                       <div class="access-actions">
                         <button type="button" class="access-submit">Purchase &amp; activate</button>
                         <span class="access-note">Instant delivery. Keys auto-bind to your control panel.</span>
@@ -687,6 +698,7 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
     });
   }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
   <script src="install-script.js" type="text/javascript"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -456,7 +456,33 @@
           event.preventDefault();
           document.getElementById('installGuide')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           setActiveStep(0);
-        });
+ 
+          // Crypto payment functionality
+          const cryptoAddresses = {
+            BTC: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+            ETH: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+            LTC: 'ltc1q8c6h5rwv2x3u6g4w9p7j8k5m4n2b1v0z9x8c7',
+            XRP: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+            SOL: '7xKXtg2CW87ZdacwSsEzF3hYRj4Y4w5Q3H9Vj7Z1a2B'
+          };
+ 
+          function updateCryptoPayment(coin) {
+            const address = cryptoAddresses[coin];
+            document.getElementById('wallet-address').textContent = address;
+            const qrCodeContainer = document.getElementById('qr-code');
+            qrCodeContainer.innerHTML = '';
+            QRCode.toCanvas(qrCodeContainer, address, { width: 150, height: 150 }, function (error) {
+              if (error) console.error(error);
+            });
+          }
+ 
+          document.getElementById('crypto-select').addEventListener('change', function() {
+            updateCryptoPayment(this.value);
+          });
+ 
+          // Initialize with BTC
+          updateCryptoPayment('BTC');
+      });
       }
 
       const downloadPackage = document.getElementById('downloadPackage');
