@@ -1834,6 +1834,208 @@
       }
     }
 
+    /* Desktop enhancements for spacious and professional look */
+    @media (min-width: 1200px) {
+      /* Increase heading sizes */
+      .heading-medium {
+        font-size: 3.5rem;
+        line-height: 1.1;
+      }
+
+      .text-size-xlarge {
+        font-size: 1.75rem;
+        line-height: 1.6;
+      }
+
+      /* Increase section padding */
+      .padding-vertical.padding-xlarge {
+        padding-top: 120px;
+        padding-bottom: 120px;
+      }
+
+      .padding-vertical.padding-large {
+        padding-top: 80px;
+        padding-bottom: 80px;
+      }
+
+      /* Increase card padding and spacing */
+      .access-card {
+        padding: 48px;
+        gap: 20px;
+      }
+
+      .access-title {
+        font-size: 28px;
+      }
+
+      .access-body {
+        font-size: 17px;
+      }
+
+      /* Larger buttons */
+      .install-btn_primary,
+      .install-btn_primary:link,
+      .install-btn_primary:visited {
+        padding: 20px 44px;
+        font-size: 18px;
+        gap: 16px;
+      }
+
+      .install-btn_primary.install-btn_primary--compact {
+        padding: 18px 32px;
+        font-size: 16px;
+      }
+
+      .install-btn_secondary,
+      .install-btn_secondary:link,
+      .install-btn_secondary:visited,
+      .install-btn_ghost,
+      .install-btn_ghost:link,
+      .install-btn_ghost:visited {
+        padding: 18px 30px;
+        font-size: 15px;
+      }
+
+      /* Increase panel padding */
+      .install-panel {
+        padding: 52px;
+        gap: 26px;
+      }
+
+      .install-panel_heading {
+        font-size: 32px;
+      }
+
+      .install-panel_body {
+        font-size: 17px;
+        gap: 20px;
+      }
+
+      /* Larger grid gaps */
+      .access-grid {
+        gap: 24px;
+      }
+
+      .install-status_grid {
+        gap: 20px;
+      }
+
+      .install-metrics {
+        gap: 20px;
+      }
+
+      .install-seo_grid {
+        gap: 28px;
+      }
+
+      .install-faq_list {
+        gap: 20px;
+      }
+
+      /* Increase input sizes */
+      .access-input {
+        padding: 16px 18px;
+        font-size: 17px;
+      }
+
+      /* Larger metrics */
+      .install-metric_value {
+        font-size: 22px;
+      }
+
+      .install-metric_label {
+        font-size: 14px;
+        margin-top: 8px;
+      }
+
+      /* Increase flow padding */
+      .install-flow {
+        padding: 60px 60px 68px;
+        gap: 48px;
+      }
+
+      /* Larger step buttons */
+      .install-step_btn {
+        padding: 22px 26px;
+        gap: 20px;
+      }
+
+      .install-step_index {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+      }
+
+      .install-step_title {
+        font-size: 16px;
+      }
+
+      .install-step_status {
+        font-size: 14px;
+      }
+
+      /* Increase SEO section padding */
+      .install-seo {
+        padding: 64px 60px;
+        gap: 42px;
+      }
+
+      .install-seo_header h2 {
+        font-size: clamp(36px, 4vw, 52px);
+      }
+
+      .install-seo_header p {
+        font-size: 20px;
+      }
+
+      .install-seo_card {
+        padding: 30px 32px;
+        gap: 16px;
+      }
+
+      .install-seo_card h3 {
+        font-size: 22px;
+      }
+
+      .install-seo_card p {
+        font-size: 16px;
+      }
+
+      /* Larger FAQ items */
+      .install-faq_item {
+        padding: 20px 22px;
+        gap: 12px;
+      }
+
+      .install-faq_item h3 {
+        font-size: 17px;
+      }
+
+      .install-faq_item p {
+        font-size: 16px;
+      }
+
+      /* Increase support card padding */
+      .install-support_card {
+        padding: 42px 48px;
+        gap: 28px;
+      }
+
+      .install-support_card h2 {
+        font-size: 28px;
+      }
+
+      .install-support_card p {
+        font-size: 17px;
+      }
+
+      /* Larger footer padding */
+      .padding-vertical.padding-xlarge {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
