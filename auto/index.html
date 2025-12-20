@@ -204,6 +204,7 @@ a {
                     <div class="margin-bottom margin-small">
                       <div class="text-meta">Automated dating app launchpad</div>
                     </div>
+                    <div id="personal-greeting" class="margin-bottom margin-small"></div>
                     <div class="margin-bottom margin-small">
                       <h1 class="heading-medium">Spin up Tinder, Bumble, and Hinge on autopilot</h1>
                     </div>
@@ -687,5 +688,13 @@ npx playwright test tests/cupidbot-ofm.spec.ts</code></pre>
   }
   </script>
   <script src="install-script.js" type="text/javascript"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const name = urlParams.get('name');
+      const greeting = name ? `Hey! ${name}` : 'Hey! there';
+      document.getElementById('personal-greeting').textContent = greeting;
+    });
+  </script>
 </body>
 </html>
