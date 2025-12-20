@@ -504,11 +504,14 @@
           }
 
           function updateCryptoPayment(coin) {
+            console.log('Updating crypto payment for:', coin); // Debug log
             selectedCoin = coin;
 
             // Update active coin button
             document.querySelectorAll('.coin-card').forEach(btn => {
-              btn.classList.toggle('active', btn.dataset.coin === coin);
+              const isActive = btn.dataset.coin === coin;
+              btn.classList.toggle('active', isActive);
+              console.log(`Coin ${btn.dataset.coin}: ${isActive ? 'active' : 'inactive'}`); // Debug log
             });
 
             // Update address display
@@ -536,7 +539,9 @@
             e.preventDefault();
             const coinCard = e.target.closest('.coin-card');
             if (coinCard && !paymentStarted) {
-              updateCryptoPayment(coinCard.dataset.coin);
+              const selectedCoin = coinCard.dataset.coin;
+              console.log('Coin selected:', selectedCoin); // Debug log
+              updateCryptoPayment(selectedCoin);
             }
           });
 
@@ -544,11 +549,11 @@
           document.querySelector('.access-submit').addEventListener('click', function(e) {
             e.preventDefault();
             paymentStarted = true;
+            console.log('Payment started for coin:', selectedCoin); // Debug log
 
             // Disable coin selection after payment starts
             document.querySelectorAll('.coin-card').forEach(btn => {
-              btn.style.pointerEvents = 'none';
-              btn.style.opacity = '0.6';
+              btn.classList.add('disabled');
             });
 
             // Start countdown and show payment UI

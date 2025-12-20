@@ -1369,8 +1369,8 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--install-border);
       border-radius: var(--install-radius-md);
-      padding: 20px;
-      margin-bottom: 24px;
+      padding: 16px;
+      margin-bottom: 20px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
 
@@ -1388,7 +1388,7 @@
     }
 
     .order-label {
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--install-text-secondary);
@@ -1396,38 +1396,38 @@
     }
 
     .order-value {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--install-text-primary);
     }
 
     .coin-selection-section {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .coin-selection-title {
-      font-size: 16px;
+      font-size: 14px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--install-text-secondary);
       font-weight: 600;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .coin-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 8px;
     }
 
     .coin-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      padding: 20px 16px;
-      border-radius: var(--install-radius-md);
+      gap: 8px;
+      padding: 12px 8px;
+      border-radius: var(--install-radius-sm);
       background: rgba(255, 255, 255, 0.04);
       border: 2px solid transparent;
       cursor: pointer;
@@ -1435,6 +1435,7 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      min-height: 60px;
     }
 
     .coin-card:hover,
@@ -1442,6 +1443,7 @@
       background: rgba(255, 0, 110, 0.08);
       border-color: rgba(255, 0, 110, 0.3);
       box-shadow: 0 4px 16px rgba(255, 0, 110, 0.15);
+      transform: translateY(-1px);
     }
 
     .coin-card.active::after {
@@ -1452,10 +1454,15 @@
       pointer-events: none;
     }
 
+    .coin-card.disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
     .coin-icon-wrapper {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1464,34 +1471,35 @@
     }
 
     .coin-icon-svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       fill: var(--install-text-primary);
     }
 
     .coin-name {
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--install-text-primary);
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      line-height: 1.2;
     }
 
     .payment-zone {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
     .address-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
 
     .payment-instruction {
       text-align: center;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--install-text-secondary);
       line-height: 1.5;
     }
@@ -1503,33 +1511,34 @@
 
     .address-display {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       align-items: center;
-      padding: 16px;
+      padding: 12px;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--install-border);
-      border-radius: var(--install-radius-md);
+      border-radius: var(--install-radius-sm);
     }
 
     .wallet-address {
       flex: 1;
       font-family: 'Roboto Mono', monospace;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--install-text-primary);
       word-break: break-all;
       background: transparent;
       border: none;
       outline: none;
       text-align: left;
+      line-height: 1.4;
     }
 
     .copy-button-primary {
-      padding: 12px 20px;
-      border-radius: var(--install-radius-md);
+      padding: 10px 16px;
+      border-radius: var(--install-radius-sm);
       border: 1px solid var(--install-border);
       background: rgba(255, 255, 255, 0.08);
       color: var(--install-text-primary);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -1551,48 +1560,48 @@
     }
 
     .countdown-container {
-      display: flex;
+      display: none;
       justify-content: center;
     }
 
     .countdown-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: var(--install-radius-md);
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--install-radius-sm);
       background: rgba(255, 177, 85, 0.1);
       border: 1px solid rgba(255, 177, 85, 0.2);
       color: #ffb155;
       font-family: 'Roboto Mono', monospace;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
     }
 
     .countdown-icon {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       fill: #ffb155;
     }
 
     .status-container {
-      display: flex;
+      display: none;
       justify-content: center;
     }
 
     .status-indicator {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      border-radius: var(--install-radius-md);
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: var(--install-radius-sm);
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--install-border);
     }
 
     .status-spinner {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border: 2px solid rgba(255, 255, 255, 0.3);
       border-top: 2px solid var(--install-text-primary);
       border-radius: 50%;
@@ -1605,7 +1614,7 @@
     }
 
     .status-text {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--install-text-secondary);
       font-weight: 500;
     }
@@ -1617,23 +1626,23 @@
     .warning-box {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 16px 20px;
-      border-radius: var(--install-radius-md);
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: var(--install-radius-sm);
       background: rgba(255, 177, 85, 0.1);
       border: 1px solid rgba(255, 177, 85, 0.2);
     }
 
     .warning-icon {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       fill: #ffb155;
       flex-shrink: 0;
       margin-top: 2px;
     }
 
     .warning-content {
-      font-size: 14px;
+      font-size: 13px;
       color: #ffb155;
       line-height: 1.5;
     }
@@ -1646,24 +1655,24 @@
     .trust-signals {
       display: flex;
       justify-content: center;
-      gap: 32px;
-      padding: 24px 0;
+      gap: 24px;
+      padding: 20px 0;
       border-top: 1px solid var(--install-border);
-      margin-top: 24px;
+      margin-top: 20px;
     }
 
     .trust-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      gap: 6px;
+      font-size: 12px;
       color: var(--install-text-secondary);
       font-weight: 500;
     }
 
     .trust-icon {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       fill: currentColor;
     }
 
@@ -1677,58 +1686,151 @@
 
     /* Responsive adjustments for new elements */
     @media (max-width: 860px) {
+      .order-summary-card {
+        padding: 14px;
+        margin-bottom: 16px;
+      }
+
+      .order-value {
+        font-size: 15px;
+      }
+
       .coin-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
+        gap: 10px;
       }
 
       .coin-card {
-        padding: 16px 12px;
+        padding: 14px 10px;
+        min-height: 70px;
+      }
+
+      .coin-icon-wrapper {
+        width: 36px;
+        height: 36px;
+      }
+
+      .coin-name {
+        font-size: 12px;
+      }
+
+      .address-display {
+        padding: 14px;
+        gap: 10px;
+      }
+
+      .wallet-address {
+        font-size: 14px;
+      }
+
+      .copy-button-primary {
+        padding: 12px 18px;
+        font-size: 13px;
       }
 
       .trust-signals {
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
+        gap: 20px;
+        padding: 18px 0;
+        margin-top: 18px;
       }
 
-      .qr-wrapper {
-        width: 180px;
-        height: 180px;
-        padding: 8px;
-      }
-
-      .qr-code-large canvas {
-        max-width: 164px !important;
-        max-height: 164px !important;
+      .trust-item {
+        font-size: 13px;
       }
     }
 
     @media (max-width: 540px) {
+      .order-summary-card {
+        padding: 12px;
+      }
+
+      .order-value {
+        font-size: 14px;
+      }
+
+      .coin-selection-title {
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
       .coin-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .coin-card {
+        padding: 12px 8px;
+        min-height: 65px;
+      }
+
+      .coin-icon-wrapper {
+        width: 32px;
+        height: 32px;
+      }
+
+      .coin-icon-svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .coin-name {
+        font-size: 11px;
+      }
+
+      .payment-instruction {
+        font-size: 13px;
       }
 
       .address-display {
         flex-direction: column;
         gap: 12px;
         align-items: stretch;
+        padding: 12px;
+      }
+
+      .wallet-address {
+        font-size: 12px;
+        text-align: center;
       }
 
       .copy-button-primary {
         width: 100%;
         text-align: center;
+        padding: 14px;
+        font-size: 14px;
       }
 
-      .qr-wrapper {
-        width: 160px;
-        height: 160px;
-        padding: 6px;
+      .countdown-badge {
+        padding: 10px 16px;
+        font-size: 14px;
       }
 
-      .qr-code-large canvas {
-        max-width: 148px !important;
-        max-height: 148px !important;
+      .status-indicator {
+        padding: 12px 16px;
+      }
+
+      .status-text {
+        font-size: 14px;
+      }
+
+      .warning-box {
+        padding: 14px 16px;
+      }
+
+      .warning-content {
+        font-size: 14px;
+      }
+
+      .trust-signals {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        padding: 16px 0;
+        margin-top: 16px;
+      }
+
+      .trust-item {
+        font-size: 13px;
       }
     }
 
