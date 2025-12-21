@@ -34,14 +34,14 @@
     }
 
     .access-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--install-border);
-      border-radius: var(--install-radius-md);
-      padding: 28px;
-      box-shadow: var(--install-shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+       background: rgba(255, 255, 255, 0.04);
+       border: 1px solid var(--install-border);
+       border-radius: var(--install-radius-md);
+       padding: 20px;
+       box-shadow: var(--install-shadow);
+       display: flex;
+       flex-direction: column;
+       gap: 12px;
     }
 
     .access-eyebrow {
@@ -116,7 +116,7 @@
 
     .heading-medium {
        font-family: 'Syne', sans-serif;
-       font-size: 2.5rem;
+       font-size: 2rem;
        line-height: 1.2;
        font-weight: 700;
        color: var(--install-text-primary);
@@ -124,19 +124,19 @@
     }
 
     .text-size-xlarge {
-       font-size: 1.25rem;
+       font-size: 1.1rem;
        line-height: 1.6;
        color: var(--install-text-secondary);
     }
 
     .padding-vertical {
        &.padding-xlarge {
-          padding-top: 80px;
-          padding-bottom: 80px;
+          padding-top: 50px;
+          padding-bottom: 50px;
        }
        &.padding-large {
-          padding-top: 60px;
-          padding-bottom: 60px;
+          padding-top: 40px;
+          padding-bottom: 40px;
        }
     }
 
@@ -653,14 +653,14 @@
     }
 
     .install-flow {
-      padding: 48px 52px 56px;
-      border-radius: var(--install-radius-lg);
-      background: linear-gradient(160deg, rgba(16, 16, 30, 0.96) 0%, rgba(18, 18, 34, 0.94) 48%, rgba(28, 18, 46, 0.9) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: var(--install-shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 42px;
+       padding: 32px 40px 40px;
+       border-radius: var(--install-radius-lg);
+       background: linear-gradient(160deg, rgba(16, 16, 30, 0.96) 0%, rgba(18, 18, 34, 0.94) 48%, rgba(28, 18, 46, 0.9) 100%);
+       border: 1px solid rgba(255, 255, 255, 0.05);
+       box-shadow: var(--install-shadow);
+       display: flex;
+       flex-direction: column;
+       gap: 28px;
     }
 
     .install-progress {
@@ -809,14 +809,14 @@
     }
 
     .install-panel {
-      display: none;
-      flex-direction: column;
-      gap: 22px;
-      padding: 38px;
-      border-radius: var(--install-radius-md);
-      background: linear-gradient(140deg, rgba(30, 30, 52, 0.92) 0%, rgba(20, 20, 36, 0.9) 62%, rgba(33, 23, 54, 0.88) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 32px 90px rgba(5, 5, 16, 0.5);
+       display: none;
+       flex-direction: column;
+       gap: 16px;
+       padding: 24px;
+       border-radius: var(--install-radius-md);
+       background: linear-gradient(140deg, rgba(30, 30, 52, 0.92) 0%, rgba(20, 20, 36, 0.9) 62%, rgba(33, 23, 54, 0.88) 100%);
+       border: 1px solid rgba(255, 255, 255, 0.06);
+       box-shadow: 0 32px 90px rgba(5, 5, 16, 0.5);
     }
 
     .install-panel.active {
@@ -1880,56 +1880,56 @@
       }
     }
 
-    /* Desktop enhancements for professional look - properly sized */
+    /* Desktop - compact and organized */
     @media (min-width: 1200px) {
-      /* Reasonable heading sizes */
+      /* Compact heading sizes */
       .heading-medium {
-        font-size: 3.5rem;
-        line-height: 1.1;
+        font-size: 2.2rem;
+        line-height: 1.2;
       }
 
       .text-size-xlarge {
-        font-size: 1.75rem;
-        line-height: 1.4;
+        font-size: 1.2rem;
+        line-height: 1.5;
       }
 
-      /* Balanced section padding */
+      /* Tight section padding */
       .padding-vertical.padding-xlarge {
-        padding-top: 120px;
-        padding-bottom: 120px;
+        padding-top: 60px;
+        padding-bottom: 60px;
       }
 
       .padding-vertical.padding-large {
-        padding-top: 100px;
-        padding-bottom: 100px;
+        padding-top: 50px;
+        padding-bottom: 50px;
       }
 
-      /* Professional card padding */
+      /* Compact card padding */
       .access-card {
-        padding: 48px;
-        gap: 24px;
-      }
-
-      .access-title {
-        font-size: 28px;
-      }
-
-      .access-body {
-        font-size: 18px;
-      }
-
-      /* Properly sized buttons */
-      .install-btn_primary,
-      .install-btn_primary:link,
-      .install-btn_primary:visited {
-        padding: 20px 40px;
-        font-size: 16px;
+        padding: 24px;
         gap: 16px;
       }
 
-      .install-btn_primary.install-btn_primary--compact {
-        padding: 18px 32px;
+      .access-title {
+        font-size: 20px;
+      }
+
+      .access-body {
         font-size: 15px;
+      }
+
+      /* Small buttons */
+      .install-btn_primary,
+      .install-btn_primary:link,
+      .install-btn_primary:visited {
+        padding: 12px 24px;
+        font-size: 14px;
+        gap: 12px;
+      }
+
+      .install-btn_primary.install-btn_primary--compact {
+        padding: 10px 20px;
+        font-size: 13px;
       }
 
       .install-btn_secondary,
@@ -1938,147 +1938,147 @@
       .install-btn_ghost,
       .install-btn_ghost:link,
       .install-btn_ghost:visited {
-        padding: 18px 30px;
-        font-size: 15px;
+        padding: 10px 18px;
+        font-size: 13px;
       }
 
-      /* Balanced panel padding */
+      /* Compact panel padding */
       .install-panel {
-        padding: 48px;
-        gap: 28px;
+        padding: 24px;
+        gap: 16px;
       }
 
       .install-panel_heading {
-        font-size: 32px;
-      }
-
-      .install-panel_body {
-        font-size: 17px;
-        gap: 20px;
-      }
-
-      /* Appropriate grid gaps */
-      .access-grid {
-        gap: 32px;
-      }
-
-      .install-status_grid {
-        gap: 24px;
-      }
-
-      .install-metrics {
-        gap: 24px;
-      }
-
-      .install-seo_grid {
-        gap: 32px;
-      }
-
-      .install-faq_list {
-        gap: 24px;
-      }
-
-      /* Comfortable input sizes */
-      .access-input {
-        padding: 16px 20px;
-        font-size: 16px;
-      }
-
-      /* Readable metrics */
-      .install-metric_value {
         font-size: 24px;
       }
 
-      .install-metric_label {
-        font-size: 14px;
-        margin-top: 8px;
-      }
-
-      /* Balanced flow padding */
-      .install-flow {
-        padding: 80px 80px 100px;
-        gap: 48px;
-      }
-
-      /* Comfortable step buttons */
-      .install-step_btn {
-        padding: 24px 28px;
-        gap: 20px;
-      }
-
-      .install-step_index {
-        width: 48px;
-        height: 48px;
-        font-size: 18px;
-      }
-
-      .install-step_title {
-        font-size: 16px;
-      }
-
-      .install-step_status {
-        font-size: 14px;
-      }
-
-      /* Professional SEO section */
-      .install-seo {
-        padding: 100px 80px;
-        gap: 48px;
-      }
-
-      .install-seo_header h2 {
-        font-size: clamp(36px, 4vw, 48px);
-      }
-
-      .install-seo_header p {
-        font-size: 20px;
-      }
-
-      .install-seo_card {
-        padding: 36px 40px;
-        gap: 20px;
-      }
-
-      .install-seo_card h3 {
-        font-size: 22px;
-      }
-
-      .install-seo_card p {
-        font-size: 16px;
-      }
-
-      /* Readable FAQ items */
-      .install-faq_item {
-        padding: 24px 28px;
+      .install-panel_body {
+        font-size: 15px;
         gap: 12px;
       }
 
-      .install-faq_item h3 {
-        font-size: 17px;
+      /* Tight grid gaps */
+      .access-grid {
+        gap: 20px;
       }
 
-      .install-faq_item p {
-        font-size: 16px;
+      .install-status_grid {
+        gap: 16px;
       }
 
-      /* Professional support card */
-      .install-support_card {
-        padding: 48px 60px;
+      .install-metrics {
+        gap: 16px;
+      }
+
+      .install-seo_grid {
+        gap: 20px;
+      }
+
+      .install-faq_list {
+        gap: 16px;
+      }
+
+      /* Compact input sizes */
+      .access-input {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+
+      /* Smaller metrics */
+      .install-metric_value {
+        font-size: 18px;
+      }
+
+      .install-metric_label {
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      /* Compact flow padding */
+      .install-flow {
+        padding: 40px 60px 50px;
         gap: 32px;
       }
 
+      /* Compact step buttons */
+      .install-step_btn {
+        padding: 16px 20px;
+        gap: 14px;
+      }
+
+      .install-step_index {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+
+      .install-step_title {
+        font-size: 14px;
+      }
+
+      .install-step_status {
+        font-size: 12px;
+      }
+
+      /* Compact SEO section */
+      .install-seo {
+        padding: 60px 60px;
+        gap: 32px;
+      }
+
+      .install-seo_header h2 {
+        font-size: clamp(24px, 3vw, 32px);
+      }
+
+      .install-seo_header p {
+        font-size: 16px;
+      }
+
+      .install-seo_card {
+        padding: 20px 24px;
+        gap: 12px;
+      }
+
+      .install-seo_card h3 {
+        font-size: 18px;
+      }
+
+      .install-seo_card p {
+        font-size: 14px;
+      }
+
+      /* Compact FAQ items */
+      .install-faq_item {
+        padding: 16px 20px;
+        gap: 8px;
+      }
+
+      .install-faq_item h3 {
+        font-size: 15px;
+      }
+
+      .install-faq_item p {
+        font-size: 14px;
+      }
+
+      /* Compact support card */
+      .install-support_card {
+        padding: 32px 40px;
+        gap: 20px;
+      }
+
       .install-support_card h2 {
-        font-size: 28px;
+        font-size: 22px;
       }
 
       .install-support_card p {
-        font-size: 17px;
+        font-size: 15px;
       }
 
-      /* Balanced footer padding */
+      /* Compact footer padding */
       .padding-vertical.padding-xlarge {
-        padding-top: 120px;
-        padding-bottom: 120px;
+        padding-top: 80px;
+        padding-bottom: 80px;
       }
     }
 
