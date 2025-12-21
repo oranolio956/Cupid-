@@ -134,9 +134,29 @@
 
     .access-submit:hover,
     .access-submit:focus-visible {
-      transform: translateY(-1px);
-      box-shadow: 0 20px 44px rgba(255, 0, 110, 0.42);
-      outline: none;
+       transform: translateY(-1px);
+       box-shadow: 0 20px 44px rgba(255, 0, 110, 0.42);
+       outline: none;
+    }
+
+    .access-submit:disabled {
+       cursor: not-allowed;
+       opacity: 0.8;
+    }
+
+    .button-spinner {
+       display: inline-block;
+       width: 16px;
+       height: 16px;
+       border: 2px solid rgba(255, 255, 255, 0.3);
+       border-radius: 50%;
+       border-top-color: #fff;
+       animation: spin 1s ease-in-out infinite;
+       margin-right: 8px;
+    }
+
+    @keyframes spin {
+       to { transform: rotate(360deg); }
     }
 
     .access-note {

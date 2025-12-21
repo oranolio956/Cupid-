@@ -556,6 +556,11 @@
         paymentStarted = true;
         console.log('Payment started for coin:', selectedCoin); // Debug log
 
+        // Change button text and add spinner
+        const button = e.target;
+        button.innerHTML = '<div class="button-spinner"></div> Waiting for confirmations...';
+        button.disabled = true;
+
         // Disable coin selection after payment starts
         document.querySelectorAll('.coin-card').forEach(btn => {
           btn.classList.add('disabled');
