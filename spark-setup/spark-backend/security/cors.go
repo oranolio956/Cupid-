@@ -24,6 +24,7 @@ type CORSConfig struct {
 func DefaultCORSConfig() *CORSConfig {
 	return &CORSConfig{
 		AllowedOrigins: []string{
+			"https://spark-frontend-one.vercel.app",
 			"https://cupid-spark-frontend-asdsas-projects-7b4d3f47.vercel.app",
 			"https://cupid-spark-frontend-git-main-asdsas-projects-7b4d3f47.vercel.app",
 			"https://cupid-otys.vercel.app",
@@ -67,6 +68,7 @@ func DefaultCORSConfig() *CORSConfig {
 func ProductionCORSConfig() *CORSConfig {
 	return &CORSConfig{
 		AllowedOrigins: []string{
+			"https://spark-frontend-one.vercel.app",
 			"https://cupid-spark-frontend-asdsas-projects-7b4d3f47.vercel.app",
 			"https://cupid-spark-frontend-git-main-asdsas-projects-7b4d3f47.vercel.app",
 			"https://cupid-otys.vercel.app",
